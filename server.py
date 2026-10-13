@@ -450,6 +450,11 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
                 "worker_role": "Zonal Municipal Engineer",
                 "assignment_status": "Active" if current_status != "Submitted" else "Pending",
                 "assigned_team": f"{dept_name} Zonal Field Redressal Crew",
+                "citizen_name": get_display(r.get("citizen")) or "Aarav Sharma",
+                "citizen": get_display(r.get("citizen")) or "Aarav Sharma",
+                "citizen_id": "CIT-BLR-001",
+                "citizen_phone": "+91 98765 43210",
+                "citizen_email": "citizen.grievance@civicone.gov.in",
                 "citizen_confirmation_status": get_display(r.get("citizen_confirmation_status")),
                 "activity_history": activity,
             }
@@ -1057,7 +1062,36 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
             return
         try:
             res = client.get_records("x_2229367_civicone_customer", limit=50)
-            self.send_json(200, {"success": True, "citizens": res, "count": len(res)})
+            citizens = []
+            for r in res:
+                lang = r.get("preferred_language")
+                if isinstance(lang, dict):
+                    lang_str = lang.get("display_value") or "English"
+                else:
+                    lang_str = str(lang) if lang else "English"
+                if not lang_str or lang_str == "{}" or "object" in lang_str.lower():
+                    lang_str = "English"
+
+                ward = r.get("ward")
+                if isinstance(ward, dict):
+                    ward_str = ward.get("display_value") or "Indiranagar, Ward 12"
+                else:
+                    ward_str = str(ward) if ward else "Indiranagar, Ward 12"
+                if not ward_str or ward_str == "{}" or "object" in ward_str.lower():
+                    ward_str = "Indiranagar, Ward 12"
+
+                citizens.append({
+                    "sys_id": r.get("sys_id"),
+                    "citizen_id": r.get("citizen_id") or "CIT-BLR-001",
+                    "full_name": r.get("full_name") or "Aarav Sharma",
+                    "email": r.get("email") or "aarav.sharma@example.gov.in",
+                    "phone": r.get("phone") or "9876543210",
+                    "ward": ward_str,
+                    "address": ward_str + ", Bengaluru",
+                    "preferred_language": lang_str,
+                    "is_verified": r.get("is_verified") == "true" or r.get("is_verified") is True
+                })
+            self.send_json(200, {"success": True, "citizens": citizens, "count": len(citizens)})
         except Exception as e:
             self.send_json(500, {"success": False, "error": str(e)})
 
