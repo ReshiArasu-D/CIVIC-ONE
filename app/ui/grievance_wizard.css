@@ -362,7 +362,8 @@
   background: #f8fafc;
   border: 1.5px dashed #cbd5e1;
   border-radius: 16px;
-  padding: 18px 20px;
+  padding: 24px 20px;
+  min-height: 140px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -378,6 +379,14 @@
   border-color: #3b82f6;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(29, 99, 237, 0.08);
+}
+
+.camera-btn-card.drag-over {
+  background: #eff6ff !important;
+  border-color: #2563eb !important;
+  border-style: solid !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15);
 }
 
 .camera-icon-circle {

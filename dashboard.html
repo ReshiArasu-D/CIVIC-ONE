@@ -597,31 +597,22 @@
             <input type="file" id="camera-rear-input" accept="image/*" capture="environment" style="display: none;" onchange="handleFileInput(event)">
             <input type="file" id="file-doc-input" accept="image/*,.pdf,.doc,.docx" multiple style="display: none;" onchange="handleFileInput(event)">
 
-            <!-- Media Options Grid -->
+            <!-- Media Options Grid (2 clean options: Capture Live Photo & Upload Photo/Evidence) -->
             <div class="media-choice-grid">
-              <div class="camera-btn-card" onclick="triggerCameraInput('environment')">
+              <div class="camera-btn-card" onclick="triggerCameraInput('environment')" id="card-capture-photo">
                 <div class="camera-icon-circle">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                 </div>
-                <strong style="color: #0f172a; font-size: 0.92rem;">Capture Live Photo</strong>
-                <span style="color: #64748b; font-size: 0.78rem;">Take picture from mobile / webcam</span>
+                <strong style="color: #0f172a; font-size: 0.95rem;">Capture Live Photo</strong>
+                <span style="color: #64748b; font-size: 0.8rem;">Take picture from mobile camera / webcam</span>
               </div>
-              <div class="camera-btn-card" onclick="triggerDocUpload()">
+              <div class="camera-btn-card" id="card-upload-evidence" onclick="triggerDocUpload()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
                 <div class="camera-icon-circle">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </div>
-                <strong style="color: #0f172a; font-size: 0.92rem;">Upload Document / Photo</strong>
-                <span style="color: #64748b; font-size: 0.78rem;">Choose JPG, PNG, WEBP, or PDF (up to 10MB)</span>
+                <strong style="color: #0f172a; font-size: 0.95rem;">Upload Photo / Evidence</strong>
+                <span style="color: #64748b; font-size: 0.8rem;">Choose file or drag &amp; drop here (JPG, PNG, WEBP)</span>
               </div>
-            </div>
-
-            <!-- Dropzone -->
-            <div class="dropzone-container" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" onclick="triggerDocUpload()">
-              <div style="color: #3b82f6; margin-bottom: 6px;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              </div>
-              <strong style="color: #1e3a8a; font-size: 0.95rem;">Drag &amp; Drop civic evidence here</strong>
-              <p style="color: #64748b; font-size: 0.8rem; margin: 4px 0 0;">Supports high-resolution images &amp; municipal scanned complaint documents</p>
             </div>
 
             <!-- Quick Demo Scenarios Box -->
@@ -1521,11 +1512,22 @@
     function handleDragOver(e) {
       e.preventDefault();
       e.stopPropagation();
+      const card = document.getElementById('card-upload-evidence');
+      if (card) card.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const card = document.getElementById('card-upload-evidence');
+      if (card) card.classList.remove('drag-over');
     }
 
     function handleDrop(e) {
       e.preventDefault();
       e.stopPropagation();
+      const card = document.getElementById('card-upload-evidence');
+      if (card) card.classList.remove('drag-over');
       if (e.dataTransfer && e.dataTransfer.files) {
         handleFileInput({ target: { files: e.dataTransfer.files } });
       }
