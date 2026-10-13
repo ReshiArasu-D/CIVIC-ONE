@@ -958,8 +958,59 @@
 }
 
 /* ==========================================================================
-   CIVICONE AI FLOATING CONVERSATION BOX
+   FLOATING CIVICONE AI WIDGET LAUNCHER & CONVERSATION BOX
    ========================================================================== */
+.floating-civicone-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 1040;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px 6px 10px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 9999px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-civicone-widget:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 34px rgba(29, 99, 237, 0.2);
+  border-color: #93c5fd;
+}
+
+.civicone-avatar-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #3b82f6;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.civicone-avatar-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.civicone-text-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
 .civicone-chat-box {
   position: fixed;
   bottom: 96px;

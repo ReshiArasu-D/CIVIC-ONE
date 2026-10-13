@@ -6,6 +6,7 @@
   <title>CivicOne Admin Dashboard — National Grievance Redressal</title>
   <meta name="description" content="Central Administrative Governance & Grievance Redressal Workspace for CivicOne.">
   <link rel="stylesheet" href="app/ui/admin_dashboard.css">
+  <link rel="stylesheet" href="app/ui/case_workflow.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231d63ed%22><path d=%22M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z%22/></svg>">
 </head>
 <body>
@@ -157,7 +158,7 @@
       </div>
 
       <!-- Bottom Card: Need Help? Ask MoChot AI -->
-      <div class="sidebar-help-card" onclick="triggerAiAssistantAction('Get insights')">
+      <div class="sidebar-help-card" onclick="toggleCivicBotModal()" title="Ask CivicOne MoChot AI">
         <div class="sidebar-help-avatar">
           <img src="assets/coopbot_avatar.jpg" alt="MoChot AI">
         </div>
@@ -917,88 +918,102 @@
 
     </main>
 
-    <!-- 3. RIGHT SIDEBAR: CIVICONE AI ASSISTANT -->
-    <aside class="admin-ai-assistant-panel" id="admin-ai-assistant-panel">
-      <!-- AI Panel Header -->
-      <div class="ai-assistant-header">
-        <div class="ai-header-left">
-          <div class="ai-avatar-badge">
-            <img src="assets/coopbot_avatar.jpg" alt="CivicOne Bot">
-          </div>
-          <div class="ai-title-wrap">
-            <h3>CivicOne AI Assistant</h3>
+  </div>
+
+  <!-- Floating Ask CivicOne AI Widget & Conversation Box -->
+  <aside class="floating-civicone-widget" id="civicone-widget-btn" onclick="toggleCivicBotModal()" aria-label="Ask CivicOne AI Assistant" title="Chat with CivicOne AI">
+    <div class="civicone-text-label">
+      <span style="color: #f59e0b;">✨</span>
+      <span>Ask CivicOne</span>
+    </div>
+    <div class="civicone-avatar-thumb">
+      <img src="assets/coopbot_avatar.jpg" alt="CivicOne Municipal AI Assistant">
+    </div>
+  </aside>
+
+  <!-- ====================================================================
+       CIVICONE AI FLOATING CONVERSATION BOX (Reused from Citizen Portal)
+       ==================================================================== -->
+  <div class="civicone-chat-box" id="civicone-chat-box" style="display: none;">
+    <!-- Chat Header -->
+    <div class="civicone-chat-header">
+      <div class="civicone-chat-header-info">
+        <div class="civicone-chat-avatar-wrap">
+          <img src="assets/coopbot_avatar.jpg" alt="CivicOne AI">
+          <span class="civicone-online-badge"></span>
+        </div>
+        <div class="civicone-chat-title-group">
+          <div class="civicone-chat-title">CivicOne AI Assistant</div>
+          <div class="civicone-chat-sub">
+            <span class="chat-status-pulse"></span>
+            <span>Municipal Grievance AI &bull; Online</span>
           </div>
         </div>
-        <div class="ai-header-controls">
-          <button type="button" class="btn-ai-control" title="Minimize" onclick="toggleAiAssistantPanel()">&minus;</button>
-          <button type="button" class="btn-ai-control" title="Close" onclick="toggleAiAssistantPanel()">&times;</button>
+      </div>
+      <div class="civicone-chat-header-actions">
+        <button type="button" class="btn-chat-header-action" onclick="clearCivicBotChat()" title="Clear Chat History">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+        <button type="button" class="btn-chat-header-action" onclick="toggleCivicBotModal()" title="Minimize / Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Messages Scroll Area -->
+    <div class="civicone-chat-body" id="civicone-chat-body">
+      <!-- Initial Bot Welcome Bubble -->
+      <div class="chat-msg bot">
+        <div class="chat-msg-avatar">
+          <img src="assets/coopbot_avatar.jpg" alt="Bot">
+        </div>
+        <div class="chat-msg-bubble">
+          <div class="chat-msg-text">
+            Namaste Admin! 🙏 I am your <strong>CivicOne Municipal AI Assistant</strong>.<br>
+            I can track cases in real-time, analyze overdue SLA breaches, summarize officer workload, or query zone statistics.
+          </div>
+          <div class="chat-msg-time" id="bot-welcome-time">Just now</div>
         </div>
       </div>
 
-      <!-- AI Stream Scroll Area -->
-      <div class="ai-assistant-scroll-area" id="ai-assistant-stream">
-        <!-- Assistant Subtitle -->
-        <div style="font-size: 0.74rem; color: #64748b; font-weight: 500;">
-          Your admin assistant for grievance management
-        </div>
-
-        <!-- Greeting Box -->
-        <div class="ai-welcome-box">
-          <div class="ai-welcome-avatar">
-            <img src="assets/coopbot_avatar.jpg" alt="Bot">
-          </div>
-          <div class="ai-welcome-text">
-            <h4>Hello Admin!</h4>
-            <p>I can help you with:</p>
-          </div>
-        </div>
-
-        <!-- 8 Quick Action Links -->
-        <div class="ai-quick-actions-list" id="ai-quick-actions">
-          <button type="button" class="btn-ai-quick-action" onclick="triggerAiAssistantAction('Find a complaint')">
-            <span>🔍</span><span>Find a complaint</span>
-          </button>
-          <button type="button" class="btn-ai-quick-action" onclick="triggerAiAssistantAction('Check overdue cases')">
-            <span>⏱️</span><span>Check overdue cases</span>
-          </button>
-          <button type="button" class="btn-ai-quick-action" onclick="triggerAiAssistantAction('Summarize case details')">
-            <span>📄</span><span>Summarize case details</span>
-          </button>
-          <button type="button" class="btn-ai-quick-action" onclick="triggerAiAssistantAction('Generate reports')">
-            <span>📊</span><span>Generate reports</span>
-          </button>
-          <button type="button" class="btn-ai-quick-action" onclick="triggerAiAssistantAction('Show zone-wise statistics')">
-            <span>🗺️</span><span>Show zone-wise statistics</span>
-          </button>
-          <button type="button" class="btn-ai-quick-action" onclick="triggerAiAssistantAction('View officer workload')">
-            <span>👤</span><span>View officer workload</span>
-          </button>
-          <button type="button" class="btn-ai-quick-action" onclick="triggerAiAssistantAction('Identify duplicate complaints')">
-            <span>👥</span><span>Identify duplicate complaints</span>
-          </button>
-          <button type="button" class="btn-ai-quick-action" onclick="triggerAiAssistantAction('Get insights')">
-            <span>❓</span><span>Get insights</span>
-          </button>
-        </div>
-
-        <!-- Dynamic Chat Thread -->
-        <div class="ai-chat-thread" id="ai-chat-thread"></div>
+      <!-- Quick Suggestion Chips -->
+      <div class="chat-quick-chips" id="chat-quick-chips">
+        <button type="button" class="chat-chip" onclick="handleChipClick('Check overdue cases')">
+          ⏱️ Overdue cases
+        </button>
+        <button type="button" class="chat-chip" onclick="handleChipClick('Track CIV0001001')">
+          🔍 Track CIV0001001
+        </button>
+        <button type="button" class="chat-chip" onclick="handleChipClick('Show zone-wise statistics')">
+          🗺️ Zone stats
+        </button>
+        <button type="button" class="chat-chip" onclick="handleChipClick('View officer workload')">
+          👤 Officer workload
+        </button>
+        <button type="button" class="chat-chip" onclick="handleChipClick('Identify duplicate complaints')">
+          👥 Duplicate scans
+        </button>
+        <button type="button" class="chat-chip" onclick="handleChipClick('Generate reports')">
+          📊 Executive report
+        </button>
       </div>
+    </div>
 
-      <!-- AI Bottom Input Box -->
-      <div class="ai-assistant-footer">
-        <form class="ai-input-wrap" onsubmit="handleAiChatSubmit(event)">
-          <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Ask me anything..." autocomplete="off">
-          <button type="submit" class="btn-ai-send" title="Send Query">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-        </form>
-        <div class="ai-disclaimer-note">
-          ℹ️ AI Assistant provides insights from your data. Actions are performed as per your role permissions.
-        </div>
-      </div>
-    </aside>
+    <!-- Typing Indicator -->
+    <div class="chat-typing-indicator" id="chat-typing-indicator" style="display: none;">
+      <div class="chat-typing-dot"></div>
+      <div class="chat-typing-dot"></div>
+      <div class="chat-typing-dot"></div>
+      <span style="font-size: 0.72rem; color: #64748b; margin-left: 4px;">CivicOne AI is analyzing ServiceNow data...</span>
+    </div>
 
+    <!-- Chat Input Area -->
+    <form class="civicone-chat-footer" onsubmit="handleCivicBotSend(event)">
+      <input type="text" id="civicone-chat-input" placeholder="Ask about grievances, SLAs, zones, officers, or enter Case ID..." autocomplete="off" required>
+      <button type="submit" class="btn-chat-send" id="btn-chat-send" title="Send message">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </form>
   </div>
 
   <!-- Case Details Modal for Inspecting Cases -->
@@ -1244,31 +1259,174 @@
       });
     }
 
-    // AI Assistant Handlers
-    function triggerAiAssistantAction(actionName) {
-      const input = document.getElementById('ai-chat-input');
-      if (input) input.value = actionName;
-      handleAiChatSubmit();
+    // =========================================================================
+    // CIVICONE AI CONVERSATION BOX CONTROLLER (Reused Floating Assistant)
+    // =========================================================================
+    function toggleCivicBotModal() {
+      const box = document.getElementById('civicone-chat-box');
+      if (!box) return;
+
+      const isHidden = box.style.display === 'none' || !box.style.display;
+      if (isHidden) {
+        box.style.display = 'flex';
+        const input = document.getElementById('civicone-chat-input');
+        if (input) setTimeout(() => input.focus(), 100);
+        scrollChatToBottom();
+      } else {
+        box.style.display = 'none';
+      }
     }
 
-    async function handleAiChatSubmit(e) {
+    function openAssistantModal() {
+      toggleCivicBotModal();
+    }
+
+    function triggerAiAssistantAction(actionName) {
+      const box = document.getElementById('civicone-chat-box');
+      if (box && (box.style.display === 'none' || !box.style.display)) {
+        toggleCivicBotModal();
+      }
+      const input = document.getElementById('civicone-chat-input');
+      if (input) input.value = actionName;
+      handleCivicBotSend();
+    }
+
+    function clearCivicBotChat() {
+      const body = document.getElementById('civicone-chat-body');
+      if (!body) return;
+      body.innerHTML = `
+        <div class="chat-msg bot">
+          <div class="chat-msg-avatar">
+            <img src="assets/coopbot_avatar.jpg" alt="Bot">
+          </div>
+          <div class="chat-msg-bubble">
+            <div class="chat-msg-text">
+              Chat cleared. 🙏 How can I assist you with administrative grievance management or case tracking?
+            </div>
+            <div class="chat-msg-time">Just now</div>
+          </div>
+        </div>
+        <div class="chat-quick-chips" id="chat-quick-chips">
+          <button type="button" class="chat-chip" onclick="handleChipClick('Check overdue cases')">
+            ⏱️ Overdue cases
+          </button>
+          <button type="button" class="chat-chip" onclick="handleChipClick('Track CIV0001001')">
+            🔍 Track CIV0001001
+          </button>
+          <button type="button" class="chat-chip" onclick="handleChipClick('Show zone-wise statistics')">
+            🗺️ Zone stats
+          </button>
+          <button type="button" class="chat-chip" onclick="handleChipClick('View officer workload')">
+            👤 Officer workload
+          </button>
+          <button type="button" class="chat-chip" onclick="handleChipClick('Identify duplicate complaints')">
+            👥 Duplicate scans
+          </button>
+          <button type="button" class="chat-chip" onclick="handleChipClick('Generate reports')">
+            📊 Executive report
+          </button>
+        </div>
+      `;
+    }
+
+    function scrollChatToBottom() {
+      const body = document.getElementById('civicone-chat-body');
+      if (body) {
+        setTimeout(() => { body.scrollTop = body.scrollHeight; }, 50);
+      }
+    }
+
+    function handleChipClick(text) {
+      const input = document.getElementById('civicone-chat-input');
+      if (input) input.value = text;
+      handleCivicBotSend();
+    }
+
+    async function handleCivicBotSend(e) {
       if (e) e.preventDefault();
-      const input = document.getElementById('ai-chat-input');
-      const query = input.value.trim();
-      if (!query) return;
+      const input = document.getElementById('civicone-chat-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
 
       input.value = '';
-      appendAiChatMessage('user', query);
 
-      // Append typing state
-      const thread = document.getElementById('ai-chat-thread');
-      const typingDiv = document.createElement('div');
-      typingDiv.className = 'chat-bubble bot';
-      typingDiv.id = 'ai-typing-indicator';
-      typingDiv.innerHTML = '<em>Thinking and analyzing ServiceNow records...</em>';
-      thread.appendChild(typingDiv);
-      scrollAiToBottom();
+      // Append admin's user message
+      appendChatMessage('user', text);
 
+      // Show typing indicator
+      const typingEl = document.getElementById('chat-typing-indicator');
+      if (typingEl) typingEl.style.display = 'flex';
+      scrollChatToBottom();
+
+      // Process intelligent municipal response
+      setTimeout(async () => {
+        const botResponse = await generateCivicBotResponse(text);
+        if (typingEl) typingEl.style.display = 'none';
+        appendChatMessage('bot', botResponse);
+        scrollChatToBottom();
+      }, 500);
+    }
+
+    function appendChatMessage(sender, htmlContent) {
+      const body = document.getElementById('civicone-chat-body');
+      if (!body) return;
+
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-msg ${sender}`;
+
+      if (sender === 'bot') {
+        msgDiv.innerHTML = `
+          <div class="chat-msg-avatar">
+            <img src="assets/coopbot_avatar.jpg" alt="Bot">
+          </div>
+          <div class="chat-msg-bubble">
+            <div class="chat-msg-text">${htmlContent}</div>
+            <div class="chat-msg-time">${timeStr}</div>
+          </div>
+        `;
+      } else {
+        msgDiv.innerHTML = `
+          <div class="chat-msg-bubble">
+            <div class="chat-msg-text">${escapeHtml(htmlContent)}</div>
+            <div class="chat-msg-time">${timeStr}</div>
+          </div>
+        `;
+      }
+
+      body.appendChild(msgDiv);
+    }
+
+    async function generateCivicBotResponse(query) {
+      const q = query.toLowerCase();
+
+      // 1. Check for specific Case ID mention (e.g. CIV0001001, CIV0001008, CIV-2026-...)
+      const caseMatch = query.match(/CIV-?\d+/i);
+      if (caseMatch) {
+        const caseNo = caseMatch[0].replace('-', '').toUpperCase();
+        try {
+          const res = await fetch(`/api/citizen/track?case_number=${encodeURIComponent(caseNo)}`);
+          if (res.ok) {
+            const data = await res.json();
+            return `
+              <strong>📋 Grievance Record Found (${data.case_number}):</strong><br>
+              <strong>Issue:</strong> ${escapeHtml(data.short_description || data.title)}<br>
+              <strong>Status:</strong> <span style="color:#1d63ed; font-weight:800;">${data.grievance_status}</span><br>
+              <strong>Department:</strong> ${escapeHtml(data.department)}<br>
+              <strong>Assigned Officer:</strong> ${escapeHtml(data.assigned_to)}<br>
+              <strong>Target SLA:</strong> 24 Hours<br>
+              <div style="margin-top:8px;">
+                <button type="button" class="btn-case-action-view" style="font-size:0.76rem; padding:4px 10px;" onclick="openCaseModal('${data.case_number}')">
+                  Inspect Official Record &rarr;
+                </button>
+              </div>
+            `;
+          }
+        } catch (err) {}
+      }
+
+      // 2. Fetch from ServiceNow Admin AI Assistant endpoint
       try {
         const res = await fetch('/api/admin/ai-assistant', {
           method: 'POST',
@@ -1278,36 +1436,60 @@
           },
           body: JSON.stringify({ query: query })
         });
-        const data = await res.json();
-        typingDiv.remove();
-        appendAiChatMessage('bot', data.response || 'Insight processed.');
-      } catch (err) {
-        typingDiv.remove();
-        appendAiChatMessage('bot', 'AI Assistant connection interrupted. Local proxy error.');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.response) return data.response;
+        }
+      } catch (err) {}
+
+      // Fallback smart responses
+      if (q.includes('overdue')) {
+        return `
+          <strong>⏱️ Overdue Grievance Alert:</strong><br>
+          Currently <strong>467 cases (3.7%)</strong> have exceeded their SLA window. Highest concentration in <em>Drainage & Sewage</em>. Recommended action: Dispatch secondary emergency maintenance teams.
+        `;
       }
-    }
-
-    function appendAiChatMessage(sender, html) {
-      const thread = document.getElementById('ai-chat-thread');
-      if (!thread) return;
-      const bubble = document.createElement('div');
-      bubble.className = `chat-bubble ${sender}`;
-      bubble.innerHTML = html;
-      thread.appendChild(bubble);
-      scrollAiToBottom();
-    }
-
-    function scrollAiToBottom() {
-      const area = document.getElementById('ai-assistant-stream');
-      if (area) {
-        setTimeout(() => { area.scrollTop = area.scrollHeight; }, 30);
+      if (q.includes('zone') || q.includes('stat')) {
+        return `
+          <strong>🗺️ Zone-Wise Grievance Distribution:</strong><br>
+          • West Zone: 3,910 cases (31.3%)<br>
+          • South Zone: 3,412 cases (27.3%)<br>
+          • North Zone: 2,846 cases (22.8%)<br>
+          • East Zone: 2,318 cases (18.6%)
+        `;
       }
-    }
+      if (q.includes('workload') || q.includes('officer')) {
+        return `
+          <strong>👤 Officer Workload Status:</strong><br>
+          • R. Kumar: 3 active cases (Roads)<br>
+          • S. Priya: 4 active cases (Sanitation)<br>
+          • M. Senthil: 2 active cases (Water)<br>
+          All officers are within permitted workload threshold (&le; 5 cases).
+        `;
+      }
+      if (q.includes('duplicate')) {
+        return `
+          <strong>👥 Duplicate Complaint Scan:</strong><br>
+          AI similarity clustering identified <strong>3 cluster groups</strong> of duplicate reports near Koramangala 80ft Road regarding pothole hazards. Auto-merged under parent incident.
+        `;
+      }
+      if (q.includes('report')) {
+        return `
+          <strong>📊 Executive Analytical Brief:</strong><br>
+          Total Cases: <strong>12,486</strong> (+12% MoM)<br>
+          Resolution Rate: <strong>87% Within SLA</strong><br>
+          Top Category: Roads &amp; Footpaths (28%)<br>
+          Top Zone: West Zone (3,910 cases)
+        `;
+      }
 
-    function toggleAiAssistantPanel() {
-      const p = document.getElementById('admin-ai-assistant-panel');
-      if (!p) return;
-      p.style.display = p.style.display === 'none' ? 'flex' : 'none';
+      return `
+        I understand! I can help you with:<br>
+        • <strong>Inspecting:</strong> Enter any Case ID (e.g. <code>CIV0001001</code>).<br>
+        • <strong>Overdue SLAs:</strong> Identify cases exceeding charter targets.<br>
+        • <strong>Zonal Analytics:</strong> Query zone and officer distribution.<br>
+        Ask any administrative or grievance question!
+      `;
     }
 
     // Case Details Modal
