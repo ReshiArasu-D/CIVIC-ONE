@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Dashboard — CivicOne</title>
+  <meta name="description" content="View and manage your civic grievances, track resolutions, and submit complaints in CivicOne.">
+  <link rel="stylesheet" href="app/ui/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231d63ed%22><path d=%22M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z%22/></svg>">
+</head>
+<body>
+
+  <!-- Dashboard Top Navigation Bar -->
+  <header class="dash-header">
+    <div class="dash-header-inner">
+      <a href="dashboard.html" class="dash-brand">
+        <div class="brand-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z"/>
+          </svg>
+        </div>
+        <div class="brand-title-group">
+          <span class="brand-title-text">CivicOne</span>
+          <span class="brand-subtitle-text">Citizen Dashboard</span>
+        </div>
+      </a>
+
+      <div class="dash-header-right">
+        <!-- Citizen Identity Badge -->
+        <div class="citizen-header-badge" id="citizen-badge">
+          <div class="citizen-avatar-circle" id="citizen-avatar-initials">A</div>
+          <div class="citizen-meta">
+            <span class="citizen-name-text" id="header-citizen-name">Loading...</span>
+            <span class="citizen-id-pill" id="header-citizen-id">CIT-BLR-001</span>
+          </div>
+        </div>
+
+        <!-- Profile Modal Trigger -->
+        <button class="btn-header-action" onclick="openProfileModal()" title="View Citizen Profile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Profile</span>
+        </button>
+
+        <!-- Logout Action -->
+        <button class="btn-header-action btn-logout" onclick="handleLogout()" title="Sign out of CivicOne">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Content -->
+  <main class="dash-main">
+
+    <!-- Welcome Card Banner -->
+    <section class="dash-welcome-card">
+      <div class="welcome-info-group">
+        <h1 class="welcome-title" id="welcome-greeting">Welcome back!</h1>
+        <p class="welcome-desc">Track and resolve civic issues in your municipality. Report problems in water, roads, waste management, or sanitation directly to field teams.</p>
+      </div>
+
+      <button class="btn-new-grievance" onclick="openNewGrievanceModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>+ Register New Grievance</span>
+      </button>
+    </section>
+
+    <!-- Overview Metric Cards Grid -->
+    <section class="metrics-overview-grid" aria-label="Grievance Overview Statistics">
+      <!-- Total -->
+      <div class="metric-card total">
+        <div class="metric-icon-box" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <div class="metric-data-group">
+          <span class="metric-num" id="stat-total">0</span>
+          <span class="metric-label">Total Grievances</span>
+        </div>
+      </div>
+
+      <!-- Pending / Submitted -->
+      <div class="metric-card pending">
+        <div class="metric-icon-box" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="metric-data-group">
+          <span class="metric-num" id="stat-pending">0</span>
+          <span class="metric-label">Pending Review</span>
+        </div>
+      </div>
+
+      <!-- In Progress / Assigned -->
+      <div class="metric-card progress">
+        <div class="metric-icon-box" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+          </svg>
+        </div>
+        <div class="metric-data-group">
+          <span class="metric-num" id="stat-progress">0</span>
+          <span class="metric-label">In Progress</span>
+        </div>
+      </div>
+
+      <!-- Resolved / Closed -->
+      <div class="metric-card resolved">
+        <div class="metric-icon-box" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <div class="metric-data-group">
+          <span class="metric-num" id="stat-resolved">0</span>
+          <span class="metric-label">Resolved &amp; Closed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- My Grievances Data Table Section -->
+    <section class="dash-section-card">
+      <div class="section-header-row">
+        <div class="section-title-group">
+          <h2 class="section-title">My Grievances</h2>
+          <span style="font-size: 0.8rem; background: #e0f2fe; color: #0284c7; padding: 2px 10px; border-radius: 9999px; font-weight: 700;" id="badge-records-count">0 Records</span>
+        </div>
+
+        <div class="section-filters">
+          <button class="filter-chip active" onclick="setFilter('all', this)">All</button>
+          <button class="filter-chip" onclick="setFilter('In Progress', this)">In Progress</button>
+          <button class="filter-chip" onclick="setFilter('Pending', this)">Pending</button>
+          <button class="filter-chip" onclick="setFilter('Resolved', this)">Resolved</button>
+          <button class="filter-chip" onclick="setFilter('Closed', this)">Closed</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="grievances-table" id="grievances-table">
+          <thead>
+            <tr>
+              <th>Ticket #</th>
+              <th>Category</th>
+              <th>Summary</th>
+              <th>Submitted</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="grievances-table-body">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================
+       MODAL 1: GRIEVANCE DETAIL VIEW & LIVE TRACKER
+       ==================================================================== -->
+  <div class="modal-overlay" id="detail-modal" onclick="handleDetailBackdropClick(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-case-title">
+      <div class="modal-header">
+        <div>
+          <span style="font-size: 0.72rem; font-weight: 800; background: #eff6ff; color: #1d63ed; padding: 2px 8px; border-radius: 9999px;" id="detail-ticket-id">CIV0001001</span>
+          <h3 class="modal-title" id="detail-title" style="margin-top: 4px;">Case Details</h3>
+        </div>
+        <button class="close-btn" onclick="closeDetailModal()">&times;</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.85rem; background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <div><strong style="color: #64748b;">Department:</strong> <span id="detail-dept"></span></div>
+          <div><strong style="color: #64748b;">Category:</strong> <span id="detail-cat"></span></div>
+          <div><strong style="color: #64748b;">Ward:</strong> <span id="detail-ward"></span></div>
+          <div><strong style="color: #64748b;">SLA Target:</strong> <span id="detail-sla"></span></div>
+        </div>
+
+        <div>
+          <h4 style="font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Citizen Description</h4>
+          <p style="font-size: 0.85rem; color: #475569; line-height: 1.45; background: #ffffff; border: 1px solid #e2e8f0; padding: 12px; border-radius: 10px;" id="detail-desc"></p>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">
+            <span>Resolution Timeline</span>
+            <span id="detail-pct">65% Completed</span>
+          </div>
+          <div style="height: 8px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+            <div id="detail-bar" style="width: 65%; height: 100%; background: #1d63ed; border-radius: 9999px;"></div>
+          </div>
+        </div>
+
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px; font-size: 0.82rem;">
+          <strong style="color: #1e40af;">Assigned Team:</strong> <span id="detail-team" style="color: #1e3a8a;"></span><br>
+          <strong style="color: #1e40af; margin-top: 4px; display: inline-block;">Latest Field Note:</strong> <span id="detail-notes" style="color: #334155;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 2: REGISTER NEW GRIEVANCE
+       ==================================================================== -->
+  <div class="modal-overlay" id="new-grievance-modal" onclick="handleNewGrievanceBackdrop(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="new-g-title">
+      <div class="modal-header">
+        <h3 class="modal-title" id="new-g-title">+ Report a Civic Grievance</h3>
+        <button class="close-btn" onclick="closeNewGrievanceModal()">&times;</button>
+      </div>
+
+      <form id="new-grievance-form" onsubmit="handleNewGrievanceSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; color: #334155;">Category *</label>
+          <select id="ng-category" style="width: 100%; height: 42px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 0 12px; font-family: inherit; margin-top: 4px;" required>
+            <option value="Water Leakage">Water Leakage (Pipe Burst / Valve Breakdown)</option>
+            <option value="Low Water Pressure">Low Water Pressure / Supply Disruption</option>
+            <option value="Road Pothole">Roads & Infrastructure (Pothole / Damaged Asphalt)</option>
+            <option value="Street Light Outage">Electricity (Dark / Blinking Street Light)</option>
+            <option value="Garbage Overflow">Waste Management (Overflowing Dustbin / Debris)</option>
+            <option value="Drainage Blockage">Sanitation & Drainage (Clogged Stormwater Drain)</option>
+            <option value="Public Park Maintenance">Public Parks & Trees (Pruning / Broken Bench)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; color: #334155;">Short Summary *</label>
+          <input type="text" id="ng-summary" placeholder="e.g. Broken water pipe flooding 100ft road" style="width: 100%; height: 42px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 0 12px; font-family: inherit; margin-top: 4px;" required>
+        </div>
+
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; color: #334155;">Detailed Description *</label>
+          <textarea id="ng-description" placeholder="Describe the issue, landmarks, and duration..." style="width: 100%; min-height: 80px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; font-family: inherit; margin-top: 4px;" required></textarea>
+        </div>
+
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; color: #334155;">Priority *</label>
+          <select id="ng-priority" style="width: 100%; height: 42px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 0 12px; font-family: inherit; margin-top: 4px;">
+            <option value="High (Priority 1)">Critical / High (Immediate Hazard)</option>
+            <option value="Normal (Priority 2)" selected>Normal (Standard 48h Resolution)</option>
+            <option value="Low (Priority 3)">Low (Routine Maintenance)</option>
+          </select>
+        </div>
+
+        <button type="submit" style="height: 46px; background: #1d63ed; color: #ffffff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 8px;">
+          Submit Grievance to Municipal Crew
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 3: CITIZEN PROFILE DETAILS
+       ==================================================================== -->
+  <div class="modal-overlay" id="profile-modal" onclick="handleProfileBackdrop(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="profile-m-title">
+      <div class="modal-header">
+        <h3 class="modal-title" id="profile-m-title">Citizen Profile</h3>
+        <button class="close-btn" onclick="closeProfileModal()">&times;</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px; font-size: 0.88rem;">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+          <div><strong style="color: #64748b;">Full Name:</strong> <span id="prof-name" style="font-weight: 700; color: #0f172a;"></span></div>
+          <div><strong style="color: #64748b;">Citizen ID:</strong> <span id="prof-id" style="font-weight: 800; color: #1d63ed;"></span></div>
+          <div><strong style="color: #64748b;">Email Address:</strong> <span id="prof-email"></span></div>
+          <div><strong style="color: #64748b;">Mobile Number:</strong> <span id="prof-phone"></span></div>
+          <div><strong style="color: #64748b;">Gender:</strong> <span id="prof-gender"></span></div>
+          <div><strong style="color: #64748b;">Registered Ward:</strong> <span id="prof-ward"></span></div>
+          <div><strong style="color: #64748b;">Residential Address:</strong> <p id="prof-address" style="margin-top: 4px; color: #334155; line-height: 1.4;"></p></div>
+        </div>
+        <button type="button" style="height: 42px; background: #e2e8f0; color: #334155; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;" onclick="closeProfileModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Ask CoopBot AI Widget -->
+  <aside class="floating-coopbot-widget" id="coopbot-widget-btn" onclick="alert('CoopBot AI: Welcome to your Citizen Dashboard! You can submit grievances, check live resolution SLA status, or review officer inspection notes anytime.')" aria-label="Ask CoopBot AI Assistant">
+    <div class="coopbot-text-label">
+      <span style="color: #f59e0b;">✨</span>
+      <span>Ask CoopBot AI</span>
+    </div>
+    <div class="coopbot-avatar-thumb">
+      <img src="assets/coopbot_avatar.jpg" alt="CoopBot AI Municipal Assistant">
+    </div>
+  </aside>
+
+  <!-- Store & Dashboard Script -->
+  <script src="app/ui/civicone_store.js"></script>
+  <script>
+    let activeCitizen = null;
+    let allCitizenGrievances = [];
+    let currentFilter = 'all';
+
+    // Guard: authenticate session
+    function checkAuth() {
+      activeCitizen = CivicStore.getCurrentSession();
+      if (!activeCitizen) {
+        // Fallback for direct viewing: auto-assign first demo citizen
+        activeCitizen = {
+          citizen_id: 'CIT-BLR-001',
+          full_name: 'Aarav Sharma',
+          email: 'aarav.sharma.demo@example.gov.in',
+          phone: '9876543210',
+          gender: 'Male',
+          address: '100ft Road, Indiranagar, Ward 12, Bengaluru, Karnataka - 560038',
+          ward: 'Ward 12 (Indiranagar)',
+          preferred_language: 'English'
+        };
+      }
+
+      // Populate header details
+      document.getElementById('header-citizen-name').innerText = activeCitizen.full_name;
+      document.getElementById('header-citizen-id').innerText = activeCitizen.citizen_id;
+      document.getElementById('citizen-avatar-initials').innerText = activeCitizen.full_name.charAt(0);
+      document.getElementById('welcome-greeting').innerText = `Welcome back, ${activeCitizen.full_name.split(' ')[0]}!`;
+
+      loadGrievances();
+    }
+
+    function loadGrievances() {
+      allCitizenGrievances = CivicStore.getCitizenGrievances(activeCitizen.citizen_id);
+      renderMetrics();
+      renderTable();
+    }
+
+    function renderMetrics() {
+      const total = allCitizenGrievances.length;
+      const pending = allCitizenGrievances.filter(g => g.grievance_status === 'Pending' || g.grievance_status === 'Submitted').length;
+      const progress = allCitizenGrievances.filter(g => g.grievance_status === 'In Progress' || g.grievance_status === 'Assigned').length;
+      const resolved = allCitizenGrievances.filter(g => g.grievance_status === 'Resolved' || g.grievance_status === 'Closed' || g.grievance_status === 'Awaiting Citizen Confirmation').length;
+
+      document.getElementById('stat-total').innerText = total;
+      document.getElementById('stat-pending').innerText = pending;
+      document.getElementById('stat-progress').innerText = progress;
+      document.getElementById('stat-resolved').innerText = resolved;
+      document.getElementById('badge-records-count').innerText = `${total} Records`;
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('grievances-table-body');
+      tbody.innerHTML = '';
+
+      let list = allCitizenGrievances;
+      if (currentFilter !== 'all') {
+        list = list.filter(g => g.grievance_status === currentFilter);
+      }
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 28px; color: #94a3b8;">No grievances found for this filter.</td></tr>`;
+        return;
+      }
+
+      list.forEach(g => {
+        const tr = document.createElement('tr');
+        
+        // Status badge class
+        let statusClass = 'pending';
+        if (g.grievance_status === 'In Progress' || g.grievance_status === 'Assigned') statusClass = 'in-progress';
+        else if (g.grievance_status === 'Resolved' || g.grievance_status === 'Awaiting Citizen Confirmation') statusClass = 'resolved';
+        else if (g.grievance_status === 'Closed') statusClass = 'closed';
+
+        // Priority badge class
+        let prioClass = 'med';
+        if (g.priority.includes('1') || g.priority.includes('High') || g.priority.includes('Critical')) prioClass = 'high';
+        else if (g.priority.includes('3') || g.priority.includes('Low')) prioClass = 'low';
+
+        tr.innerHTML = `
+          <td><strong style="color:#1d63ed;">${g.case_number}</strong></td>
+          <td>${g.category}</td>
+          <td style="max-width: 260px; font-weight: 600; color: #1e293b;">${g.short_description}</td>
+          <td style="font-size: 0.8rem; color: #64748b;">${g.submitted_at}</td>
+          <td><span class="badge-priority ${prioClass}">${g.priority}</span></td>
+          <td><span class="badge-status ${statusClass}">${g.grievance_status}</span></td>
+          <td>
+            <button class="btn-view-details" onclick="openDetailModal('${g.case_number}')">View Details</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Detail Modal
+    function openDetailModal(caseNum) {
+      const item = allCitizenGrievances.find(g => g.case_number === caseNum);
+      if (!item) return;
+
+      document.getElementById('detail-ticket-id').innerText = item.case_number;
+      document.getElementById('detail-title').innerText = item.short_description;
+      document.getElementById('detail-dept').innerText = item.department;
+      document.getElementById('detail-cat').innerText = item.category;
+      document.getElementById('detail-ward').innerText = item.ward;
+      document.getElementById('detail-sla').innerText = `${item.sla_hours} Hours Target`;
+      document.getElementById('detail-desc').innerText = item.description;
+      document.getElementById('detail-pct').innerText = `${item.progress_pct}% Resolved`;
+      document.getElementById('detail-bar').style.width = `${item.progress_pct}%`;
+      document.getElementById('detail-team').innerText = item.assigned_team;
+      document.getElementById('detail-notes').innerText = item.officer_notes;
+
+      document.getElementById('detail-modal').classList.add('active');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detail-modal').classList.remove('active');
+    }
+
+    function handleDetailBackdropClick(e) {
+      if (e.target === document.getElementById('detail-modal')) closeDetailModal();
+    }
+
+    // New Grievance Modal
+    function openNewGrievanceModal() {
+      document.getElementById('new-grievance-modal').classList.add('active');
+    }
+
+    function closeNewGrievanceModal() {
+      document.getElementById('new-grievance-modal').classList.remove('active');
+    }
+
+    function handleNewGrievanceBackdrop(e) {
+      if (e.target === document.getElementById('new-grievance-modal')) closeNewGrievanceModal();
+    }
+
+    function handleNewGrievanceSubmit(e) {
+      e.preventDefault();
+      const cat = document.getElementById('ng-category').value;
+      const summary = document.getElementById('ng-summary').value;
+      const desc = document.getElementById('ng-description').value;
+      const prio = document.getElementById('ng-priority').value;
+
+      CivicStore.submitGrievance(activeCitizen.citizen_id, {
+        category: cat,
+        short_description: summary,
+        description: desc,
+        priority: prio
+      });
+
+      closeNewGrievanceModal();
+      loadGrievances();
+      alert('Grievance registered successfully! Your assigned ward team has been dispatched.');
+    }
+
+    // Profile Modal
+    function openProfileModal() {
+      document.getElementById('prof-name').innerText = activeCitizen.full_name;
+      document.getElementById('prof-id').innerText = activeCitizen.citizen_id;
+      document.getElementById('prof-email').innerText = activeCitizen.email;
+      document.getElementById('prof-phone').innerText = activeCitizen.phone;
+      document.getElementById('prof-gender').innerText = activeCitizen.gender;
+      document.getElementById('prof-ward').innerText = activeCitizen.ward;
+      document.getElementById('prof-address').innerText = activeCitizen.address;
+
+      document.getElementById('profile-modal').classList.add('active');
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profile-modal').classList.remove('active');
+    }
+
+    function handleProfileBackdrop(e) {
+      if (e.target === document.getElementById('profile-modal')) closeProfileModal();
+    }
+
+    // Logout
+    function handleLogout() {
+      CivicStore.logout();
+      window.location.href = 'index.html';
+    }
+
+    window.addEventListener('DOMContentLoaded', checkAuth);
+  </script>
+</body>
+</html>
