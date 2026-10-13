@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicOne — Citizen Grievance Redressal Portal</title>
+  <meta name="description" content="CivicOne is the next-generation citizen grievance redressal platform. Report civic issues, track complaints in real-time, and help build a cleaner, safer, and better city.">
+  <link rel="stylesheet" href="app/ui/landing_page.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230066CC'><path d='M12 2L2 7v2h20V7L12 2zm-7 9v8h2v-8H5zm5 0v8h2v-8h-2zm5 0v8h2v-8h-2zm5 0v8h2v-8h-2zM2 20v2h20v-2H2z'/></svg>">
+</head>
+<body>
+
+  <!-- ========================================================================
+       TOP NAVIGATION BAR
+       ======================================================================== -->
+  <header class="header" id="site-header">
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <a href="#home" class="logo-container" id="logo-link">
+        <div class="logo-icon-wrap">
+          <!-- Classical Neoclassical Monument / Civic Building Icon -->
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z"/>
+          </svg>
+        </div>
+        <div class="logo-text-group">
+          <span class="logo-title">CivicOne</span>
+          <span class="logo-subtitle">Citizen Grievance Redressal Portal</span>
+        </div>
+      </a>
+
+      <!-- Center Navigation Links -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link active" id="nav-home">Home</a></li>
+          <li><a href="#about" class="nav-link" id="nav-about">About</a></li>
+          <li><a href="#services" class="nav-link" id="nav-services">Services</a></li>
+          <li><a href="#how-it-works" class="nav-link" id="nav-how-it-works">How It Works</a></li>
+          <li><a href="#help" class="nav-link" id="nav-help">Help</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right Action Controls -->
+      <div class="header-actions">
+        <!-- Language Switcher -->
+        <div class="lang-dropdown-wrapper">
+          <button class="lang-btn" id="lang-btn" aria-expanded="false" aria-haspopup="true">
+            <!-- Globe Icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span id="current-lang-text">English</span>
+            <!-- Chevron Down Icon -->
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="lang-menu" id="lang-menu" role="menu">
+            <button class="lang-item active" data-lang="en"><span>English</span> <small>English</small></button>
+            <button class="lang-item" data-lang="hi"><span>हिन्दी</span> <small>Hindi</small></button>
+            <button class="lang-item" data-lang="kn"><span>ಕನ್ನಡ</span> <small>Kannada</small></button>
+            <button class="lang-item" data-lang="ta"><span>தமிழ்</span> <small>Tamil</small></button>
+            <button class="lang-item" data-lang="te"><span>తెలుగు</span> <small>Telugu</small></button>
+            <button class="lang-item" data-lang="mr"><span>मराठी</span> <small>Marathi</small></button>
+            <button class="lang-item" data-lang="bn"><span>বাংলা</span> <small>Bengali</small></button>
+            <button class="lang-item" data-lang="gu"><span>ગુજરાતી</span> <small>Gujarati</small></button>
+            <button class="lang-item" data-lang="pa"><span>ਪੰਜਾਬੀ</span> <small>Punjabi</small></button>
+            <button class="lang-item" data-lang="ur"><span>اردو</span> <small>Urdu</small></button>
+          </div>
+        </div>
+
+        <!-- Get Started Button -->
+        <button class="btn-primary-pill" id="header-get-started" onclick="openGrievanceModal()">
+          <span>Get Started</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       HERO SECTION
+       ======================================================================== -->
+  <section class="hero-section" id="home">
+    <div class="hero-bg-layer"></div>
+    <div class="hero-overlay-gradient"></div>
+
+    <div class="hero-container">
+      <!-- Left Hero Column -->
+      <div class="hero-left">
+        <!-- Top Micro-Badge -->
+        <div class="hero-badge" onclick="openGrievanceModal()">
+          <span>A Cleaner &bull; A Safer &bull; A Better City</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
+
+        <!-- Main Headline -->
+        <h1 class="hero-headline">
+          <span>Your City.</span>
+          <span>Your Voice.</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="hero-subtitle">
+          Report civic issues, track complaints, and help build a cleaner, safer, and better city with <strong>CivicOne</strong>.
+        </p>
+
+        <!-- CTA Buttons Group -->
+        <div class="hero-cta-group">
+          <button class="btn-hero-primary" id="hero-get-started-btn" onclick="openGrievanceModal()">
+            <span>Get Started</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <button class="btn-hero-watch" id="hero-watch-btn" onclick="openWatchModal()">
+            <div class="play-icon-circle">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+            <span>Watch How It Works</span>
+          </button>
+        </div>
+
+        <!-- Floating Glassmorphic Stats Pill -->
+        <div class="hero-metrics-bar">
+          <!-- Metric 1: Resolved -->
+          <div class="metric-item">
+            <div class="metric-icon-bubble green">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="metric-text-group">
+              <span class="metric-val">42+</span>
+              <span class="metric-label">Grievances Resolved</span>
+            </div>
+          </div>
+
+          <!-- Metric 2: Zones -->
+          <div class="metric-item">
+            <div class="metric-icon-bubble blue">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="metric-text-group">
+              <span class="metric-val">5</span>
+              <span class="metric-label">Zones Covered</span>
+            </div>
+          </div>
+
+          <!-- Metric 3: Support -->
+          <div class="metric-item">
+            <div class="metric-icon-bubble orange">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+              </svg>
+            </div>
+            <div class="metric-text-group">
+              <span class="metric-val">24/7</span>
+              <span class="metric-label">Citizen Support</span>
+            </div>
+          </div>
+
+          <!-- Metric 4: Communities -->
+          <div class="metric-item">
+            <div class="metric-icon-bubble gold">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="metric-text-group">
+              <span class="metric-val">Better</span>
+              <span class="metric-label">Communities</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Floating Glass Card (Overlapping Skyline) -->
+      <div class="hero-right-card">
+        <div class="card-pin-bubble">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <h3 class="card-title">Together for<br>a better tomorrow</h3>
+        <p class="card-desc">Clean streets. Safe neighborhoods. Stronger communities.</p>
+        <div class="card-accent-bar"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       POPULAR SERVICES SECTION
+       ======================================================================== -->
+  <section class="section-services" id="services">
+    <div class="section-container">
+      <div class="section-header-row">
+        <div class="section-title-wrap">
+          <div class="section-header-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <h2 class="section-heading">Popular Services</h2>
+        </div>
+        <a href="#services" class="section-view-all-link" onclick="openGrievanceModal('all')">
+          <span>View All Services</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <!-- 5 Horizontal Service Cards -->
+      <div class="services-grid">
+        <!-- Service 1: Water Supply -->
+        <div class="service-card" onclick="openGrievanceModal('CAT-WAT-LEAK')">
+          <div class="service-card-top">
+            <div class="service-icon-box water">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+              </svg>
+            </div>
+            <div class="service-info-col">
+              <h3 class="service-name">Water Supply</h3>
+              <p class="service-subtext">Leakage, low pressure, no supply</p>
+            </div>
+          </div>
+          <div class="service-card-arrow">&rarr;</div>
+        </div>
+
+        <!-- Service 2: Roads & Infrastructure -->
+        <div class="service-card" onclick="openGrievanceModal('CAT-ROD-POTHOLE')">
+          <div class="service-card-top">
+            <div class="service-icon-box roads">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19L8 5h8l4 14H4z"></path>
+                <line x1="12" y1="8" x2="12" y2="10"></line>
+                <line x1="12" y1="14" x2="12" y2="16"></line>
+              </svg>
+            </div>
+            <div class="service-info-col">
+              <h3 class="service-name">Roads &amp; Infrastructure</h3>
+              <p class="service-subtext">Potholes, street lights, footpaths</p>
+            </div>
+          </div>
+          <div class="service-card-arrow">&rarr;</div>
+        </div>
+
+        <!-- Service 3: Waste Management -->
+        <div class="service-card" onclick="openGrievanceModal('CAT-SAN-GARBAGE')">
+          <div class="service-card-top">
+            <div class="service-icon-box waste">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+            </div>
+            <div class="service-info-col">
+              <h3 class="service-name">Waste Management</h3>
+              <p class="service-subtext">Garbage collection, cleanliness issues</p>
+            </div>
+          </div>
+          <div class="service-card-arrow">&rarr;</div>
+        </div>
+
+        <!-- Service 4: Public Parks -->
+        <div class="service-card" onclick="openGrievanceModal('CAT-HLT-MOSQ')">
+          <div class="service-card-top">
+            <div class="service-icon-box parks">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L6 10h3l-4 6h5v4h4v-4h5l-4-6h3L12 2z"></path>
+              </svg>
+            </div>
+            <div class="service-info-col">
+              <h3 class="service-name">Public Parks</h3>
+              <p class="service-subtext">Maintenance, safety, facilities</p>
+            </div>
+          </div>
+          <div class="service-card-arrow">&rarr;</div>
+        </div>
+
+        <!-- Service 5: Drainage & Sanitation -->
+        <div class="service-card" onclick="openGrievanceModal('CAT-ROD-DRAIN')">
+          <div class="service-card-top">
+            <div class="service-icon-box sanitation">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path>
+                <path d="M8 10V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"></path>
+                <line x1="2" y1="14" x2="22" y2="14"></line>
+              </svg>
+            </div>
+            <div class="service-info-col">
+              <h3 class="service-name">Drainage &amp; Sanitation</h3>
+              <p class="service-subtext">Blockage, overflow, cleaning</p>
+            </div>
+          </div>
+          <div class="service-card-arrow">&rarr;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       HOW IT WORKS SECTION
+       ======================================================================== -->
+  <section class="section-how-it-works" id="how-it-works">
+    <div class="section-container">
+      <div class="section-header-row">
+        <div>
+          <div class="section-title-wrap">
+            <div class="section-header-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+            <h2 class="section-heading">How It Works</h2>
+          </div>
+          <p class="how-header-sub">Your complaint can make a real difference. It's simple, quick, and secure.</p>
+        </div>
+
+        <a href="#about" class="section-view-all-link" onclick="openWatchModal()">
+          <span>Learn More</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <!-- 4-Step Process Timeline -->
+      <div class="steps-timeline-wrap">
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            <div class="step-badge-num step-1">1</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="step-info-wrap">
+            <h3 class="step-title">Register / Login</h3>
+            <p class="step-desc">Create your account or login to get started</p>
+          </div>
+        </div>
+
+        <div class="step-connector-arrow">&rarr;</div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            <div class="step-badge-num step-2">2</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div class="step-info-wrap">
+            <h3 class="step-title">Submit a Grievance</h3>
+            <p class="step-desc">Provide details, location and attach photos</p>
+          </div>
+        </div>
+
+        <div class="step-connector-arrow">&rarr;</div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            <div class="step-badge-num step-3">3</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <div class="step-info-wrap">
+            <h3 class="step-title">Track Progress</h3>
+            <p class="step-desc">Get real-time updates on your complaint</p>
+          </div>
+        </div>
+
+        <div class="step-connector-arrow">&rarr;</div>
+
+        <!-- Step 4 -->
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            <div class="step-badge-num step-4">4</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="step-info-wrap">
+            <h3 class="step-title">See Results</h3>
+            <p class="step-desc">Your city becomes cleaner, safer and better</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       FOOTER QUOTE & ARCHITECTURAL SKYLINE BANNER
+       ======================================================================== -->
+  <footer class="footer-quote-banner" id="help">
+    <!-- Stylized Architectural Monument Silhouette SVG -->
+    <svg class="skyline-svg-bg" viewBox="0 0 1200 120" preserveAspectRatio="none" fill="none" stroke="#38BDF8" stroke-width="1.2">
+      <!-- Monument Palace Dome & Columns -->
+      <path d="M 0,120 L 0,90 L 40,90 L 40,70 L 60,70 L 60,90 L 100,90 L 100,60 L 120,60 L 120,30 Q 150,10 180,30 L 180,60 L 200,60 L 200,90 L 240,90 L 240,120 Z" opacity="0.6"></path>
+      <!-- High-rise Skyline -->
+      <path d="M 240,120 L 240,50 L 270,50 L 270,30 L 300,30 L 300,50 L 330,50 L 330,80 L 380,80 L 380,20 L 420,20 L 420,80 L 470,80 L 470,120 Z" opacity="0.5"></path>
+      <!-- Vidhana Soudha Style Grand Dome Palace -->
+      <path d="M 470,120 L 470,70 L 520,70 L 520,50 L 570,50 L 570,30 Q 600,0 630,30 L 630,50 L 680,50 L 680,70 L 730,70 L 730,120 Z" opacity="0.8"></path>
+      <!-- Modern City Towers & Clock Tower -->
+      <path d="M 730,120 L 730,60 L 760,60 L 760,25 L 780,10 L 800,25 L 800,60 L 840,60 L 840,40 L 890,40 L 890,120 Z" opacity="0.5"></path>
+      <!-- Metro Pillars and Cable Bridge -->
+      <path d="M 890,120 L 890,80 L 950,80 L 980,40 L 1010,80 L 1070,80 L 1100,40 L 1130,80 L 1200,80 L 1200,120 Z" opacity="0.6"></path>
+      <!-- Ground line -->
+      <line x1="0" y1="120" x2="1200" y2="120" stroke="#38BDF8" stroke-width="2"></line>
+    </svg>
+
+    <div class="footer-banner-content">
+      <!-- Quote Bubble -->
+      <div class="quote-icon-bubble">
+        <span>&ldquo;</span>
+      </div>
+
+      <!-- Main Quote -->
+      <p class="footer-quote-text">
+        &ldquo;A cleaner city, a safer tomorrow, starts with you.&rdquo;
+      </p>
+      <div class="quote-accent-bar"></div>
+
+      <!-- Footer Meta Row -->
+      <div class="footer-meta-row">
+        <span>&copy; 2026 CivicOne Portal &bull; Department of Municipal Administration &bull; Scope: <code>x_2229367_civicone</code></span>
+        <ul class="footer-meta-links">
+          <li><a href="#home" class="footer-meta-link" onclick="openTrackModal()">Track Ticket</a></li>
+          <li><a href="#services" class="footer-meta-link">Citizen Charter</a></li>
+          <li><a href="#help" class="footer-meta-link">Emergency Helpline: 112</a></li>
+          <li><a href="#help" class="footer-meta-link">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL 1: GRIEVANCE INTAKE MODAL
+       ======================================================================== -->
+  <div class="modal-backdrop" id="grievance-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h3>Submit a Civic Grievance</h3>
+          <p>Instant server-side routing &amp; SLA assignment</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="grievance-form" onsubmit="handleGrievanceSubmit(event)">
+          <div class="form-group">
+            <label class="form-label" for="intake-category">Service Category *</label>
+            <select class="form-select" id="intake-category" required>
+              <option value="">-- Select Category --</option>
+              <option value="CAT-WAT-LEAK">Water Supply &mdash; Pipeline Burst / Leakage (SLA: 24h)</option>
+              <option value="CAT-WAT-CONTAM">Water Supply &mdash; Drinking Water Contamination (SLA: 12h)</option>
+              <option value="CAT-ROD-POTHOLE">Roads &mdash; Deep Crater Pothole (SLA: 24h)</option>
+              <option value="CAT-ELEC-WIRE">Electricity &mdash; Exposed Live Electrical Wire (SLA: 6h)</option>
+              <option value="CAT-ELEC-STLIGHT">Electricity &mdash; Broken Street Lights (SLA: 48h)</option>
+              <option value="CAT-SAN-GARBAGE">Waste Management &mdash; Garbage Overflow (SLA: 24h)</option>
+              <option value="CAT-ROD-DRAIN">Drainage &mdash; Blocked Stormwater Drain (SLA: 48h)</option>
+              <option value="CAT-HLT-MOSQ">Public Health &mdash; Mosquito Menace &amp; Fogging (SLA: 48h)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="intake-ward">Administrative Ward *</label>
+            <select class="form-select" id="intake-ward" required>
+              <option value="29b0d91bc3bb8754e54832f1b40131fd">Ward 12 &mdash; Indiranagar (Zone: East)</option>
+              <option value="75b01d1bc3bb8754e54832f1b401317f">Ward 15 &mdash; Koramangala (Zone: South)</option>
+              <option value="4ab01d1bc3bb8754e54832f1b4013190">Ward 08 &mdash; Malleshwaram (Zone: West)</option>
+              <option value="dab01d1bc3bb8754e54832f1b40131ba">Ward 22 &mdash; Whitefield (Zone: East)</option>
+              <option value="6ab05d1bc3bb8754e54832f1b4013116">Ward 01 &mdash; Fort Colaba (Zone: South)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="intake-short">Brief Title *</label>
+            <input type="text" class="form-input" id="intake-short" placeholder="e.g. Major water pipeline leakage on 12th Main" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="intake-desc">Detailed Complaint &bull; Automated PII Protection Active *</label>
+            <textarea class="form-textarea" id="intake-desc" placeholder="Describe the location and issue. Any Aadhaar, PAN, phone numbers or email will be automatically masked on server." required oninput="previewPiiMasking(this.value)"></textarea>
+            <div id="pii-preview" style="display:none; margin-top:8px; padding:10px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:6px; font-size:12px; color:#166534;"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="intake-phone">Citizen Contact Number</label>
+            <input type="tel" class="form-input" id="intake-phone" placeholder="10-digit mobile number for SMS tracking updates">
+          </div>
+
+          <div id="submission-result" style="display:none; margin-top:14px; padding:14px; border-radius:8px;"></div>
+
+          <div class="modal-footer" style="padding:16px 0 0 0; background:none; border-top:none;">
+            <button type="button" class="btn-secondary" onclick="closeModals()">Cancel</button>
+            <button type="submit" class="btn-hero-primary" style="padding:10px 24px;">Submit Complaint &rarr;</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: TRACK GRIEVANCE MODAL
+       ======================================================================== -->
+  <div class="modal-backdrop" id="track-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h3>Track Grievance Status</h3>
+          <p>Real-time SLA and resolution progression lookup</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="track-ticket-input">Ticket / Case Reference Number</label>
+          <div style="display:flex; gap:10px;">
+            <input type="text" class="form-input" id="track-ticket-input" placeholder="e.g. CIV0001001 or CIV0001004" value="CIV0001001">
+            <button type="button" class="btn-hero-primary" style="padding:10px 20px; flex-shrink:0;" onclick="lookupTicketStatus()">Search</button>
+          </div>
+          <small style="color:#64748B; display:block; margin-top:4px;">Try demo cases: <strong>CIV0001001</strong> (Water Leak), <strong>CIV0001004</strong> (Pothole), <strong>CIV0001013</strong> (Awaiting Confirmation)</small>
+        </div>
+
+        <div id="track-result-card" style="margin-top:18px; display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: WATCH HOW IT WORKS TOUR MODAL
+       ======================================================================== -->
+  <div class="modal-backdrop" id="watch-modal">
+    <div class="modal-card" style="max-width:640px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h3>CivicOne Redressal Engine Walkthrough</h3>
+          <p>Public Sector SLA Gating, Jurisdiction Scoping &amp; Citizen Confirmation</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:28px 24px;">
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div style="display:flex; gap:16px; align-items:flex-start;">
+            <div style="width:36px; height:36px; border-radius:50%; background:#E0F2FE; color:#0284C7; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">1</div>
+            <div>
+              <h4 style="font-size:15px; font-weight:700; color:#0B2545;">Deterministic Intake &amp; PII Sanitization</h4>
+              <p style="font-size:13px; color:#64748B; margin-top:3px;">Your raw complaint is scrubbed with <code>PiiMasker</code> to redact Aadhaar, PAN, phone numbers, and emails before field workers inspect the case.</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:16px; align-items:flex-start;">
+            <div style="width:36px; height:36px; border-radius:50%; background:#EDE9FE; color:#7C3AED; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">2</div>
+            <div>
+              <h4 style="font-size:15px; font-weight:700; color:#0B2545;">GeoRouter &amp; Priority Scoring Engine</h4>
+              <p style="font-size:13px; color:#64748B; margin-top:3px;"><code>GeoRouter</code> resolves the geographic ward and nearest civic asset. <code>PriorityScorer</code> computes a deterministic priority score (e.g. Life-safety wire hazard: 6h SLA).</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:16px; align-items:flex-start;">
+            <div style="width:36px; height:36px; border-radius:50%; background:#DCFCE7; color:#16A34A; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">3</div>
+            <div>
+              <h4 style="font-size:15px; font-weight:700; color:#0B2545;">Resolution Evidence &amp; Citizen Confirmation Gate</h4>
+              <p style="font-size:13px; color:#64748B; margin-top:3px;">Officers cannot close cases arbitrarily. Resolution proof photos must be attached, and the citizen receives a confirmation prompt. If disputed, the case automatically reopens.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary-pill" onclick="closeModals(); openGrievanceModal();">Report an Issue Now &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       JAVASCRIPT LOGIC
+       ======================================================================== -->
+  <script>
+    // Language Dropdown Interaction
+    const langBtn = document.getElementById('lang-btn');
+    const langMenu = document.getElementById('lang-menu');
+    const currentLangText = document.getElementById('current-lang-text');
+
+    langBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      langMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', () => {
+      langMenu.classList.remove('show');
+    });
+
+    document.querySelectorAll('.lang-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.lang-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const langName = btn.querySelector('small').textContent;
+        currentLangText.textContent = langName;
+        langMenu.classList.remove('show');
+      });
+    });
+
+    // Modals Handling
+    function openGrievanceModal(categoryCode) {
+      document.getElementById('grievance-modal').classList.add('active');
+      if (categoryCode && categoryCode !== 'all') {
+        const catSelect = document.getElementById('intake-category');
+        for (let i = 0; i < catSelect.options.length; i++) {
+          if (catSelect.options[i].value === categoryCode) {
+            catSelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    }
+
+    function openTrackModal() {
+      document.getElementById('track-modal').classList.add('active');
+      lookupTicketStatus();
+    }
+
+    function openWatchModal() {
+      document.getElementById('watch-modal').classList.add('active');
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('active'));
+    }
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModals();
+    });
+
+    // Client-side PII Masking Preview Demonstration
+    function previewPiiMasking(text) {
+      const previewDiv = document.getElementById('pii-preview');
+      if (!text || text.length < 5) {
+        previewDiv.style.display = 'none';
+        return;
+      }
+      // Simple regex masking preview
+      let masked = text
+        .replace(/\b\d{4}\s?\d{4}\s?\d{4}\b/g, 'XXXX-XXXX-$1')
+        .replace(/\b[A-Z]{5}\d{4}[A-Z]\b/gi, 'XXXXX****')
+        .replace(/\b\d{10}\b/g, 'XXXXXX****')
+        .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, 'c***@domain.com');
+
+      if (masked !== text) {
+        previewDiv.style.display = 'block';
+        previewDiv.innerHTML = '<strong>Automated Privacy Shield Preview:</strong><br>' + masked;
+      } else {
+        previewDiv.style.display = 'none';
+      }
+    }
+
+    // Submit Grievance Demo
+    function handleGrievanceSubmit(e) {
+      e.preventDefault();
+      const cat = document.getElementById('intake-category').value;
+      const ward = document.getElementById('intake-ward').options[document.getElementById('intake-ward').selectedIndex].text;
+      const title = document.getElementById('intake-short').value;
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      const ticketId = 'CIV000' + randomNum;
+
+      const resultBox = document.getElementById('submission-result');
+      resultBox.style.display = 'block';
+      resultBox.style.background = '#ECFDF5';
+      resultBox.style.border = '1px solid #6EE7B7';
+      resultBox.style.color = '#065F46';
+      resultBox.innerHTML = `
+        <h4 style="font-size:15px; font-weight:800; margin-bottom:4px;">Grievance Successfully Registered!</h4>
+        <p style="font-size:13px; margin-bottom:6px;">Reference Ticket: <strong>${ticketId}</strong> &bull; Status: <strong>Assigned</strong></p>
+        <p style="font-size:12px; color:#047857;">Assigned to field worker in ${ward}. An automated confirmation SMS has been dispatched with real-time tracking.</p>
+      `;
+
+      setTimeout(() => {
+        document.getElementById('grievance-form').reset();
+      }, 5000);
+    }
+
+    // Demo Ticket Status Database
+    const demoCases = {
+      'CIV0001001': {
+        title: 'Major water pipeline leak flooding road',
+        category: 'Water Supply',
+        ward: 'Ward 12 Indiranagar',
+        status: 'In Progress',
+        priority: 'Priority 1 (High)',
+        sla: '24 Hours',
+        progressPct: 65,
+        worker: 'Field Officer Suresh K. (Water Supply Board)',
+        notes: 'Excavation team on-site at 100ft road junction. Replacement coupling pipe fitted.'
+      },
+      'CIV0001004': {
+        title: 'Massive crater pothole opposite Metro Pillar 84',
+        category: 'Roads & Infrastructure',
+        ward: 'Ward 12 Indiranagar',
+        status: 'Assigned',
+        priority: 'Priority 1 (High)',
+        sla: '24 Hours',
+        progressPct: 30,
+        worker: 'Field Officer Ramesh P. (Roads Dept)',
+        notes: 'Site inspected. Asphalt mix batch scheduled for evening road repair crew.'
+      },
+      'CIV0001013': {
+        title: 'Commercial valve leakage on 1st Main',
+        category: 'Water Supply',
+        ward: 'Ward 15 Koramangala',
+        status: 'Awaiting Citizen Confirmation',
+        priority: 'Priority 2 (Medium)',
+        sla: '24 Hours',
+        progressPct: 90,
+        worker: 'Officer Manjunath B. (Water Board)',
+        notes: 'Valve gasket replaced. Inspection certificate attached. Pending citizen satisfaction verification.'
+      }
+    };
+
+    function lookupTicketStatus() {
+      const ticketInput = document.getElementById('track-ticket-input').value.trim().toUpperCase();
+      const card = document.getElementById('track-result-card');
+      card.style.display = 'block';
+
+      const data = demoCases[ticketInput] || {
+        title: 'Reported Civic Grievance',
+        category: 'Municipal Services',
+        ward: 'Ward 12 Indiranagar',
+        status: 'In Progress',
+        priority: 'Priority 2 (Normal)',
+        sla: '48 Hours',
+        progressPct: 50,
+        worker: 'Assigned Zonal Field Team',
+        notes: 'Grievance verified by Ward Supervisor. Field crew dispatched.'
+      };
+
+      card.innerHTML = `
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+            <div>
+              <span style="font-size:11px; font-weight:800; background:#E0F2FE; color:#0284C7; padding:3px 8px; border-radius:9999px;">${ticketInput}</span>
+              <h4 style="font-size:15px; font-weight:800; color:#0B2545; margin-top:6px;">${data.title}</h4>
+            </div>
+            <span style="font-size:12px; font-weight:700; background:#DCFCE7; color:#166534; padding:4px 10px; border-radius:9999px;">${data.status}</span>
+          </div>
+
+          <div style="font-size:12px; color:#64748B; margin-bottom:12px; display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+            <div><strong>Category:</strong> ${data.category}</div>
+            <div><strong>Ward:</strong> ${data.ward}</div>
+            <div><strong>Target SLA:</strong> ${data.sla}</div>
+            <div><strong>Urgency:</strong> ${data.priority}</div>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600; color:#475569; margin-bottom:4px;">
+              <span>Resolution Progress</span>
+              <span>${data.progressPct}%</span>
+            </div>
+            <div style="height:6px; background:#E2E8F0; border-radius:9999px; overflow:hidden;">
+              <div style="width:${data.progressPct}%; height:100%; background:#0066CC; border-radius:9999px;"></div>
+            </div>
+          </div>
+
+          <div style="font-size:12px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:10px; color:#334155;">
+            <strong>Latest Officer Note:</strong> ${data.notes}
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
