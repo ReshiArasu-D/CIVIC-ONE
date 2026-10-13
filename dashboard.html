@@ -469,7 +469,7 @@
 
         <!-- Main Workspace Card (Full-width clean card) -->
         <div class="reg-workspace-card">
-          <!-- 5-Step Horizontal Stepper Bar -->
+          <!-- 4-Step Horizontal Stepper Bar -->
           <nav class="wizard-stepper" aria-label="Grievance Registration Stepper">
             <div class="step-indicator active" id="step-ind-1">
               <div class="step-circle">1</div>
@@ -485,18 +485,12 @@
 
             <div class="step-indicator" id="step-ind-3">
               <div class="step-circle">3</div>
-              <span class="step-title">AI Intelligence</span>
+              <span class="step-title">Grievance Details</span>
             </div>
             <div class="step-arrow" aria-hidden="true">→</div>
 
             <div class="step-indicator" id="step-ind-4">
               <div class="step-circle">4</div>
-              <span class="step-title">Edit Details</span>
-            </div>
-            <div class="step-arrow" aria-hidden="true">→</div>
-
-            <div class="step-indicator" id="step-ind-5">
-              <div class="step-circle">5</div>
               <span class="step-title">Review &amp; Submit</span>
             </div>
           </nav>
@@ -633,47 +627,23 @@
             <!-- Footer Action -->
             <div class="wizard-footer-actions">
               <button type="button" class="btn-wizard-back" onclick="goToStep(1)">← Back to Location</button>
-              <button type="button" class="btn-wizard-next" onclick="triggerAIIntelligence()">
-                <span>Next: AI Document Intelligence</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+              <button type="button" class="btn-wizard-next" id="btn-proceed-details" onclick="proceedToDetailsStep()">
+                <span>Next: Grievance Details</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </button>
             </div>
           </div>
 
           <!-- ==========================================
-               STEP 3: AI INTELLIGENCE SCAN
+               STEP 3: GRIEVANCE DETAILS & AUTOFILL
                ========================================== -->
           <div class="wizard-screen" id="wizard-step-3" style="display: none;">
-            <div class="ai-processing-box">
-              <div class="ai-scan-radar">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 8a2 2 0 1 1 2-2 2 2 0 0 1-2 2z"/></svg>
-              </div>
-              <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin: 0;">Analyzing Evidence with Document Intelligence</h3>
-              <p style="color: #64748b; font-size: 0.88rem; max-width: 540px; margin: 0;">Extracting municipal features, classifying issue category, calculating SLA priority, and mapping to the designated zonal department.</p>
-
-              <div class="ai-tags-container">
-                <span class="ai-tag-pill">✨ Visual OCR Extraction</span>
-                <span class="ai-tag-pill">🏢 Dept Auto-Mapping</span>
-                <span class="ai-tag-pill">⏱️ SLA Target Assignment</span>
-              </div>
-
-              <!-- Transparent Demo Disclaimer -->
-              <div class="ai-disclaimer-box">
-                <strong>ServiceNow Document Intelligence Demonstration:</strong> Simulating production model trained on civic redressal records. Citizen retains 100% review and edit authority in Step 4.
-              </div>
-            </div>
-          </div>
-
-          <!-- ==========================================
-               STEP 4: EDIT DETAILS & AUTOFILL
-               ========================================== -->
-          <div class="wizard-screen" id="wizard-step-4" style="display: none;">
             <div class="wizard-screen-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
               <div>
                 <h2 class="wizard-screen-title">Review &amp; Edit Grievance Details</h2>
-                <p class="wizard-screen-sub">Verify the classified department and category. You can modify any field before final submission.</p>
+                <p class="wizard-screen-sub">Verify or customize the municipal classification, severity, and incident details.</p>
               </div>
-              <span class="ai-suggested-badge">✨ Autofilled by AI Document Intelligence</span>
+              <span class="ai-suggested-badge">✨ Auto-classified by Redressal Engine</span>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
@@ -722,7 +692,7 @@
             <!-- Footer Action -->
             <div class="wizard-footer-actions">
               <button type="button" class="btn-wizard-back" onclick="goToStep(2)">← Back to Proof</button>
-              <button type="button" class="btn-wizard-next" onclick="goToStep(5)">
+              <button type="button" class="btn-wizard-next" onclick="goToStep(4)">
                 <span>Next: Review &amp; Submit</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </button>
@@ -730,9 +700,9 @@
           </div>
 
           <!-- ==========================================
-               STEP 5: REVIEW & SUBMIT
+               STEP 4: REVIEW & SUBMIT
                ========================================== -->
-          <div class="wizard-screen" id="wizard-step-5" style="display: none;">
+          <div class="wizard-screen" id="wizard-step-4" style="display: none;">
             <div class="wizard-screen-header">
               <h2 class="wizard-screen-title">Final Grievance Review</h2>
               <p class="wizard-screen-sub">Confirm the complaint parameters before submitting to the municipal redressal engine.</p>
@@ -771,7 +741,7 @@
 
             <!-- Footer Action -->
             <div class="wizard-footer-actions">
-              <button type="button" class="btn-wizard-back" onclick="goToStep(4)">← Back to Edit Details</button>
+              <button type="button" class="btn-wizard-back" onclick="goToStep(3)">← Back to Edit Details</button>
               <button type="button" class="btn-wizard-next" id="btn-submit-grievance" onclick="submitGrievanceFinal()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 <span id="btn-submit-text">Submit Grievance</span>
@@ -780,9 +750,9 @@
           </div>
 
           <!-- ==========================================
-               STEP 6: SUCCESS CASE ID SCREEN
+               STEP 5: SUCCESS CASE ID SCREEN
                ========================================== -->
-          <div class="wizard-screen" id="wizard-step-6" style="display: none;">
+          <div class="wizard-screen" id="wizard-step-5" style="display: none;">
             <div class="case-success-panel">
               <div style="width: 72px; height: 72px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(22, 163, 74, 0.2);">
                 <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1289,7 +1259,7 @@
         wizardState.ward = document.getElementById('wiz-loc-ward').value;
       }
 
-      if (stepNum === 5) {
+      if (stepNum === 4) {
         // Prepare Review Screen
         const title = (document.getElementById('wiz-title-input').value || '').trim();
         if (!title) {
@@ -1304,8 +1274,8 @@
 
       wizardState.step = stepNum;
 
-      // Update Stepper UI (Steps 1 to 5)
-      for (let s = 1; s <= 5; s++) {
+      // Update Stepper UI (Steps 1 to 4)
+      for (let s = 1; s <= 4; s++) {
         const ind = document.getElementById('step-ind-' + s);
         if (!ind) continue;
         ind.classList.remove('active', 'completed');
@@ -1316,8 +1286,8 @@
         }
       }
 
-      // Show the requested pane, hide others
-      for (let p = 1; p <= 6; p++) {
+      // Show the requested pane, hide others (1 to 5)
+      for (let p = 1; p <= 5; p++) {
         const pane = document.getElementById('wizard-step-' + p);
         if (pane) {
           pane.style.display = (p === stepNum) ? 'block' : 'none';
@@ -1780,15 +1750,20 @@
       renderEvidencePreviews();
     }
 
-    // Step 3: Trigger Document Intelligence Processing (Demo Mode)
-    async function triggerAIIntelligence() {
-      goToStep(3);
+    // Backend AI Classification & Seamless Transition to Details Step
+    async function proceedToDetailsStep() {
+      const btn = document.getElementById('btn-proceed-details');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>Categorizing...</span> <span style="display:inline-block; animation:gmapSpin 0.8s linear infinite;">⏳</span>';
+      }
 
       const area = (document.getElementById('wiz-loc-area').value || '').trim();
       const files = wizardState.attachments;
       const scenarioKey = wizardState.selectedScenario;
 
       try {
+        // Backend AI operation: auto-classify without showing fake scan screen to the user
         const aiResponse = await DemoAIProvider.processEvidenceAndClassify(files, area, scenarioKey);
         wizardState.aiResult = aiResponse;
 
@@ -1801,17 +1776,22 @@
         wizardState.title = aiResponse.suggested_title;
         wizardState.description = aiResponse.suggested_description;
 
-        // Populate and select in Step 4 form
+        // Auto-fill into Grievance Details form
         applyAISuggestionsToForm(aiResponse);
-
-        // Smooth transition to Step 4 after visual scan finishes
-        setTimeout(() => {
-          goToStep(4);
-        }, 600);
       } catch (err) {
-        console.error('AI Intelligence Error:', err);
-        goToStep(4);
+        console.warn('Backend AI classification note:', err);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Next: Grievance Details</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+        }
       }
+
+      goToStep(3);
+    }
+
+    function triggerAIIntelligence() {
+      proceedToDetailsStep();
     }
 
     function populateTaxonomyDropdowns() {
@@ -1982,13 +1962,13 @@
           updateMetricCounters();
           renderTable();
 
-          // Populate Confirmation Screen (Step 6)
+          // Populate Confirmation Screen (Step 5)
           document.getElementById('conf-case-id').innerText = result.case_id;
           document.getElementById('conf-dept-val').innerText = finalDept;
           document.getElementById('conf-loc-val').innerText = `${wizardState.area}, ${wizardState.street}`;
 
-          // Transition to Step 6
-          goToStep(6);
+          // Transition to Step 5
+          goToStep(5);
         } catch (err) {
           alert('Submission Error: ' + err.message);
         } finally {
