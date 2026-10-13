@@ -599,7 +599,7 @@
 
             <!-- Media Options Grid (2 clean options: Capture Live Photo & Upload Photo/Evidence) -->
             <div class="media-choice-grid">
-              <div class="camera-btn-card" onclick="triggerCameraInput('environment')" id="card-capture-photo">
+              <div class="camera-btn-card" onclick="openLiveCameraModal()" id="card-capture-photo">
                 <div class="camera-icon-circle">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                 </div>
@@ -899,6 +899,62 @@
         <div><strong>Email Address:</strong> <span id="prof-email">rishi.citizen@example.gov.in</span></div>
         <div><strong>Mobile Number:</strong> +91 98765 43210</div>
         <div><strong>Municipality:</strong> Zone East, Ward 12 (Indiranagar)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Camera Capture Modal -->
+  <div class="modal-overlay" id="live-camera-modal" onclick="handleCameraBackdrop(event)">
+    <div class="modal-card camera-modal-card" style="max-width: 640px; padding: 24px;">
+      <div class="modal-header" style="margin-bottom: 16px; padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; animation: cameraPulse 1.5s infinite;"></div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0;">Live Camera Viewfinder</h3>
+        </div>
+        <button type="button" class="close-btn" onclick="closeLiveCameraModal()">&times;</button>
+      </div>
+
+      <!-- Camera Viewport Container -->
+      <div class="camera-viewport-wrap" id="camera-viewport-wrap">
+        <video id="live-camera-video" autoplay playsinline muted class="camera-video-element"></video>
+        <canvas id="live-camera-canvas" style="display: none;"></canvas>
+
+        <!-- Camera HUD / Viewfinder Overlay -->
+        <div class="camera-hud-overlay">
+          <div class="hud-corner top-left"></div>
+          <div class="hud-corner top-right"></div>
+          <div class="hud-corner bottom-left"></div>
+          <div class="hud-corner bottom-right"></div>
+          <div class="hud-crosshair"></div>
+          <div class="hud-badge">LIVE 1080P • EVIDENCE CAPTURE</div>
+        </div>
+
+        <!-- Camera Loading / Permission Banner -->
+        <div class="camera-status-overlay" id="camera-status-overlay" style="display: none;">
+          <div id="camera-status-text" style="font-size: 0.9rem; font-weight: 600; color: #e2e8f0; text-align: center; max-width: 80%;">Connecting to device camera...</div>
+        </div>
+      </div>
+
+      <!-- Camera Action Controls -->
+      <div class="camera-controls-bar">
+        <button type="button" class="btn-camera-cancel" onclick="closeLiveCameraModal()">
+          Cancel
+        </button>
+
+        <button type="button" class="btn-camera-shutter" id="btn-camera-shutter" onclick="captureLiveWebcamPhoto()">
+          <div class="shutter-inner-circle" style="display: flex; align-items: center; justify-content: center;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <span>Capture Photo</span>
+        </button>
+
+        <button type="button" class="btn-camera-switch" id="btn-camera-switch" onclick="switchCameraFacing()" title="Switch Camera">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        </button>
+      </div>
+
+      <div style="margin-top: 12px; text-align: center; font-size: 0.78rem; color: #64748b;">
+        Align civic issue clearly in frame and click <strong>Capture Photo</strong>. Photo is tagged to your report instantly.
       </div>
     </div>
   </div>
@@ -1472,15 +1528,147 @@
       );
     }
 
-    // Step 2: Proof & Media Handling
-    function triggerCameraInput(facing) {
-      if (facing === 'user') {
-        const inp = document.getElementById('camera-front-input');
-        if (inp) inp.click();
-      } else {
-        const inp = document.getElementById('camera-rear-input');
-        if (inp) inp.click();
+    // Step 2: Live Camera & Proof Media Handling
+    let liveCameraStream = null;
+    let currentCameraFacing = 'environment';
+
+    async function openLiveCameraModal() {
+      const modal = document.getElementById('live-camera-modal');
+      const statusOverlay = document.getElementById('camera-status-overlay');
+      const statusText = document.getElementById('camera-status-text');
+
+      if (modal) modal.classList.add('active');
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showCameraError("Your device or browser does not support live webcam streaming. You can upload a photo file directly.");
+        return;
       }
+
+      if (statusOverlay) {
+        statusOverlay.style.display = 'flex';
+        statusText.innerHTML = '<span style="display:inline-block; animation:gmapSpin 0.8s linear infinite; margin-right:6px;">⏳</span> Connecting to camera...';
+      }
+
+      await startCameraStream(currentCameraFacing);
+    }
+
+    async function startCameraStream(facing) {
+      const video = document.getElementById('live-camera-video');
+      const statusOverlay = document.getElementById('camera-status-overlay');
+
+      if (liveCameraStream) {
+        liveCameraStream.getTracks().forEach(t => t.stop());
+        liveCameraStream = null;
+      }
+
+      try {
+        let stream = null;
+        try {
+          // Attempt specific camera facing
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: facing,
+              width: { ideal: 1920 },
+              height: { ideal: 1080 }
+            },
+            audio: false
+          });
+        } catch (specErr) {
+          // Fallback to generic video device (common on desktop webcams)
+          stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        }
+
+        liveCameraStream = stream;
+        if (video) {
+          video.srcObject = liveCameraStream;
+          video.onloadedmetadata = () => {
+            video.play().catch(e => console.warn('Video play interrupted:', e));
+            if (statusOverlay) statusOverlay.style.display = 'none';
+          };
+        }
+      } catch (err) {
+        console.warn('Camera stream error:', err);
+        showCameraError("Camera permission was denied or device is in use by another app. Please grant camera permission or use file upload.");
+      }
+    }
+
+    function showCameraError(msg) {
+      const statusOverlay = document.getElementById('camera-status-overlay');
+      const statusText = document.getElementById('camera-status-text');
+      if (statusOverlay && statusText) {
+        statusOverlay.style.display = 'flex';
+        statusText.innerHTML = `
+          <div style="color: #f87171; font-size: 1.15rem; font-weight:800; margin-bottom: 6px;">📷 Camera Inaccessible</div>
+          <p style="margin: 0 0 14px; font-size: 0.84rem; color: #cbd5e1; line-height: 1.4;">${msg}</p>
+          <button type="button" onclick="closeLiveCameraModal(); triggerDocUpload();" style="background:#1d63ed; color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer;">Choose Photo From Files</button>
+        `;
+      }
+    }
+
+    async function switchCameraFacing() {
+      currentCameraFacing = (currentCameraFacing === 'environment') ? 'user' : 'environment';
+      await startCameraStream(currentCameraFacing);
+    }
+
+    function captureLiveWebcamPhoto() {
+      const video = document.getElementById('live-camera-video');
+      const canvas = document.getElementById('live-camera-canvas');
+      if (!video || !canvas) return;
+
+      const width = video.videoWidth || 1280;
+      const height = video.videoHeight || 720;
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      if (currentCameraFacing === 'user') {
+        ctx.translate(width, 0);
+        ctx.scale(-1, 1);
+      }
+      ctx.drawImage(video, 0, 0, width, height);
+
+      // Shutter visual flash animation
+      const viewport = document.getElementById('camera-viewport-wrap');
+      if (viewport) {
+        viewport.style.filter = 'brightness(2.2)';
+        setTimeout(() => { viewport.style.filter = 'none'; }, 120);
+      }
+
+      canvas.toBlob(blob => {
+        if (!blob) return;
+        const previewUrl = URL.createObjectURL(blob);
+        const fileName = `live_camera_${Date.now().toString().slice(-6)}.jpg`;
+        const sizeStr = (blob.size / (1024 * 1024)).toFixed(1) + ' MB';
+
+        wizardState.attachments.push({
+          name: fileName,
+          size: sizeStr,
+          type: 'image/jpeg',
+          previewUrl: previewUrl
+        });
+
+        renderEvidencePreviews();
+        closeLiveCameraModal();
+      }, 'image/jpeg', 0.92);
+    }
+
+    function closeLiveCameraModal() {
+      if (liveCameraStream) {
+        liveCameraStream.getTracks().forEach(t => t.stop());
+        liveCameraStream = null;
+      }
+      const modal = document.getElementById('live-camera-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function handleCameraBackdrop(e) {
+      if (e.target.id === 'live-camera-modal') {
+        closeLiveCameraModal();
+      }
+    }
+
+    function triggerCameraInput(facing) {
+      openLiveCameraModal();
     }
 
     function triggerDocUpload() {
