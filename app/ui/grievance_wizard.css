@@ -1,0 +1,493 @@
+/* ==========================================================================
+   CivicOne — Grievance Registration Wizard Stylesheet
+   Supports the updated 6-step workflow:
+   Location -> Proof/Camera -> AI Processing -> Autofilled Edit -> Review -> Case ID
+   ========================================================================== */
+
+.wizard-modal-card {
+  background: var(--white);
+  border-radius: 24px;
+  max-width: 740px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25);
+  padding: 28px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: popWizard 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popWizard {
+  from { opacity: 0; transform: scale(0.97) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Stepper Progress Bar */
+.wizard-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1.5px solid #e9eff6;
+  position: relative;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--slate-400);
+}
+
+.step-indicator.active {
+  color: var(--primary-blue);
+}
+
+.step-indicator.completed {
+  color: #16a34a;
+}
+
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: var(--slate-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.76rem;
+  font-weight: 800;
+  transition: all 0.2s ease;
+}
+
+.step-indicator.active .step-circle {
+  background: var(--primary-blue);
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(29, 99, 237, 0.3);
+}
+
+.step-indicator.completed .step-circle {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.step-arrow {
+  color: var(--slate-300);
+  font-size: 0.85rem;
+}
+
+/* Wizard Screen Title Group */
+.wizard-screen-header {
+  margin-bottom: 20px;
+}
+
+.wizard-screen-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--navy-dark);
+  letter-spacing: -0.02em;
+}
+
+.wizard-screen-sub {
+  font-size: 0.85rem;
+  color: var(--slate-500);
+  margin-top: 4px;
+}
+
+/* STEP 1: LOCATION OPTIONS */
+.location-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.location-live-box {
+  background: #eff6ff;
+  border: 1.5px dashed #93c5fd;
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.btn-gps-autofill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #1d63ed, #2563eb);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(29, 99, 237, 0.25);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-gps-autofill:hover {
+  background: #154fc1;
+  transform: translateY(-1px);
+}
+
+.btn-gps-autofill.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.gps-status-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #16a34a;
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+/* STEP 2: PROOF CAPTURE & UPLOAD */
+.proof-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.proof-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.btn-proof-source {
+  padding: 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.btn-proof-source:hover {
+  border-color: #3b82f6;
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.proof-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Demo Sample Scenarios */
+.sample-scenarios-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.sample-scenarios-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scenario-chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.scenario-chip {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid #cbd5e1;
+  background: var(--white);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.scenario-chip:hover,
+.scenario-chip.active {
+  background: #1d63ed;
+  color: var(--white);
+  border-color: #1d63ed;
+}
+
+/* Attachment Preview Gallery */
+.proof-preview-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.preview-thumb-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 110px;
+  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+}
+
+.preview-thumb-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-remove-thumb {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.75);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: background 0.15s ease;
+}
+
+.btn-remove-thumb:hover {
+  background: #dc2626;
+}
+
+/* STEP 3: DEMO DOCUMENT INTELLIGENCE PROCESSING */
+.ai-processing-box {
+  background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+  border: 1.5px solid #bfdbfe;
+  border-radius: 20px;
+  padding: 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.ai-scan-animation {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-blue);
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(29, 99, 237, 0.4);
+  animation: pulseAi 1.5s infinite;
+}
+
+@keyframes pulseAi {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(29, 99, 237, 0.5); }
+  70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(29, 99, 237, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(29, 99, 237, 0); }
+}
+
+.ai-step-indicator-text {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--navy-dark);
+}
+
+.ai-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ai-tag-pill {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #bfdbfe;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #1e40af;
+}
+
+.ai-disclaimer-note {
+  font-size: 0.72rem;
+  color: #64748b;
+  max-width: 440px;
+  line-height: 1.4;
+}
+
+/* STEP 4: EDITABLE DETAILS FORM */
+.wizard-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wizard-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.ai-suggested-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: #e0f2fe;
+  color: #0284c7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+
+/* STEP 5: REVIEW CARD */
+.review-summary-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+.review-item-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 8px;
+}
+
+.review-item-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.review-label {
+  font-weight: 700;
+  color: #64748b;
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.review-value {
+  color: var(--navy-dark);
+  font-weight: 600;
+  text-align: right;
+  flex: 1;
+}
+
+/* STEP 6: CASE ID SUCCESS SCREEN */
+.case-success-panel {
+  text-align: center;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.case-id-display-box {
+  background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+  border: 2px dashed #3b82f6;
+  border-radius: 18px;
+  padding: 18px 36px;
+  margin: 10px 0;
+}
+
+.case-id-number-large {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1d4ed8;
+  letter-spacing: 0.05em;
+}
+
+/* Navigation Actions at Bottom */
+.wizard-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn-wizard-back {
+  padding: 10px 20px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-wizard-back:hover {
+  background: #e2e8f0;
+}
+
+.btn-wizard-next {
+  padding: 11px 24px;
+  background: linear-gradient(135deg, #1d63ed, #2563eb);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(29, 99, 237, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-wizard-next:hover {
+  background: #154fc1;
+  transform: translateY(-1px);
+}
+
+.btn-wizard-next:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}

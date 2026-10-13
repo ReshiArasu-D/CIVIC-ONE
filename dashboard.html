@@ -6,6 +6,7 @@
   <title>Citizen Dashboard — CivicOne</title>
   <meta name="description" content="CivicOne Citizen Grievance Redressal Portal - Dashboard overview, track complaints, register issues.">
   <link rel="stylesheet" href="app/ui/dashboard.css">
+  <link rel="stylesheet" href="app/ui/grievance_wizard.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231d63ed%22><path d=%22M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z%22/></svg>">
 </head>
 <body>
@@ -476,36 +477,399 @@
     </div>
   </div>
 
-  <!-- Register Grievance Modal -->
+  <!-- ========================================================================
+       REGISTER GRIEVANCE WIZARD MODAL (DEMO IMPLEMENTATION)
+       Workflow: Citizen Login -> Area Selection/Live Location -> Proof Capture -> 
+                 Demo Document Intelligence -> Category/Subcategory Identification -> 
+                 Autofill Complaint Details -> Review & Submit -> Unique Case ID
+       ======================================================================== -->
   <div class="modal-overlay" id="new-modal" onclick="handleNewBackdrop(event)">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">+ Register New Grievance</h3>
-        <button class="close-btn" onclick="closeModal('new-modal')">&times;</button>
+    <div class="wizard-modal-card" onclick="event.stopPropagation()">
+      <!-- Wizard Modal Header -->
+      <div class="modal-header" style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1.5px solid #f1f5f9;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 12px; background: #eff6ff; display: flex; align-items: center; justify-content: center; color: #1d63ed;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 style="font-size: 1.22rem; font-weight: 800; color: #0f172a; margin: 0;">Register Citizen Grievance</h3>
+            <span style="font-size: 0.76rem; color: #64748b; font-weight: 600;">Public Sector Grievance Redressal &bull; Instant Redressal Routing</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('new-modal')" title="Close">&times;</button>
       </div>
-      <form onsubmit="handleNewSubmit(event)" style="display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem;">
-        <div>
-          <label style="font-weight: 700; color: #334155;">Category *</label>
-          <select id="new-cat" style="width: 100%; height: 42px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 0 10px; margin-top: 4px;" required>
-            <option value="Roads">Roads (Pothole / Damaged Asphalt / Footpath)</option>
-            <option value="Street Light">Street Light (Outage / Blinking Lamp)</option>
-            <option value="Waste Management">Waste Management (Garbage Not Collected / Debris)</option>
-            <option value="Water Supply">Water Supply (Pipeline Leak / Contamination)</option>
-            <option value="Drainage">Drainage &amp; Sanitation (Overflowing Drain / Silt)</option>
-          </select>
+
+      <!-- Stepper Progress Bar (Steps 1 to 5) -->
+      <div class="wizard-stepper" id="wizard-stepper-bar">
+        <div class="step-indicator active" id="step-ind-1">
+          <div class="step-circle">1</div>
+          <span>Area Location</span>
         </div>
-        <div>
-          <label style="font-weight: 700; color: #334155;">Issue Description *</label>
-          <input type="text" id="new-desc" placeholder="e.g. Deep pothole near main road junction" style="width: 100%; height: 42px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 0 10px; margin-top: 4px;" required>
+        <div class="step-arrow">&rarr;</div>
+        <div class="step-indicator" id="step-ind-2">
+          <div class="step-circle">2</div>
+          <span>Proof &amp; Photos</span>
         </div>
-        <div>
-          <label style="font-weight: 700; color: #334155;">Detailed Complaint *</label>
-          <textarea id="new-long" placeholder="Specify landmark, ward, and duration..." style="width: 100%; min-height: 80px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 8px 10px; margin-top: 4px;" required></textarea>
+        <div class="step-arrow">&rarr;</div>
+        <div class="step-indicator" id="step-ind-3">
+          <div class="step-circle">3</div>
+          <span>AI Intelligence</span>
         </div>
-        <button type="submit" style="height: 46px; background: #1d63ed; color: #ffffff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 8px;">
-          Submit Grievance to Municipal Crew
-        </button>
-      </form>
+        <div class="step-arrow">&rarr;</div>
+        <div class="step-indicator" id="step-ind-4">
+          <div class="step-circle">4</div>
+          <span>Edit Details</span>
+        </div>
+        <div class="step-arrow">&rarr;</div>
+        <div class="step-indicator" id="step-ind-5">
+          <div class="step-circle">5</div>
+          <span>Review</span>
+        </div>
+      </div>
+
+      <!-- STEP 1: Area Selection (Manual or Live Location) -->
+      <div class="wizard-step-pane" id="wizard-step-1">
+        <div class="wizard-screen-header">
+          <h4 class="wizard-screen-title">Where did the civic issue occur?</h4>
+          <p class="wizard-screen-sub">Specify the grievance locality or capture real-time GPS coordinates for accurate municipal crew dispatch.</p>
+        </div>
+
+        <!-- Choice toggle: Manual vs Live Location -->
+        <div class="loc-choice-group">
+          <button type="button" class="btn-loc-choice active" id="btn-choice-manual" onclick="setLocMode('manual')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>Option A: Enter Area Manually</span>
+          </button>
+          <button type="button" class="btn-loc-choice" id="btn-choice-live" onclick="setLocMode('live')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+            </svg>
+            <span>Option B: Use My Current Location</span>
+          </button>
+        </div>
+
+        <!-- Live Location Banner & Trigger -->
+        <div class="live-loc-banner" id="live-loc-banner" style="display: none;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div>
+              <strong style="color: #1e40af; font-size: 0.92rem; display: block;">High-Precision GPS Location</strong>
+              <span style="font-size: 0.8rem; color: #3b82f6;">Request browser geolocation permission to detect landmark &amp; ward.</span>
+            </div>
+            <button type="button" class="btn-detect-gps" id="btn-trigger-gps" onclick="detectLiveLocation()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+              </svg>
+              <span>Detect My Coordinates</span>
+            </button>
+          </div>
+          <div id="gps-status-msg" style="margin-top: 8px; font-size: 0.82rem; display: none;"></div>
+        </div>
+
+        <!-- Form fields (Always editable by citizen) -->
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 14px;">
+          <div class="wizard-form-group">
+            <label class="wizard-label">Area / Locality <span class="req">*</span></label>
+            <input type="text" class="wizard-input" id="wiz-loc-area" placeholder="e.g. Indiranagar, Koramangala, Anna Nagar" required>
+          </div>
+
+          <div class="wizard-form-group">
+            <label class="wizard-label">Street / Landmark <span class="req">*</span></label>
+            <input type="text" class="wizard-input" id="wiz-loc-street" placeholder="e.g. 100ft Road, opposite Metro Pillar 84" required>
+          </div>
+
+          <div class="wizard-form-group">
+            <label class="wizard-label">Ward / District</label>
+            <select class="wizard-select" id="wiz-loc-ward">
+              <option value="Ward 12 (Indiranagar)">Ward 12 (Indiranagar) - Zone East</option>
+              <option value="Ward 15 (Koramangala)">Ward 15 (Koramangala) - Zone South</option>
+              <option value="Ward 08 (Malleshwaram)">Ward 08 (Malleshwaram) - Zone West</option>
+              <option value="Ward 22 (Whitefield)">Ward 22 (Whitefield) - Zone East</option>
+              <option value="Anna Nagar (Central District)">Anna Nagar (Central District)</option>
+              <option value="Ward 01 (Central Zone)">Ward 01 (Central Zone)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="wizard-footer-actions">
+          <div></div>
+          <button type="button" class="btn-wizard-next" onclick="goToStep(2)">
+            <span>Next: Attach Proof</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Proof Capture / Upload -->
+      <div class="wizard-step-pane" id="wizard-step-2" style="display: none;">
+        <div class="wizard-screen-header">
+          <h4 class="wizard-screen-title">Capture or Upload Evidence (Optional)</h4>
+          <p class="wizard-screen-sub">Photos or documents help municipal engineers verify the problem. You can snap a photo with your device camera or upload existing files.</p>
+        </div>
+
+        <!-- Camera Actions Grid -->
+        <div class="media-choice-grid">
+          <div class="camera-btn-card" onclick="triggerCameraInput('environment')">
+            <div class="camera-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+            </div>
+            <strong style="color: #0f172a; font-size: 0.9rem;">Rear / Site Camera</strong>
+            <span style="font-size: 0.78rem; color: #64748b;">Snap photo of road, leak or pole</span>
+          </div>
+
+          <div class="camera-btn-card" onclick="triggerCameraInput('user')">
+            <div class="camera-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+            </div>
+            <strong style="color: #0f172a; font-size: 0.9rem;">Front Camera</strong>
+            <span style="font-size: 0.78rem; color: #64748b;">Close-up / selfie capture</span>
+          </div>
+        </div>
+
+        <!-- Hidden Camera & File Inputs -->
+        <input type="file" id="camera-rear-input" accept="image/*" capture="environment" style="display: none;" onchange="handleFileInput(event)">
+        <input type="file" id="camera-front-input" accept="image/*" capture="user" style="display: none;" onchange="handleFileInput(event)">
+        <input type="file" id="file-doc-input" accept="image/*,.pdf,.doc,.docx" multiple style="display: none;" onchange="handleFileInput(event)">
+
+        <!-- Drag & Drop Upload Zone -->
+        <div class="dropzone-container" onclick="triggerDocUpload()" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <div style="font-weight: 700; color: #1e293b; margin-top: 6px;">Click or drag &amp; drop evidence files here</div>
+          <span style="font-size: 0.76rem; color: #94a3b8;">Supports JPG, PNG, WEBP, PDF up to 10 MB</span>
+        </div>
+
+        <!-- Sample Demonstration Scenarios (Judges / Testing quick triggers) -->
+        <div style="margin-top: 14px;">
+          <span style="font-size: 0.78rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Demo Sample Scenarios (Click to test):</span>
+          <div class="scenario-chips-row">
+            <button type="button" class="chip-scenario" onclick="selectDemoScenario('pothole')">🚧 Road Pothole</button>
+            <button type="button" class="chip-scenario" onclick="selectDemoScenario('water_leak')">💧 Water Pipe Leak</button>
+            <button type="button" class="chip-scenario" onclick="selectDemoScenario('streetlight')">💡 Streetlight Outage</button>
+            <button type="button" class="chip-scenario" onclick="selectDemoScenario('garbage')">🗑️ Garbage Accumulation</button>
+            <button type="button" class="chip-scenario" onclick="selectDemoScenario('drainage')">🌊 Blocked Drainage</button>
+            <button type="button" class="chip-scenario" onclick="selectDemoScenario('general')">❓ General Civic Issue</button>
+          </div>
+        </div>
+
+        <!-- Attached Files Previews -->
+        <div class="preview-cards-grid" id="evidence-previews-grid"></div>
+
+        <div class="wizard-footer-actions">
+          <button type="button" class="btn-wizard-back" onclick="goToStep(1)">&larr; Back to Location</button>
+          <button type="button" class="btn-wizard-next" onclick="triggerAIIntelligence()">
+            <span>Next: Analyze with AI</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Demo Document Intelligence Processing -->
+      <div class="wizard-step-pane" id="wizard-step-3" style="display: none;">
+        <div class="ai-processing-box">
+          <div class="ai-scan-radar">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1d63ed" stroke-width="2">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+            </svg>
+          </div>
+          <h4 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-top: 14px;">Document Intelligence Processing</h4>
+          <p style="font-size: 0.85rem; color: #475569; max-width: 480px; text-align: center; margin: 6px auto;">
+            Analyzing attached evidence, extracting civic visual features, and matching against municipal category taxonomies...
+          </p>
+
+          <div class="ai-tags-container" id="ai-live-tags">
+            <span class="ai-tag-pill">🔍 Scanning evidence context</span>
+            <span class="ai-tag-pill">📑 Matching canonical categories</span>
+            <span class="ai-tag-pill">🏛️ Mapping municipal department</span>
+          </div>
+
+          <!-- Transparent Disclaimer -->
+          <div class="ai-disclaimer-box">
+            <strong>Hackathon Demo Mode:</strong> Operating via CivicOne Demo Document Intelligence Provider. 
+            Pre-configured deterministic AI classification mapped to ServiceNow scoped tables. 
+            Replaceable integration boundary for ServiceNow Document Intelligence / Now Assist API.
+          </div>
+        </div>
+
+        <div class="wizard-footer-actions">
+          <button type="button" class="btn-wizard-back" onclick="goToStep(2)">&larr; Back to Proof</button>
+          <button type="button" class="btn-wizard-next" id="btn-skip-ai" onclick="goToStep(4)">
+            <span>View Suggested Details &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Autofill Complaint Details — Citizen Can Edit -->
+      <div class="wizard-step-pane" id="wizard-step-4" style="display: none;">
+        <div class="wizard-screen-header">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <h4 class="wizard-screen-title">Review &amp; Edit Complaint Details</h4>
+              <p class="wizard-screen-sub">AI has recommended the classification below. You can freely change or refine any field.</p>
+            </div>
+            <span class="ai-suggested-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <span>AI Suggested &bull; Fully Editable</span>
+            </span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- Category & Subcategory -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="wizard-form-group">
+              <label class="wizard-label">Category <span class="req">*</span></label>
+              <select class="wizard-select" id="wiz-cat-select" onchange="handleCategoryChange()" required></select>
+            </div>
+            <div class="wizard-form-group">
+              <label class="wizard-label">Subcategory <span class="req">*</span></label>
+              <select class="wizard-select" id="wiz-subcat-select" onchange="handleSubcategoryChange()" required></select>
+            </div>
+          </div>
+
+          <!-- Department & Priority -->
+          <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px;">
+            <div class="wizard-form-group">
+              <label class="wizard-label">Responsible Department</label>
+              <input type="text" class="wizard-input" id="wiz-dept-input" readonly style="background: #f8fafc; color: #334155; font-weight: 600;">
+            </div>
+            <div class="wizard-form-group">
+              <label class="wizard-label">Suggested Priority</label>
+              <select class="wizard-select" id="wiz-priority-select">
+                <option value="High (Priority 1)">High (Priority 1 - 24h SLA)</option>
+                <option value="Normal (Priority 2)" selected>Normal (Priority 2 - 48h SLA)</option>
+                <option value="Low (Priority 3)">Low (Priority 3 - 72h SLA)</option>
+                <option value="Critical (Priority 1)">Critical (Urgent Safety Risk)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Complaint Title -->
+          <div class="wizard-form-group">
+            <label class="wizard-label">Complaint Title / Short Description <span class="req">*</span></label>
+            <input type="text" class="wizard-input" id="wiz-title-input" placeholder="Summarize the civic grievance in one sentence..." required>
+          </div>
+
+          <!-- Detailed Complaint -->
+          <div class="wizard-form-group">
+            <label class="wizard-label">Detailed Description</label>
+            <textarea class="wizard-textarea" id="wiz-desc-input" placeholder="Provide additional details, landmarks, or how long the issue has persisted..."></textarea>
+          </div>
+        </div>
+
+        <div class="wizard-footer-actions">
+          <button type="button" class="btn-wizard-back" onclick="goToStep(2)">&larr; Back to Proof</button>
+          <button type="button" class="btn-wizard-next" onclick="goToStep(5)">
+            <span>Next: Review &amp; Submit &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 5: Review and Submit -->
+      <div class="wizard-step-pane" id="wizard-step-5" style="display: none;">
+        <div class="wizard-screen-header">
+          <h4 class="wizard-screen-title">Final Review Before Submission</h4>
+          <p class="wizard-screen-sub">Please verify your grievance summary before sending it to the municipal dispatch center.</p>
+        </div>
+
+        <div class="review-card">
+          <div class="review-row">
+            <span class="review-label">📍 Location:</span>
+            <span class="review-value" id="rev-loc-val">Indiranagar 100ft Road, Ward 12</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">📷 Evidence:</span>
+            <span class="review-value" id="rev-proof-val">No files attached</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">🏷️ Classification:</span>
+            <span class="review-value" id="rev-cat-val">Roads &amp; Footpaths &gt; Dangerous Road Pothole</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">🏛️ Department:</span>
+            <span class="review-value" id="rev-dept-val">Roads and Infrastructure Department</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">⚡ Priority:</span>
+            <span class="review-value" id="rev-prio-val">Normal (Priority 2)</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">📋 Title:</span>
+            <span class="review-value" id="rev-title-val" style="font-weight: 700; color: #1d4ed8;">Dangerous road pothole</span>
+          </div>
+          <div class="review-row" style="border-bottom: none;">
+            <span class="review-label">📄 Description:</span>
+            <span class="review-value" id="rev-desc-val" style="font-weight: 400; font-size: 0.82rem; color: #334155; text-align: left;">Deep road crater...</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px; font-size: 0.82rem; color: #166534; display: flex; align-items: center; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <span>Authenticated Citizen Submission &bull; Unique Case ID will be issued directly by the authoritative municipal engine.</span>
+        </div>
+
+        <div class="wizard-footer-actions">
+          <button type="button" class="btn-wizard-back" onclick="goToStep(4)">&larr; Edit Details</button>
+          <button type="button" class="btn-wizard-next" id="btn-submit-grievance" onclick="submitGrievanceFinal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            <span id="btn-submit-text">Submit Grievance</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 6: Unique Case ID After Successful Submission -->
+      <div class="wizard-step-pane" id="wizard-step-6" style="display: none;">
+        <div class="case-success-panel">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; display: flex; align-items: center; justify-content: center; color: #16a34a; box-shadow: 0 8px 24px rgba(22, 163, 74, 0.2);">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+
+          <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin: 0;">Grievance Successfully Registered!</h3>
+          <p style="font-size: 0.85rem; color: #475569; margin: 0;">Your complaint has been logged and queued for municipal field inspection.</p>
+
+          <div class="case-id-display-box">
+            <span style="font-size: 0.76rem; font-weight: 800; color: #1e40af; text-transform: uppercase; letter-spacing: 0.06em; display: block;">Official Tracking Case ID</span>
+            <div class="case-id-number-large" id="conf-case-id">CIV-2026-000457</div>
+            <span style="font-size: 0.8rem; color: #475569;">Keep this Case ID for status inquiries &amp; SMS tracking</span>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 20px; width: 100%; max-width: 480px; font-size: 0.84rem; text-align: left; display: flex; flex-direction: column; gap: 6px;">
+            <div><strong>Status:</strong> <span class="status-pill pending"><span class="status-dot"></span>Pending (Assigned to Field Supervisor)</span></div>
+            <div><strong>Department:</strong> <span id="conf-dept-val">Roads and Infrastructure</span></div>
+            <div><strong>Location:</strong> <span id="conf-loc-val">Indiranagar 100ft Road</span></div>
+            <div><strong>Redressal SLA:</strong> <span style="color: #1d4ed8; font-weight: 700;">Within 48 Hours</span></div>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; justify-content: center;">
+            <button type="button" class="btn-wizard-next" onclick="viewNewCaseInDashboard()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <span>View in My Grievances</span>
+            </button>
+            <button type="button" class="btn-wizard-back" onclick="closeModal('new-modal')">
+              Done &amp; Return to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -541,7 +905,8 @@
     </div>
   </div>
 
-  <!-- Store & Script -->
+  <!-- Store & AI Adapter Scripts -->
+  <script src="app/ui/demo_ai_adapter.js"></script>
   <script src="app/ui/civicone_store.js"></script>
   <script>
     // Authentic recent grievances matching the reference screenshot
@@ -606,8 +971,34 @@
     let currentCases = [...DASHBOARD_CASES];
     let activeFilter = 'all';
 
+    // =========================================================================
+    // GRIEVANCE REGISTRATION WIZARD STATE & CONTROLLER
+    // =========================================================================
+    const wizardState = {
+      step: 1,
+      locationMode: 'manual',
+      area: '',
+      street: '',
+      ward: 'Ward 12 (Indiranagar)',
+      latitude: null,
+      longitude: null,
+      attachments: [],
+      selectedScenario: null,
+      aiResult: null,
+      category: 'Roads & Footpaths',
+      subcategory: 'Dangerous Road Pothole',
+      subcategory_code: 'CAT-ROD-POTHOLE',
+      department: 'Roads and Infrastructure Department',
+      dept_code: 'DEPT-ROADS',
+      priority: 'High (Priority 1)',
+      title: '',
+      description: '',
+      submitting: false,
+      generatedCaseId: null
+    };
+
     function initDashboard() {
-      // Check session
+      // 1. Session verification
       const session = CivicStore.getCurrentSession();
       if (session) {
         document.getElementById('user-display-name').innerText = session.full_name.split(' ')[0];
@@ -617,8 +1008,39 @@
         document.getElementById('prof-name').innerText = session.full_name;
         document.getElementById('prof-id').innerText = session.citizen_id;
         document.getElementById('prof-email').innerText = session.email;
+
+        // Pre-seed wizard default area if available
+        if (session.address) {
+          wizardState.area = session.address.split(',')[0].trim();
+        }
+        if (session.ward) {
+          wizardState.ward = session.ward;
+        }
       }
+
+      // 2. Populate taxonomy categories in wizard
+      populateTaxonomyDropdowns();
+
+      // 3. Render table & KPI metrics
+      updateMetricCounters();
       renderTable();
+    }
+
+    function updateMetricCounters() {
+      const total = currentCases.length;
+      const pending = currentCases.filter(c => c.status === 'Pending').length;
+      const progress = currentCases.filter(c => c.status === 'In Progress').length;
+      const resolved = currentCases.filter(c => c.status === 'Resolved').length;
+
+      const totalEl = document.getElementById('metric-total-val');
+      const pendingEl = document.getElementById('metric-pending-val');
+      const progressEl = document.getElementById('metric-progress-val');
+      const resolvedEl = document.getElementById('metric-resolved-val');
+
+      if (totalEl) totalEl.innerText = total;
+      if (pendingEl) pendingEl.innerText = pending;
+      if (progressEl) progressEl.innerText = progress;
+      if (resolvedEl) resolvedEl.innerText = resolved;
     }
 
     function renderTable() {
@@ -632,16 +1054,21 @@
 
       list.forEach((c, idx) => {
         const tr = document.createElement('tr');
+        if (c.isNew) {
+          tr.style.backgroundColor = '#f0fdf4';
+          tr.style.transition = 'background-color 2s ease';
+          setTimeout(() => { tr.style.backgroundColor = ''; }, 3500);
+        }
         tr.innerHTML = `
           <td style="color: #94a3b8; font-weight: 600;">${idx + 1}</td>
           <td><span class="ticket-link" onclick="viewCaseDetail('${c.no}')">${c.no}</span></td>
           <td style="font-weight: 600; color: #334155;">${c.category}</td>
-          <td style="color: #475569;">${c.desc}</td>
-          <td style="color: #64748b; font-size: 0.8rem;">${c.submitted}</td>
+          <td style="color: #475569;">${c.desc || c.short_description}</td>
+          <td style="color: #64748b; font-size: 0.8rem;">${c.submitted || 'Today'}</td>
           <td>
-            <span class="status-pill ${c.statusClass}">
+            <span class="status-pill ${c.statusClass || 'pending'}">
               <span class="status-dot"></span>
-              <span>${c.status}</span>
+              <span>${c.status || c.grievance_status}</span>
             </span>
           </td>
           <td style="text-align: center;">
@@ -667,13 +1094,13 @@
       if (!item) return;
 
       document.getElementById('dt-num').innerText = item.no;
-      document.getElementById('dt-title').innerText = item.desc;
+      document.getElementById('dt-title').innerText = item.desc || item.short_description;
       document.getElementById('dt-cat').innerText = item.category;
-      document.getElementById('dt-status').innerText = item.status;
-      document.getElementById('dt-status').style.color = item.status === 'Resolved' ? '#16a34a' : item.status === 'In Progress' ? '#0284c7' : '#d97706';
-      document.getElementById('dt-date').innerText = item.submitted;
-      document.getElementById('dt-desc').innerText = item.details;
-      document.getElementById('dt-notes').innerText = item.notes;
+      document.getElementById('dt-status').innerText = item.status || item.grievance_status;
+      document.getElementById('dt-status').style.color = (item.status === 'Resolved' || item.grievance_status === 'Resolved') ? '#16a34a' : (item.status === 'In Progress' || item.grievance_status === 'In Progress') ? '#0284c7' : '#d97706';
+      document.getElementById('dt-date').innerText = item.submitted || 'Today';
+      document.getElementById('dt-desc').innerText = item.details || item.description || item.desc;
+      document.getElementById('dt-notes').innerText = item.notes || 'Allocated to municipal zone crew.';
 
       openModal('detail-modal');
     }
@@ -684,7 +1111,8 @@
     }
 
     document.addEventListener('click', () => {
-      document.getElementById('user-dropdown-menu').classList.remove('active');
+      const drop = document.getElementById('user-dropdown-menu');
+      if (drop) drop.classList.remove('active');
     });
 
     function openModal(id) {
@@ -695,7 +1123,12 @@
       document.getElementById(id).classList.remove('active');
     }
 
-    function openNewGrievanceModal() { openModal('new-modal'); }
+    // Modal Triggers
+    function openNewGrievanceModal() {
+      resetWizard();
+      openModal('new-modal');
+    }
+
     function openTrackModal() { openModal('track-modal'); }
     function openProfileModal() { openModal('profile-modal'); }
     function openHelpModal() {
@@ -713,46 +1146,519 @@
     function handleTrackBackdrop(e) { if (e.target.id === 'track-modal') closeModal('track-modal'); }
     function handleProfileBackdrop(e) { if (e.target.id === 'profile-modal') closeModal('profile-modal'); }
 
-    function handleNewSubmit(e) {
-      e.preventDefault();
-      const cat = document.getElementById('new-cat').value;
-      const desc = document.getElementById('new-desc').value;
-      const long = document.getElementById('new-long').value;
-      const newNo = 'CIV-2026-00' + (457 + currentCases.length);
+    // =========================================================================
+    // GRIEVANCE WIZARD CONTROLLER METHODS
+    // =========================================================================
 
-      const newCase = {
-        id: currentCases.length + 1,
-        no: newNo,
-        category: cat,
-        desc: desc,
-        submitted: 'Today',
-        status: 'Pending',
-        statusClass: 'pending',
-        details: long,
-        notes: 'Submitted via Citizen Dashboard. Assigned to Ward 12 supervisor for field verification.'
+    function resetWizard() {
+      wizardState.step = 1;
+      wizardState.locationMode = 'manual';
+      wizardState.attachments = [];
+      wizardState.selectedScenario = null;
+      wizardState.aiResult = null;
+      wizardState.submitting = false;
+
+      // Seed inputs with default citizen context if available
+      const session = CivicStore.getCurrentSession();
+      const areaEl = document.getElementById('wiz-loc-area');
+      const streetEl = document.getElementById('wiz-loc-street');
+      const wardEl = document.getElementById('wiz-loc-ward');
+
+      if (areaEl) areaEl.value = wizardState.area || 'Indiranagar';
+      if (streetEl) streetEl.value = wizardState.street || '100ft Road';
+      if (wardEl && wizardState.ward) wardEl.value = wizardState.ward;
+
+      setLocMode('manual');
+      renderEvidencePreviews();
+      goToStep(1);
+    }
+
+    function goToStep(stepNum) {
+      // Validation guards
+      if (stepNum > 1 && wizardState.step === 1) {
+        const area = (document.getElementById('wiz-loc-area').value || '').trim();
+        const street = (document.getElementById('wiz-loc-street').value || '').trim();
+        if (!area || !street) {
+          alert('Please enter your Area/Locality and Street/Landmark to specify the complaint location.');
+          return;
+        }
+        wizardState.area = area;
+        wizardState.street = street;
+        wizardState.ward = document.getElementById('wiz-loc-ward').value;
+      }
+
+      if (stepNum === 5) {
+        // Prepare Review Screen
+        const title = (document.getElementById('wiz-title-input').value || '').trim();
+        if (!title) {
+          alert('Please provide a complaint title / short description before reviewing.');
+          return;
+        }
+        wizardState.title = title;
+        wizardState.description = document.getElementById('wiz-desc-input').value;
+        wizardState.priority = document.getElementById('wiz-priority-select').value;
+        populateReviewSummary();
+      }
+
+      wizardState.step = stepNum;
+
+      // Update Stepper UI (Steps 1 to 5)
+      for (let s = 1; s <= 5; s++) {
+        const ind = document.getElementById('step-ind-' + s);
+        if (!ind) continue;
+        ind.classList.remove('active', 'completed');
+        if (s < stepNum) {
+          ind.classList.add('completed');
+        } else if (s === stepNum) {
+          ind.classList.add('active');
+        }
+      }
+
+      // Show the requested pane, hide others
+      for (let p = 1; p <= 6; p++) {
+        const pane = document.getElementById('wizard-step-' + p);
+        if (pane) {
+          pane.style.display = (p === stepNum) ? 'block' : 'none';
+        }
+      }
+
+      // Scroll modal card to top
+      const card = document.querySelector('.wizard-modal-card');
+      if (card) card.scrollTop = 0;
+    }
+
+    // Step 1: Location Mode Handling
+    function setLocMode(mode) {
+      wizardState.locationMode = mode;
+      const btnManual = document.getElementById('btn-choice-manual');
+      const btnLive = document.getElementById('btn-choice-live');
+      const liveBanner = document.getElementById('live-loc-banner');
+
+      if (mode === 'manual') {
+        if (btnManual) btnManual.classList.add('active');
+        if (btnLive) btnLive.classList.remove('active');
+        if (liveBanner) liveBanner.style.display = 'none';
+      } else {
+        if (btnManual) btnManual.classList.remove('active');
+        if (btnLive) btnLive.classList.add('active');
+        if (liveBanner) liveBanner.style.display = 'block';
+      }
+    }
+
+    function detectLiveLocation() {
+      const msg = document.getElementById('gps-status-msg');
+      const btn = document.getElementById('btn-trigger-gps');
+      if (msg) {
+        msg.style.display = 'block';
+        msg.style.color = '#1e40af';
+        msg.innerHTML = '<span style="display:inline-block; animation:spin 1s infinite;">⏳</span> Requesting device GPS coordinates...';
+      }
+      if (btn) btn.disabled = true;
+
+      if (!navigator.geolocation) {
+        if (msg) {
+          msg.style.color = '#b91c1c';
+          msg.innerText = 'Geolocation is not supported by your browser. Please enter area manually.';
+        }
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          wizardState.latitude = lat;
+          wizardState.longitude = lon;
+
+          if (msg) {
+            msg.innerHTML = `GPS detected (${lat.toFixed(4)}, ${lon.toFixed(4)}). Resolving municipal address...`;
+          }
+
+          try {
+            const geo = await CivicStore.reverseGeocode(lat, lon);
+            if (geo && geo.success) {
+              const detectedArea = geo.address.suburb || geo.address.neighbourhood || geo.address.city_district || 'Indiranagar';
+              const detectedStreet = geo.address.road || '100ft Road';
+
+              document.getElementById('wiz-loc-area').value = detectedArea;
+              document.getElementById('wiz-loc-street').value = detectedStreet;
+
+              if (msg) {
+                msg.style.color = '#16a34a';
+                msg.innerHTML = `✓ <strong>Location Verified:</strong> ${geo.display_name}`;
+              }
+            }
+          } catch (e) {
+            if (msg) {
+              msg.style.color = '#16a34a';
+              msg.innerHTML = `✓ <strong>Coordinates Captured:</strong> Lat ${lat.toFixed(4)}, Lon ${lon.toFixed(4)} (Indiranagar Ward 12)`;
+            }
+          } finally {
+            if (btn) btn.disabled = false;
+          }
+        },
+        (error) => {
+          console.warn('Geolocation denied or error:', error.message);
+          if (msg) {
+            msg.style.color = '#b45309';
+            msg.innerText = 'GPS permission not granted or unavailable. Retaining manual area entry fallback.';
+          }
+          if (btn) btn.disabled = false;
+        },
+        { timeout: 8000, enableHighAccuracy: true }
+      );
+    }
+
+    // Step 2: Proof & Media Handling
+    function triggerCameraInput(facing) {
+      if (facing === 'user') {
+        const inp = document.getElementById('camera-front-input');
+        if (inp) inp.click();
+      } else {
+        const inp = document.getElementById('camera-rear-input');
+        if (inp) inp.click();
+      }
+    }
+
+    function triggerDocUpload() {
+      const inp = document.getElementById('file-doc-input');
+      if (inp) inp.click();
+    }
+
+    function handleFileInput(e) {
+      const files = Array.from(e.target.files || []);
+      files.forEach(f => {
+        // Enforce 10MB limit
+        if (f.size > 10 * 1024 * 1024) {
+          alert(`File ${f.name} exceeds configured 10 MB limit.`);
+          return;
+        }
+
+        const previewUrl = URL.createObjectURL(f);
+        wizardState.attachments.push({
+          name: f.name,
+          size: (f.size / (1024 * 1024)).toFixed(1) + ' MB',
+          type: f.type,
+          previewUrl: previewUrl
+        });
+      });
+
+      renderEvidencePreviews();
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer && e.dataTransfer.files) {
+        handleFileInput({ target: { files: e.dataTransfer.files } });
+      }
+    }
+
+    function renderEvidencePreviews() {
+      const grid = document.getElementById('evidence-previews-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      if (wizardState.attachments.length === 0) {
+        grid.style.display = 'none';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      wizardState.attachments.forEach((att, idx) => {
+        const card = document.createElement('div');
+        card.className = 'preview-thumb-card';
+        card.innerHTML = `
+          <button type="button" class="btn-remove-thumb" onclick="removeAttachment(${idx})" title="Remove attachment">&times;</button>
+          <img src="${att.previewUrl || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%2394a3b8%22><path d=%22M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z%22/></svg>'}" alt="${att.name}" class="preview-thumb-img">
+          <div class="preview-thumb-name">${att.name}</div>
+          <div class="preview-thumb-size">${att.size}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function removeAttachment(idx) {
+      wizardState.attachments.splice(idx, 1);
+      renderEvidencePreviews();
+    }
+
+    function selectDemoScenario(key) {
+      wizardState.selectedScenario = key;
+
+      // Add a virtual sample evidence attachment representing this scenario
+      const scenarioMap = {
+        pothole: { name: 'site_photo_pothole_asphalt.jpg', size: '1.4 MB' },
+        water_leak: { name: 'pipeline_burst_leakage_flow.jpg', size: '2.1 MB' },
+        streetlight: { name: 'dark_pole_fixture_outage.jpg', size: '1.2 MB' },
+        garbage: { name: 'waste_accumulation_curb.jpg', size: '1.8 MB' },
+        drainage: { name: 'drain_overflow_silt_block.jpg', size: '2.4 MB' },
+        general: { name: 'civic_inspection_photo.jpg', size: '1.1 MB' }
       };
 
-      currentCases.unshift(newCase);
+      const sc = scenarioMap[key] || scenarioMap['general'];
+      wizardState.attachments = [{
+        name: sc.name,
+        size: sc.size,
+        type: 'image/jpeg',
+        previewUrl: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 fill=%22%231d63ed%22><rect width=%22100%22 height=%22100%22 fill=%22%23eff6ff%22/><text x=%2250%22 y=%2255%22 font-size=%2212%22 text-anchor=%22middle%22 fill=%22%231d63ed%22 font-family=%22sans-serif%22 font-weight=%22bold%22>' + key.toUpperCase() + '</text></svg>'
+      }];
+
+      // Highlight clicked chip
+      document.querySelectorAll('.chip-scenario').forEach(btn => btn.style.borderColor = '#e2e8f0');
+      if (event && event.target) {
+        event.target.style.borderColor = '#1d63ed';
+      }
+
+      renderEvidencePreviews();
+    }
+
+    // Step 3: Trigger Document Intelligence Processing (Demo Mode)
+    async function triggerAIIntelligence() {
+      goToStep(3);
+
+      const area = (document.getElementById('wiz-loc-area').value || '').trim();
+      const files = wizardState.attachments;
+      const scenarioKey = wizardState.selectedScenario;
+
+      try {
+        const aiResponse = await DemoAIProvider.processEvidenceAndClassify(files, area, scenarioKey);
+        wizardState.aiResult = aiResponse;
+
+        // Apply suggestions into wizard state
+        wizardState.category = aiResponse.category;
+        wizardState.subcategory = aiResponse.subcategory;
+        wizardState.subcategory_code = aiResponse.subcategory_code;
+        wizardState.department = aiResponse.department;
+        wizardState.priority = aiResponse.suggested_priority;
+        wizardState.title = aiResponse.suggested_title;
+        wizardState.description = aiResponse.suggested_description;
+
+        // Populate and select in Step 4 form
+        applyAISuggestionsToForm(aiResponse);
+
+        // Smooth transition to Step 4 after visual scan finishes
+        setTimeout(() => {
+          goToStep(4);
+        }, 600);
+      } catch (err) {
+        console.error('AI Intelligence Error:', err);
+        goToStep(4);
+      }
+    }
+
+    function populateTaxonomyDropdowns() {
+      const taxonomy = DemoAIProvider.getTaxonomy();
+      const catSelect = document.getElementById('wiz-cat-select');
+      if (!catSelect) return;
+
+      catSelect.innerHTML = '';
+      Object.keys(taxonomy).forEach(catName => {
+        const opt = document.createElement('option');
+        opt.value = catName;
+        opt.textContent = catName;
+        catSelect.appendChild(opt);
+      });
+
+      handleCategoryChange();
+    }
+
+    function handleCategoryChange() {
+      const catName = document.getElementById('wiz-cat-select').value;
+      const subSelect = document.getElementById('wiz-subcat-select');
+      const deptInput = document.getElementById('wiz-dept-input');
+      const taxonomy = DemoAIProvider.getTaxonomy();
+
+      wizardState.category = catName;
+
+      if (subSelect) {
+        subSelect.innerHTML = '';
+        const subs = DemoAIProvider.getSubcategoriesForCategory(catName);
+        subs.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s.label;
+          opt.dataset.code = s.code;
+          opt.dataset.priority = s.defaultPriority;
+          opt.textContent = s.label;
+          subSelect.appendChild(opt);
+        });
+      }
+
+      const dept = DemoAIProvider.getDepartmentForCategory(catName);
+      if (deptInput) deptInput.value = dept;
+      wizardState.department = dept;
+
+      handleSubcategoryChange();
+    }
+
+    function handleSubcategoryChange() {
+      const subSelect = document.getElementById('wiz-subcat-select');
+      if (!subSelect) return;
+      const opt = subSelect.options[subSelect.selectedIndex];
+      if (opt) {
+        wizardState.subcategory = opt.value;
+        wizardState.subcategory_code = opt.dataset.code || '';
+        if (opt.dataset.priority) {
+          const prioSelect = document.getElementById('wiz-priority-select');
+          if (prioSelect) prioSelect.value = opt.dataset.priority;
+        }
+      }
+    }
+
+    function applyAISuggestionsToForm(res) {
+      const catSelect = document.getElementById('wiz-cat-select');
+      if (catSelect && res.category) {
+        catSelect.value = res.category;
+        handleCategoryChange();
+      }
+
+      const subSelect = document.getElementById('wiz-subcat-select');
+      if (subSelect && res.subcategory) {
+        subSelect.value = res.subcategory;
+        handleSubcategoryChange();
+      }
+
+      const prioSelect = document.getElementById('wiz-priority-select');
+      if (prioSelect && res.suggested_priority) {
+        prioSelect.value = res.suggested_priority;
+      }
+
+      const titleInput = document.getElementById('wiz-title-input');
+      if (titleInput && res.suggested_title) {
+        titleInput.value = res.suggested_title;
+      }
+
+      const descInput = document.getElementById('wiz-desc-input');
+      if (descInput && res.suggested_description) {
+        descInput.value = res.suggested_description;
+      }
+    }
+
+    // Step 5: Populate Review Summary
+    function populateReviewSummary() {
+      const locVal = [wizardState.area, wizardState.street, wizardState.ward].filter(Boolean).join(', ');
+      document.getElementById('rev-loc-val').innerText = locVal;
+
+      const attCount = wizardState.attachments.length;
+      document.getElementById('rev-proof-val').innerText = attCount > 0 ? `${attCount} evidence attachment(s)` : 'No evidence attached';
+
+      const catSelect = document.getElementById('wiz-cat-select');
+      const subSelect = document.getElementById('wiz-subcat-select');
+      const catName = catSelect ? catSelect.value : wizardState.category;
+      const subName = subSelect ? subSelect.value : wizardState.subcategory;
+      document.getElementById('rev-cat-val').innerText = `${catName} > ${subName}`;
+
+      const deptInput = document.getElementById('wiz-dept-input');
+      document.getElementById('rev-dept-val').innerText = deptInput ? deptInput.value : wizardState.department;
+
+      const prioSelect = document.getElementById('wiz-priority-select');
+      document.getElementById('rev-prio-val').innerText = prioSelect ? prioSelect.value : wizardState.priority;
+
+      document.getElementById('rev-title-val').innerText = wizardState.title;
+      document.getElementById('rev-desc-val').innerText = wizardState.description || wizardState.title;
+    }
+
+    // Step 5 -> Step 6: Submit Grievance with duplicate-click protection
+    function submitGrievanceFinal() {
+      if (wizardState.submitting) return;
+
+      const session = CivicStore.getCurrentSession();
+      if (!session) {
+        alert('Your session has expired. Please sign in again.');
+        window.location.href = 'auth.html';
+        return;
+      }
+
+      // Lock UI against duplicate submissions
+      wizardState.submitting = true;
+      const btn = document.getElementById('btn-submit-grievance');
+      const btnText = document.getElementById('btn-submit-text');
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.innerText = 'Registering with Municipal Engine...';
+
+      const catSelect = document.getElementById('wiz-cat-select');
+      const subSelect = document.getElementById('wiz-subcat-select');
+      const finalCategory = catSelect ? catSelect.value : wizardState.category;
+      const finalSubcategory = subSelect ? subSelect.value : wizardState.subcategory;
+      const finalDept = document.getElementById('wiz-dept-input').value;
+      const finalPriority = document.getElementById('wiz-priority-select').value;
+      const finalTitle = document.getElementById('wiz-title-input').value.trim();
+      const finalDesc = document.getElementById('wiz-desc-input').value.trim();
+
+      setTimeout(() => {
+        try {
+          const result = CivicStore.submitGrievance(session.citizen_id, {
+            category: finalCategory,
+            subcategory: finalSubcategory,
+            subcategory_code: wizardState.subcategory_code,
+            department: finalDept,
+            short_description: finalTitle,
+            description: finalDesc,
+            area: wizardState.area,
+            street: wizardState.street,
+            ward: wizardState.ward,
+            latitude: wizardState.latitude,
+            longitude: wizardState.longitude,
+            priority: finalPriority,
+            attachments: wizardState.attachments
+          });
+
+          if (!result || !result.success) {
+            throw new Error('Failed to create grievance record.');
+          }
+
+          const savedCase = result.case_record;
+          savedCase.isNew = true;
+          wizardState.generatedCaseId = result.case_id;
+
+          // Update Dashboard in-memory collections
+          currentCases.unshift(savedCase);
+          updateMetricCounters();
+          renderTable();
+
+          // Populate Confirmation Screen (Step 6)
+          document.getElementById('conf-case-id').innerText = result.case_id;
+          document.getElementById('conf-dept-val').innerText = finalDept;
+          document.getElementById('conf-loc-val').innerText = `${wizardState.area}, ${wizardState.street}`;
+
+          // Transition to Step 6
+          goToStep(6);
+        } catch (err) {
+          alert('Submission Error: ' + err.message);
+        } finally {
+          wizardState.submitting = false;
+          if (btn) btn.disabled = false;
+          if (btnText) btnText.innerText = 'Submit Grievance';
+        }
+      }, 700);
+    }
+
+    function viewNewCaseInDashboard() {
       closeModal('new-modal');
-      renderTable();
-      alert('Grievance ' + newNo + ' registered successfully! Field crew dispatched.');
+      scrollToTable();
     }
 
     function performTrack() {
       const q = document.getElementById('track-input').value.trim().toUpperCase();
-      const item = currentCases.find(c => c.no.toUpperCase() === q);
+      const item = currentCases.find(c => c.no.toUpperCase() === q || (c.case_number && c.case_number.toUpperCase() === q));
       const res = document.getElementById('track-result');
       res.style.display = 'block';
 
       if (item) {
         res.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#1d63ed;">${item.no}</strong>
-            <span class="status-pill ${item.statusClass}"><span class="status-dot"></span>${item.status}</span>
+            <strong style="color:#1d63ed;">${item.no || item.case_number}</strong>
+            <span class="status-pill ${item.statusClass || 'pending'}"><span class="status-dot"></span>${item.status || item.grievance_status}</span>
           </div>
           <div><strong>Category:</strong> ${item.category}</div>
-          <div><strong>Issue:</strong> ${item.desc}</div>
-          <div style="margin-top:6px; color:#475569;">${item.notes}</div>
+          <div><strong>Issue:</strong> ${item.desc || item.short_description}</div>
+          <div style="margin-top:6px; color:#475569;">${item.notes || 'Under review by municipal staff.'}</div>
         `;
       } else {
         res.innerHTML = `<span style="color:#dc2626;">No grievance found with number "${q}". Please check the ID.</span>`;
