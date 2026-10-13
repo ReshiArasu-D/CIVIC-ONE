@@ -1,0 +1,525 @@
+{
+  "sys_app": {
+    "sys_id": "26068197c33b8754e54832f1b40131d5",
+    "can_edit_in_studio": "true",
+    "scope": "x_2229367_civicone",
+    "name": "CivicOne",
+    "active": "true",
+    "version": "1.0.0"
+  },
+  "live_tables_count": 28,
+  "live_tables": [
+    {
+      "name": "x_2229367_civicone_customer",
+      "label": "Customer",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_ward",
+      "label": "Ward",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_category",
+      "label": "Category",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_escalation_step",
+      "label": "Escalation Step",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_ward_village",
+      "label": "Ward Village",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_executive_brief",
+      "label": "Executive Brief",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_department",
+      "label": "Department",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_state",
+      "label": "State",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_language",
+      "label": "Language",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_civic_asset",
+      "label": "Civic Asset",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_civic_case",
+      "label": "Civic Case",
+      "super_class": {
+        "link": "https://dev187180.service-now.com/api/now/table/sys_db_object/06ff39c5c3530310e54832f1b40131f5",
+        "value": "06ff39c5c3530310e54832f1b40131f5"
+      }
+    },
+    {
+      "name": "x_2229367_civicone_test_task_extension",
+      "label": "Test Task Extension",
+      "super_class": {
+        "link": "https://dev187180.service-now.com/api/now/table/sys_db_object/06ff39c5c3530310e54832f1b40131f5",
+        "value": "06ff39c5c3530310e54832f1b40131f5"
+      }
+    },
+    {
+      "name": "x_2229367_civicone_citizen_feedback",
+      "label": "Citizen Feedback",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_grievance_category",
+      "label": "Grievance Category",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_master_grievance",
+      "label": "Master Grievance",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_district",
+      "label": "District",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_state_ut",
+      "label": "State UT",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_citizen_customer",
+      "label": "Citizen Customer",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_resolution_evidence",
+      "label": "Resolution Evidence",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_sub_district",
+      "label": "Sub District",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_notification_template",
+      "label": "Notification Template",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_zone",
+      "label": "Zone",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_case",
+      "label": "Case",
+      "super_class": {
+        "link": "https://dev187180.service-now.com/api/now/table/sys_db_object/06ff39c5c3530310e54832f1b40131f5",
+        "value": "06ff39c5c3530310e54832f1b40131f5"
+      }
+    },
+    {
+      "name": "x_2229367_civicone_sla_policy",
+      "label": "SLA Policy",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_case_assignment_history",
+      "label": "Case Assignment History",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_ui_translation",
+      "label": "UI Translation",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_case_worker",
+      "label": "Case Worker",
+      "super_class": ""
+    },
+    {
+      "name": "x_2229367_civicone_ai_action_log",
+      "label": "AI Action Log",
+      "super_class": ""
+    }
+  ],
+  "missing_tables": [],
+  "extra_tables": [
+    "x_2229367_civicone_ward_village",
+    "x_2229367_civicone_civic_case",
+    "x_2229367_civicone_test_task_extension",
+    "x_2229367_civicone_grievance_category",
+    "x_2229367_civicone_state_ut",
+    "x_2229367_civicone_citizen_customer"
+  ],
+  "case_extends_task": true,
+  "case_super_class": "06ff39c5c3530310e54832f1b40131f5",
+  "script_includes": [
+    {
+      "name": "JurisdictionUtil",
+      "active": "true"
+    },
+    {
+      "name": "PiiMasker",
+      "active": "true"
+    },
+    {
+      "name": "NotificationComposer",
+      "active": "true"
+    },
+    {
+      "name": "PriorityScorer",
+      "active": "true"
+    },
+    {
+      "name": "GeoRouter",
+      "active": "true"
+    },
+    {
+      "name": "AiLogger",
+      "active": "true"
+    }
+  ],
+  "business_rules": [
+    {
+      "name": "BR21_Protect_AI_Action_Log_Immutability",
+      "table": "x_2229367_civicone_ai_action_log",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR09_Worker_Absence_Auto_Reassignment",
+      "table": "x_2229367_civicone_case_worker",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR18_Trigger_Multilingual_Notifications",
+      "table": "x_2229367_civicone_case",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR22_Protect_Preserved_PII_Fields",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR05_Detect_Potential_Duplicate_Grievanc",
+      "table": "x_2229367_civicone_case",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR19_Restrict_Citizen_Read_Visibility",
+      "table": "x_2229367_civicone_case",
+      "when": "before_display",
+      "active": "true"
+    },
+    {
+      "name": "BR16_SLA_Warning_Monitoring",
+      "table": "x_2229367_civicone_case",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR01_Validate_Intake_Requirements",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR13_Handle_Citizen_Confirmation",
+      "table": "x_2229367_civicone_citizen_feedback",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR05_Detect_Potential_Duplicate_Grievanc",
+      "table": "x_2229367_civicone_case",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR02_Preserve_Raw_Text_And_Mask_PII",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR08_Record_Assignment_History",
+      "table": "x_2229367_civicone_case",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR15_Validate_Citizen_Feedback",
+      "table": "x_2229367_civicone_citizen_feedback",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR20_Enforce_Officer_Jurisdiction_Scopin",
+      "table": "x_2229367_civicone_case",
+      "when": "before_display",
+      "active": "true"
+    },
+    {
+      "name": "BR14_Handle_Citizen_Dispute",
+      "table": "x_2229367_civicone_citizen_feedback",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR11_Require_Evidence_Before_Resolution",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR04_Calculate_Priority_Score",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR05_Detect_Potential_Duplicate_Grievanc",
+      "table": "x_2229367_civicone_case",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR03_Resolve_Geographic_Hierarchy",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR17_SLA_Breach_Escalation",
+      "table": "x_2229367_civicone_case",
+      "when": "after",
+      "active": "true"
+    },
+    {
+      "name": "BR10_Enforce_In_Progress_Prerequisite",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR07_Enforce_Eligible_Assignment",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR06_Initialise_SLA_Association",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR12_Protect_Citizen_Confirmation_Closur",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    },
+    {
+      "name": "BR12_Protect_Citizen_Confirmation_Closur",
+      "table": "x_2229367_civicone_case",
+      "when": "before",
+      "active": "true"
+    }
+  ],
+  "roles": [
+    {
+      "name": "x_2229367_civicone.district_officer"
+    },
+    {
+      "name": "x_2229367_civicone.auditor"
+    },
+    {
+      "name": "x_2229367_civicone.state_head"
+    },
+    {
+      "name": "x_2229367_civicone.citizen"
+    },
+    {
+      "name": "x_2229367_civicone.zonal_officer"
+    },
+    {
+      "name": "x_2229367_civicone.case_worker"
+    },
+    {
+      "name": "x_2229367_civicone.admin"
+    },
+    {
+      "name": "x_2229367_civicone.commissioner"
+    },
+    {
+      "name": "x_2229367_civicone.ward_head"
+    }
+  ],
+  "acls_count": 20,
+  "flows": [
+    {
+      "name": "F8 Worker Absence",
+      "active": "true",
+      "type": "flow"
+    },
+    {
+      "name": "F5 Resolution and Confirmation",
+      "active": "true",
+      "type": "flow"
+    },
+    {
+      "name": "F4 SLA and Escalation",
+      "active": "true",
+      "type": "flow"
+    },
+    {
+      "name": "F1 Grievance Intake",
+      "active": "true",
+      "type": "flow"
+    },
+    {
+      "name": "F6 Notifications",
+      "active": "true",
+      "type": "flow"
+    }
+  ],
+  "numbering": [
+    {
+      "number": "1000",
+      "prefix": "BRF",
+      "category": {
+        "link": "https://dev187180.service-now.com/api/now/table/sys_db_object?name=x_2229367_civicone_executive_brief",
+        "value": "x_2229367_civicone_executive_brief"
+      }
+    },
+    {
+      "number": "1000",
+      "prefix": "MGR",
+      "category": {
+        "link": "https://dev187180.service-now.com/api/now/table/sys_db_object?name=x_2229367_civicone_master_grievance",
+        "value": "x_2229367_civicone_master_grievance"
+      }
+    },
+    {
+      "number": "1000",
+      "prefix": "AIL",
+      "category": {
+        "link": "https://dev187180.service-now.com/api/now/table/sys_db_object?name=x_2229367_civicone_ai_action_log",
+        "value": "x_2229367_civicone_ai_action_log"
+      }
+    },
+    {
+      "number": "1000",
+      "prefix": "CIV",
+      "category": {
+        "link": "https://dev187180.service-now.com/api/now/table/sys_db_object?name=x_2229367_civicone_case",
+        "value": "x_2229367_civicone_case"
+      }
+    }
+  ],
+  "audited_tables": [
+    "x_2229367_civicone_case",
+    "x_2229367_civicone_case_assignment_history",
+    "x_2229367_civicone_master_grievance"
+  ],
+  "record_counts": {
+    "x_2229367_civicone_zone": 5,
+    "x_2229367_civicone_state": 5,
+    "x_2229367_civicone_district": 5,
+    "x_2229367_civicone_sub_district": 5,
+    "x_2229367_civicone_ward": 5,
+    "x_2229367_civicone_department": 5,
+    "x_2229367_civicone_category": 10,
+    "x_2229367_civicone_civic_asset": 6,
+    "x_2229367_civicone_case_worker": 6,
+    "x_2229367_civicone_customer": 8,
+    "x_2229367_civicone_master_grievance": 0,
+    "x_2229367_civicone_case": 42,
+    "x_2229367_civicone_case_assignment_history": 1,
+    "x_2229367_civicone_resolution_evidence": 0,
+    "x_2229367_civicone_citizen_feedback": 0,
+    "x_2229367_civicone_sla_policy": 10,
+    "x_2229367_civicone_escalation_step": 0,
+    "x_2229367_civicone_language": 6,
+    "x_2229367_civicone_ui_translation": 0,
+    "x_2229367_civicone_notification_template": 8,
+    "x_2229367_civicone_ai_action_log": 100,
+    "x_2229367_civicone_executive_brief": 0
+  },
+  "seeded_languages": [
+    "te (Telugu)",
+    "en (English)",
+    "mr (Marathi)",
+    "kn (Kannada)",
+    "ta (Tamil)",
+    "hi (Hindi)"
+  ],
+  "seeded_languages_count": 6,
+  "security_checks": {
+    "cit1": "42e0195bc3bb8754e54832f1b401315d",
+    "cit2": "69e0195bc3bb8754e54832f1b4013108",
+    "ai_log_acl_count": 4,
+    "br22_active": "1",
+    "br19_active": "1",
+    "br20_active": "1",
+    "scoped_role_assignments": 0,
+    "atf_tests_deployed": 0
+  },
+  "pii_trace": {
+    "hasPii": true,
+    "detections": [
+      "Aadhaar (1 found)",
+      "PAN (1 found)",
+      "Phone (1 found)",
+      "Email (1 found)"
+    ],
+    "maskedText": "Citizen reporting with Aadhaar XXXX-XXXX-9012 and PAN XXXXX1234F and phone XXXXXX3210 and email c***@example.com",
+    "aadhaarRedacted": true,
+    "panRedacted": true,
+    "phoneRedacted": true,
+    "emailRedacted": true
+  },
+  "workflow_tests": {
+    "neg_intake_aborted": true,
+    "neg_in_progress_aborted": true,
+    "neg_closure_aborted_admin": false,
+    "neg_closure_aborted_non_admin": false,
+    "scorer_high": {
+      "score": 75,
+      "priority": 2,
+      "factors": [
+        "Severe Multi-hazard detected (+30)",
+        "Critical Infrastructure (hospital) (+15)",
+        "Direct High Urgency selected (+10)"
+      ]
+    },
+    "scorer_low": {
+      "score": 20,
+      "priority": 4,
+      "factors": []
+    },
+    "duplicate_suspect_count": 19
+  }
+}
