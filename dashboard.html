@@ -7,6 +7,7 @@
   <meta name="description" content="CivicOne Citizen Grievance Redressal Portal - Dashboard overview, track complaints, register issues.">
   <link rel="stylesheet" href="app/ui/dashboard.css">
   <link rel="stylesheet" href="app/ui/grievance_wizard.css">
+  <link rel="stylesheet" href="app/ui/case_workflow.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231d63ed%22><path d=%22M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z%22/></svg>">
 </head>
 <body>
@@ -58,7 +59,7 @@
       </a>
 
       <!-- 3. My Grievances -->
-      <a href="javascript:void(0)" class="sidebar-nav-item" id="nav-item-my-grievances" onclick="navigateToPage('overview'); scrollToTable();">
+      <a href="javascript:void(0)" class="sidebar-nav-item" id="nav-item-my-grievances" onclick="navigateToPage('my-grievances')">
         <div class="nav-item-icon">
           <!-- Document Lines Icon -->
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -76,7 +77,7 @@
       </a>
 
       <!-- 4. Track Complaint -->
-      <a href="javascript:void(0)" class="sidebar-nav-item" onclick="openTrackModal()">
+      <a href="javascript:void(0)" class="sidebar-nav-item" id="nav-item-track-complaint" onclick="navigateToPage('track')">
         <div class="nav-item-icon">
           <!-- Location Map Pin Icon -->
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -793,6 +794,465 @@
         </div> <!-- /reg-workspace-card -->
       </div> <!-- /#page-register-grievance -->
 
+      <!-- ====================================================================
+           PAGE VIEW 3: MY GRIEVANCES
+           ==================================================================== -->
+      <div id="page-my-grievances" class="workflow-page-wrap" style="display: none;">
+        <!-- Header -->
+        <div class="workflow-header-card">
+          <div class="workflow-header-left">
+            <h1 class="workflow-header-title">My Grievances</h1>
+            <p class="workflow-header-sub">View, monitor, and manage your submitted complaints.</p>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn-wf-view" style="padding: 10px 18px; font-size: 0.88rem;" onclick="navigateToPage('track')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Track a Complaint</span>
+            </button>
+            <button type="button" class="btn-wizard-next" style="padding: 10px 20px; font-size: 0.88rem;" onclick="navigateToPage('register')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+              <span>Register New Grievance</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Summary Cards Grid (Live from ServiceNow) -->
+        <div class="workflow-summary-grid">
+          <div class="wf-summary-card total" id="wf-card-box-total" onclick="filterByCardStatus('all')">
+            <div class="wf-summary-left">
+              <div class="wf-summary-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div>
+                <div class="wf-stat-num" id="wf-card-total">0</div>
+                <div class="wf-stat-label">Total Grievances</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-summary-card pending" id="wf-card-box-pending" onclick="filterByCardStatus('Pending')">
+            <div class="wf-summary-left">
+              <div class="wf-summary-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div>
+                <div class="wf-stat-num" id="wf-card-pending" style="color: #d97706;">0</div>
+                <div class="wf-stat-label">Pending</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-summary-card progress" id="wf-card-box-progress" onclick="filterByCardStatus('In Progress')">
+            <div class="wf-summary-left">
+              <div class="wf-summary-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+              </div>
+              <div>
+                <div class="wf-stat-num" id="wf-card-progress" style="color: #0284c7;">0</div>
+                <div class="wf-stat-label">In Progress</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-summary-card resolved" id="wf-card-box-resolved" onclick="filterByCardStatus('Resolved')">
+            <div class="wf-summary-left">
+              <div class="wf-summary-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div>
+                <div class="wf-stat-num" id="wf-card-resolved" style="color: #16a34a;">0</div>
+                <div class="wf-stat-label">Resolved</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Controls Toolbar -->
+        <div class="workflow-filters-card">
+          <div class="workflow-search-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="wf-search-input" class="workflow-search-input" placeholder="Search by Case ID or complaint text..." oninput="handleWorkflowFilterChange()">
+          </div>
+          <div class="workflow-filters-right">
+            <select id="wf-filter-status" class="workflow-filter-select" onchange="handleWorkflowFilterChange()">
+              <option value="">All Statuses</option>
+              <option value="Submitted">Submitted</option>
+              <option value="Assigned">Assigned</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Awaiting Citizen Confirmation">Awaiting Confirmation</option>
+              <option value="Resolved">Resolved</option>
+              <option value="Closed">Closed</option>
+            </select>
+            <select id="wf-filter-category" class="workflow-filter-select" onchange="handleWorkflowFilterChange()">
+              <option value="">All Categories</option>
+            </select>
+            <select id="wf-filter-department" class="workflow-filter-select" onchange="handleWorkflowFilterChange()">
+              <option value="">All Departments</option>
+            </select>
+            <button type="button" class="btn-wf-clear" onclick="clearWorkflowFilters()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Clear</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Data Table Card -->
+        <div class="workflow-table-card">
+          <div class="wf-table-responsive">
+            <table class="wf-data-table" id="wf-cases-table">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Category</th>
+                  <th>Complaint</th>
+                  <th>Department</th>
+                  <th>Submitted On</th>
+                  <th>Last Updated</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="wf-cases-tbody">
+                <!-- Sourced dynamically from ServiceNow API -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination Footer -->
+          <div class="wf-table-footer">
+            <span id="wf-table-count-text">Showing 0 grievances</span>
+            <div class="wf-pagination-btns">
+              <button type="button" class="btn-wf-page" id="wf-btn-prev" onclick="changeWorkflowPage(-1)" disabled>&laquo; Previous</button>
+              <span id="wf-page-indicator" style="display:inline-flex; align-items:center; padding:0 8px; font-weight:700; color:#0f172a;">1 / 1</span>
+              <button type="button" class="btn-wf-page" id="wf-btn-next" onclick="changeWorkflowPage(1)" disabled>Next &raquo;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           PAGE VIEW 4: COMPLETE GRIEVANCE REPORT
+           ==================================================================== -->
+      <div id="page-case-report" class="workflow-page-wrap" style="display: none;">
+        <div class="report-page-card" id="report-printable-area">
+          <!-- Report Header Banner -->
+          <div class="report-header-banner">
+            <div class="report-header-left">
+              <div class="report-brand-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z"/></svg>
+                <span>CivicOne Redressal Record &bull; Official Report</span>
+              </div>
+              <h1 class="report-case-id-heading">
+                <span id="rep-case-id">CIV0001001</span>
+                <span id="rep-status-pill" class="status-pill in-progress"><span class="status-dot"></span>In Progress</span>
+              </h1>
+              <h2 class="report-title-text" id="rep-title">Grievance Title</h2>
+              <div class="report-timestamps-row">
+                <span>📅 Submitted: <strong id="rep-submitted-time">-</strong></span>
+                <span>&bull;</span>
+                <span>🔄 Last Updated: <strong id="rep-updated-time">-</strong></span>
+              </div>
+            </div>
+            <div class="report-header-actions">
+              <button type="button" class="btn-report-action" onclick="navigateToPage('my-grievances')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                <span>Back to My Grievances</span>
+              </button>
+              <button type="button" class="btn-report-action" id="rep-btn-track" onclick="trackFromReport()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Track Live Progress</span>
+              </button>
+              <button type="button" class="btn-report-action primary" onclick="printCaseReport()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                <span>Print / Download Report</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Citizen Confirmation Alert Banner -->
+          <div id="rep-action-alert" style="display: none;" class="track-citizen-actions-box">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 1.5rem;">🔔</span>
+              <div>
+                <div style="font-weight: 800; color: #1e3a8a; font-size: 0.95rem;" id="rep-action-alert-title">Resolution Confirmation Required</div>
+                <div style="font-size: 0.84rem; color: #3b82f6;" id="rep-action-alert-desc">Field work has been completed. Please confirm satisfaction or report if unresolved.</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" class="btn-wizard-next" style="padding: 8px 16px; font-size: 0.84rem; background: #16a34a;" onclick="submitReportConfirmation(true)">
+                ✓ Confirm Resolution
+              </button>
+              <button type="button" class="btn-wizard-back" style="padding: 8px 16px; font-size: 0.84rem; border-color: #ef4444; color: #dc2626;" onclick="submitReportConfirmation(false)">
+                ⚠ Report Unresolved
+              </button>
+            </div>
+          </div>
+
+          <!-- 2-Column Overview Grid -->
+          <div class="report-grid-two-col">
+            <!-- Complaint Overview Card -->
+            <div class="report-section-card">
+              <h3 class="report-section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>Complaint Overview</span>
+              </h3>
+              <div class="report-key-val-list">
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Category</span>
+                  <span class="report-kv-val" id="rep-category">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Subcategory</span>
+                  <span class="report-kv-val" id="rep-subcategory">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Priority</span>
+                  <span class="report-kv-val" id="rep-priority" style="color: #d97706; font-weight: 800;">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Submission Channel</span>
+                  <span class="report-kv-val" id="rep-channel">Citizen Portal (Web)</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Registered Location</span>
+                  <span class="report-kv-val" id="rep-location">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">GPS Coordinates</span>
+                  <span class="report-kv-val" id="rep-coords" style="font-family: monospace; font-size: 0.8rem;">-</span>
+                </div>
+              </div>
+              <div style="margin-top: 6px; padding: 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px;">
+                <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 4px;">Original Complaint Description</div>
+                <p id="rep-description" style="margin: 0; font-size: 0.86rem; color: #1e293b; line-height: 1.45;"></p>
+              </div>
+            </div>
+
+            <!-- Department & Worker Assignment Card -->
+            <div class="report-section-card">
+              <h3 class="report-section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Department &amp; Officer Assignment</span>
+              </h3>
+              <div class="report-key-val-list">
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Assigned Department</span>
+                  <span class="report-kv-val" id="rep-dept" style="color: #1e3a8a; font-weight: 800;">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Assigned Office / Ward</span>
+                  <span class="report-kv-val" id="rep-ward">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Assigned Field Officer</span>
+                  <span class="report-kv-val" id="rep-worker">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Officer Designation</span>
+                  <span class="report-kv-val" id="rep-worker-role">Zonal Municipal Engineer</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Assignment Status</span>
+                  <span class="report-kv-val" id="rep-assign-status" style="color: #16a34a; font-weight: 700;">Active</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">SLA Redressal Window</span>
+                  <span class="report-kv-val" id="rep-sla-status" style="color: #16a34a; font-weight: 800;">Target: 24 Hours (Within SLA)</span>
+                </div>
+              </div>
+              <div style="margin-top: 6px; padding: 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px;">
+                <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 6px;">Citizen Uploaded Proof &amp; Attachments</div>
+                <div id="rep-evidence-container" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <div style="font-size: 0.82rem; color: #94a3b8; font-style: italic;">No citizen evidence files attached.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chronological Activity Timeline Section -->
+          <div class="report-timeline-section">
+            <h3 class="report-section-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Case Activity &amp; Action History</span>
+            </h3>
+            <p style="margin: 0; font-size: 0.84rem; color: #64748b;">Authoritative chronological audit log sourced directly from ServiceNow case assignment history and action logs.</p>
+            
+            <div class="report-timeline-wrap" id="rep-timeline-items">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           PAGE VIEW 5: TRACK COMPLAINT
+           ==================================================================== -->
+      <div id="page-track-complaint" class="workflow-page-wrap" style="display: none;">
+        <!-- Track Hero Search Card -->
+        <div class="track-search-hero-card">
+          <div style="width: 56px; height: 56px; border-radius: 16px; background: #eff6ff; color: #1d63ed; display: flex; align-items: center; justify-content: center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <h1 class="workflow-header-title" style="font-size: 1.8rem;">Track Complaint</h1>
+            <p class="workflow-header-sub" style="margin-top: 4px;">Enter your grievance Case ID to view its current status and action history.</p>
+          </div>
+          <form class="track-input-form-wrap" onsubmit="handleTrackSubmit(event)">
+            <input type="text" id="track-search-box-input" class="track-main-input" placeholder="e.g. CIV0001001 or CIV-2026-000457" autocomplete="off" required>
+            <button type="submit" class="btn-track-submit" id="btn-track-go">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>Track Complaint</span>
+            </button>
+          </form>
+          <div style="font-size: 0.82rem; color: #64748b; display: flex; align-items: center; gap: 8px;">
+            <span>💡 You can find your Case ID in</span>
+            <a href="javascript:void(0)" onclick="navigateToPage('my-grievances')" style="color: #1d63ed; font-weight: 700; text-decoration: underline;">My Grievances</a>
+            <span>or SMS acknowledgement.</span>
+          </div>
+          <div id="track-error-banner" style="display: none; padding: 12px 20px; border-radius: 12px; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; font-size: 0.86rem; font-weight: 600; width: 100%; max-width: 580px;">
+          </div>
+        </div>
+
+        <!-- Tracking Result Display Container -->
+        <div id="track-result-container" style="display: none; flex-direction: column; gap: 22px;">
+          <!-- Tracking Header -->
+          <div class="workflow-header-card">
+            <div class="workflow-header-left">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 0.8rem; font-weight: 800; background: #eff6ff; color: #1d63ed; padding: 3px 10px; border-radius: 9999px;" id="tr-case-badge">CIV0001001</span>
+                <span id="tr-status-badge" class="status-pill in-progress"><span class="status-dot"></span>In Progress</span>
+              </div>
+              <h2 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin: 4px 0 0;" id="tr-title">Complaint Title</h2>
+              <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">
+                <span>Submitted: <strong id="tr-submitted-time">-</strong></span> &bull; 
+                <span>Department: <strong id="tr-dept-name" style="color: #1e3a8a;">-</strong></span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button type="button" class="btn-wf-view" style="padding: 10px 16px; font-size: 0.84rem;" onclick="openReportFromTrack()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>View Full Case Report</span>
+              </button>
+              <button type="button" class="btn-wf-clear" style="padding: 10px 14px;" onclick="refreshCurrentTrack()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                <span>Refresh</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 6-Stage Visual Status Progress Stepper -->
+          <div class="track-progress-card">
+            <div style="font-size: 0.86rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #475569; margin-bottom: 14px;">
+              Grievance Resolution Lifecycle
+            </div>
+            <div class="track-stages-row">
+              <div class="track-stage-line"></div>
+              
+              <!-- Stage 1: Submitted -->
+              <div class="track-stage-node" id="stage-node-1">
+                <div class="track-stage-icon-circle" id="stage-icon-1">1</div>
+                <div class="track-stage-title">Submitted</div>
+                <div class="track-stage-time" id="stage-time-1">-</div>
+              </div>
+
+              <!-- Stage 2: Under Review -->
+              <div class="track-stage-node" id="stage-node-2">
+                <div class="track-stage-icon-circle" id="stage-icon-2">2</div>
+                <div class="track-stage-title">Under Review</div>
+                <div class="track-stage-time" id="stage-time-2">-</div>
+              </div>
+
+              <!-- Stage 3: Assigned to Department -->
+              <div class="track-stage-node" id="stage-node-3">
+                <div class="track-stage-icon-circle" id="stage-icon-3">3</div>
+                <div class="track-stage-title">Assigned to Dept</div>
+                <div class="track-stage-time" id="stage-time-3">-</div>
+              </div>
+
+              <!-- Stage 4: Work in Progress -->
+              <div class="track-stage-node" id="stage-node-4">
+                <div class="track-stage-icon-circle" id="stage-icon-4">4</div>
+                <div class="track-stage-title">Work in Progress</div>
+                <div class="track-stage-time" id="stage-time-4">-</div>
+              </div>
+
+              <!-- Stage 5: Citizen Confirmation -->
+              <div class="track-stage-node" id="stage-node-5">
+                <div class="track-stage-icon-circle" id="stage-icon-5">5</div>
+                <div class="track-stage-title">Citizen Confirmation</div>
+                <div class="track-stage-time" id="stage-time-5">-</div>
+              </div>
+
+              <!-- Stage 6: Resolved / Closed -->
+              <div class="track-stage-node" id="stage-node-6">
+                <div class="track-stage-icon-circle" id="stage-icon-6">6</div>
+                <div class="track-stage-title">Resolved / Closed</div>
+                <div class="track-stage-time" id="stage-time-6">-</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Citizen Action Gate Banner -->
+          <div id="tr-action-gate" class="track-citizen-actions-box" style="display: none;">
+            <div>
+              <div style="font-weight: 800; color: #1e3a8a; font-size: 0.95rem;">Citizen Redressal Confirmation Required</div>
+              <div style="font-size: 0.84rem; color: #3b82f6;">Work has been marked complete. Please verify if the issue was resolved satisfactorily.</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" class="btn-wizard-next" style="padding: 8px 16px; font-size: 0.84rem; background: #16a34a;" onclick="submitTrackConfirmation(true)">
+                ✓ Confirm Resolution
+              </button>
+              <button type="button" class="btn-wizard-back" style="padding: 8px 16px; font-size: 0.84rem; border-color: #ef4444; color: #dc2626;" onclick="submitTrackConfirmation(false)">
+                ⚠ Report Unresolved
+              </button>
+            </div>
+          </div>
+
+          <!-- Latest Updates & Case Details 2-Column Grid -->
+          <div class="report-grid-two-col">
+            <!-- Latest Updates Card -->
+            <div class="report-section-card">
+              <h3 class="report-section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Latest Updates</span>
+              </h3>
+              <div id="tr-latest-updates-list" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <!-- Quick Details & Location Card -->
+            <div class="report-section-card">
+              <h3 class="report-section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Complaint Details &amp; Location</span>
+              </h3>
+              <div class="report-key-val-list">
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Category</span>
+                  <span class="report-kv-val" id="tr-kv-category">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Location / Area</span>
+                  <span class="report-kv-val" id="tr-kv-location">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Assigned Officer</span>
+                  <span class="report-kv-val" id="tr-kv-officer">-</span>
+                </div>
+                <div class="report-kv-row">
+                  <span class="report-kv-key">Target SLA Window</span>
+                  <span class="report-kv-val" style="color: #16a34a; font-weight: 800;">24 Hours (Within SLA)</span>
+                </div>
+              </div>
+              <div style="margin-top: 6px; padding: 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px;">
+                <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 4px;">Citizen Statement</div>
+                <p id="tr-kv-desc" style="margin: 0; font-size: 0.85rem; color: #334155; line-height: 1.4;"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -1056,9 +1516,34 @@
       // 2. Populate taxonomy categories in wizard
       populateTaxonomyDropdowns();
 
-      // 3. Render table & KPI metrics
+      // 3. Render initial table & KPI metrics
       updateMetricCounters();
       renderTable();
+
+      // Sync live records from ServiceNow backend
+      fetch('/api/citizen/cases')
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.cases && data.cases.length > 0) {
+            currentCases = data.cases.map(c => ({
+              no: c.case_number,
+              case_number: c.case_number,
+              category: c.category,
+              desc: c.short_description,
+              short_description: c.short_description,
+              details: c.description || c.short_description,
+              description: c.description,
+              submitted: c.submitted_on,
+              status: c.grievance_status,
+              grievance_status: c.grievance_status,
+              statusClass: (c.grievance_status === 'Resolved' || c.grievance_status === 'Closed') ? 'resolved' : (c.grievance_status === 'In Progress' || c.grievance_status === 'Assigned') ? 'in-progress' : 'pending',
+              notes: 'Sourced from live ServiceNow case record.'
+            }));
+            updateMetricCounters();
+            renderTable();
+          }
+        })
+        .catch(err => console.log('ServiceNow background sync note:', err));
     }
 
     function updateMetricCounters() {
@@ -1096,7 +1581,7 @@
         }
         tr.innerHTML = `
           <td style="color: #94a3b8; font-weight: 600;">${idx + 1}</td>
-          <td><span class="ticket-link" onclick="viewCaseDetail('${c.no}')">${c.no}</span></td>
+          <td><span class="ticket-link" onclick="viewFullCaseReport('${c.case_number || c.no}')">${c.no || c.case_number}</span></td>
           <td style="font-weight: 600; color: #334155;">${c.category}</td>
           <td style="color: #475569;">${c.desc || c.short_description}</td>
           <td style="color: #64748b; font-size: 0.8rem;">${c.submitted || 'Today'}</td>
@@ -1107,7 +1592,7 @@
             </span>
           </td>
           <td style="text-align: center;">
-            <button class="btn-table-view" onclick="viewCaseDetail('${c.no}')">View</button>
+            <button class="btn-table-view" onclick="viewFullCaseReport('${c.case_number || c.no}')">View</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1158,19 +1643,37 @@
       document.getElementById(id).classList.remove('active');
     }
 
+    // =========================================================================
+    // NAVIGATION & VIEW SWITCHER (Overview, Register, My Grievances, Report, Track)
+    // =========================================================================
     function navigateToPage(page) {
       const overviewEl = document.getElementById('page-dashboard-overview');
       const registerEl = document.getElementById('page-register-grievance');
+      const myGrievancesEl = document.getElementById('page-my-grievances');
+      const caseReportEl = document.getElementById('page-case-report');
+      const trackEl = document.getElementById('page-track-complaint');
+
       const navOverview = document.getElementById('nav-item-overview');
       const navRegister = document.getElementById('nav-item-register');
       const navMy = document.getElementById('nav-item-my-grievances');
+      const navTrack = document.getElementById('nav-item-track-complaint');
+
+      // Hide all pages first
+      if (overviewEl) overviewEl.style.display = 'none';
+      if (registerEl) registerEl.style.display = 'none';
+      if (myGrievancesEl) myGrievancesEl.style.display = 'none';
+      if (caseReportEl) caseReportEl.style.display = 'none';
+      if (trackEl) trackEl.style.display = 'none';
+
+      // Remove active classes
+      if (navOverview) navOverview.classList.remove('active');
+      if (navRegister) navRegister.classList.remove('active');
+      if (navMy) navMy.classList.remove('active');
+      if (navTrack) navTrack.classList.remove('active');
 
       if (page === 'register') {
-        if (overviewEl) overviewEl.style.display = 'none';
         if (registerEl) registerEl.style.display = 'flex';
         if (navRegister) navRegister.classList.add('active');
-        if (navOverview) navOverview.classList.remove('active');
-        if (navMy) navMy.classList.remove('active');
         resetWizard();
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setTimeout(() => {
@@ -1179,13 +1682,608 @@
             if (gMarker) gMap.setCenter(gMarker.getPosition());
           }
         }, 150);
+      } else if (page === 'my-grievances') {
+        if (myGrievancesEl) myGrievancesEl.style.display = 'flex';
+        if (navMy) navMy.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        loadMyGrievances();
+      } else if (page === 'report') {
+        if (caseReportEl) caseReportEl.style.display = 'flex';
+        if (navMy) navMy.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (page === 'track') {
+        if (trackEl) trackEl.style.display = 'flex';
+        if (navTrack) navTrack.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        if (registerEl) registerEl.style.display = 'none';
+        // default: overview
         if (overviewEl) overviewEl.style.display = 'block';
         if (navOverview) navOverview.classList.add('active');
-        if (navRegister) navRegister.classList.remove('active');
-        if (navMy) navMy.classList.remove('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // =========================================================================
+    // SECTION ONE: MY GRIEVANCES CONTROLLER (Live ServiceNow Records)
+    // =========================================================================
+    let currentMyGrievancesData = [];
+    let currentFilteredCases = [];
+    let wfCurrentPage = 1;
+    const wfPageSize = 8;
+    let currentViewingCase = null;
+    let currentTrackingCase = null;
+
+    async function loadMyGrievances() {
+      const tbody = document.getElementById('wf-cases-tbody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 36px; color: #64748b;">
+              <div style="display:inline-block; animation:gmapSpin 0.8s linear infinite; margin-right:8px; font-size:1.2rem;">⏳</div>
+              <span style="font-weight:700;">Fetching your verified grievance records from ServiceNow...</span>
+            </td>
+          </tr>
+        `;
+      }
+
+      try {
+        const response = await fetch('/api/citizen/cases');
+        if (!response.ok) {
+          throw new Error('Failed to retrieve grievances from ServiceNow.');
+        }
+        const data = await response.json();
+
+        if (data.summary) {
+          const totEl = document.getElementById('wf-card-total');
+          const pendEl = document.getElementById('wf-card-pending');
+          const progEl = document.getElementById('wf-card-progress');
+          const resEl = document.getElementById('wf-card-resolved');
+
+          if (totEl) totEl.innerText = data.summary.total || 0;
+          if (pendEl) pendEl.innerText = data.summary.pending || 0;
+          if (progEl) progEl.innerText = data.summary.in_progress || 0;
+          if (resEl) resEl.innerText = data.summary.resolved || 0;
+        }
+
+        currentMyGrievancesData = data.cases || [];
+
+        // Populate Category and Department dropdown filters dynamically
+        populateWorkflowFilterDropdowns(currentMyGrievancesData);
+
+        // Apply filters & render table
+        applyWorkflowFilters();
+      } catch (err) {
+        console.error('Error loading grievances:', err);
+        if (tbody) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 36px; color: #dc2626;">
+                <strong>ServiceNow Connection Notice:</strong> ${err.message}<br>
+                <button type="button" class="btn-wf-view" style="margin-top:12px;" onclick="loadMyGrievances()">Retry Loading</button>
+              </td>
+            </tr>
+          `;
+        }
+      }
+    }
+
+    function populateWorkflowFilterDropdowns(cases) {
+      const catSelect = document.getElementById('wf-filter-category');
+      const deptSelect = document.getElementById('wf-filter-department');
+
+      if (catSelect) {
+        const currentCat = catSelect.value;
+        const categories = Array.from(new Set(cases.map(c => c.category).filter(Boolean))).sort();
+        catSelect.innerHTML = '<option value="">All Categories</option>' +
+          categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        catSelect.value = currentCat;
+      }
+
+      if (deptSelect) {
+        const currentDept = deptSelect.value;
+        const depts = Array.from(new Set(cases.map(c => c.department).filter(Boolean))).sort();
+        deptSelect.innerHTML = '<option value="">All Departments</option>' +
+          depts.map(d => `<option value="${d}">${d}</option>`).join('');
+        deptSelect.value = currentDept;
+      }
+    }
+
+    function handleWorkflowFilterChange() {
+      wfCurrentPage = 1;
+      applyWorkflowFilters();
+    }
+
+    function clearWorkflowFilters() {
+      const searchInput = document.getElementById('wf-search-input');
+      const statusSelect = document.getElementById('wf-filter-status');
+      const catSelect = document.getElementById('wf-filter-category');
+      const deptSelect = document.getElementById('wf-filter-department');
+
+      if (searchInput) searchInput.value = '';
+      if (statusSelect) statusSelect.value = '';
+      if (catSelect) catSelect.value = '';
+      if (deptSelect) deptSelect.value = '';
+
+      // Reset card highlights
+      document.querySelectorAll('.wf-summary-card').forEach(c => c.classList.remove('active'));
+
+      wfCurrentPage = 1;
+      applyWorkflowFilters();
+    }
+
+    function filterByCardStatus(statusGroup) {
+      const statusSelect = document.getElementById('wf-filter-status');
+      
+      // Update card visual active styling
+      document.querySelectorAll('.wf-summary-card').forEach(c => c.classList.remove('active'));
+
+      if (statusGroup === 'all') {
+        const card = document.getElementById('wf-card-box-total');
+        if (card) card.classList.add('active');
+        if (statusSelect) statusSelect.value = '';
+      } else if (statusGroup === 'Pending') {
+        const card = document.getElementById('wf-card-box-pending');
+        if (card) card.classList.add('active');
+        if (statusSelect) statusSelect.value = 'Submitted';
+      } else if (statusGroup === 'In Progress') {
+        const card = document.getElementById('wf-card-box-progress');
+        if (card) card.classList.add('active');
+        if (statusSelect) statusSelect.value = 'In Progress';
+      } else if (statusGroup === 'Resolved') {
+        const card = document.getElementById('wf-card-box-resolved');
+        if (card) card.classList.add('active');
+        if (statusSelect) statusSelect.value = 'Resolved';
+      }
+
+      wfCurrentPage = 1;
+      applyWorkflowFilters();
+    }
+
+    function applyWorkflowFilters() {
+      const searchVal = (document.getElementById('wf-search-input')?.value || '').trim().toLowerCase();
+      const statusVal = document.getElementById('wf-filter-status')?.value || '';
+      const catVal = document.getElementById('wf-filter-category')?.value || '';
+      const deptVal = document.getElementById('wf-filter-department')?.value || '';
+
+      currentFilteredCases = currentMyGrievancesData.filter(item => {
+        // Search filter (Case ID, description)
+        if (searchVal) {
+          const caseNo = (item.case_number || '').toLowerCase();
+          const desc = (item.short_description || '').toLowerCase();
+          const fullDesc = (item.description || '').toLowerCase();
+          if (!caseNo.includes(searchVal) && !desc.includes(searchVal) && !fullDesc.includes(searchVal)) {
+            return false;
+          }
+        }
+
+        // Status filter
+        if (statusVal) {
+          if (item.grievance_status !== statusVal) return false;
+        }
+
+        // Category filter
+        if (catVal) {
+          if (item.category !== catVal) return false;
+        }
+
+        // Department filter
+        if (deptVal) {
+          if (item.department !== deptVal) return false;
+        }
+
+        return true;
+      });
+
+      renderWorkflowTable();
+    }
+
+    function renderWorkflowTable() {
+      const tbody = document.getElementById('wf-cases-tbody');
+      const countText = document.getElementById('wf-table-count-text');
+      const pageInd = document.getElementById('wf-page-indicator');
+      const prevBtn = document.getElementById('wf-btn-prev');
+      const nextBtn = document.getElementById('wf-btn-next');
+
+      if (!tbody) return;
+
+      const totalItems = currentFilteredCases.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / wfPageSize));
+      if (wfCurrentPage > totalPages) wfCurrentPage = totalPages;
+
+      if (countText) {
+        countText.innerText = totalItems === 0
+          ? 'No grievances found matching criteria'
+          : `Showing ${(wfCurrentPage - 1) * wfPageSize + 1} - ${Math.min(wfCurrentPage * wfPageSize, totalItems)} of ${totalItems} grievances`;
+      }
+
+      if (pageInd) pageInd.innerText = `${wfCurrentPage} / ${totalPages}`;
+      if (prevBtn) prevBtn.disabled = wfCurrentPage <= 1;
+      if (nextBtn) nextBtn.disabled = wfCurrentPage >= totalPages;
+
+      if (totalItems === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 48px 20px; color: #64748b;">
+              <div style="font-size: 2rem; margin-bottom: 8px;">📂</div>
+              <div style="font-size: 1rem; font-weight: 800; color: #0f172a;">No Grievance Records Found</div>
+              <div style="font-size: 0.85rem; margin-top: 4px;">There are no complaints matching your search and filter settings.</div>
+              <button type="button" class="btn-wf-clear" style="margin-top: 14px;" onclick="clearWorkflowFilters()">Clear All Filters</button>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const startIndex = (wfCurrentPage - 1) * wfPageSize;
+      const pageSlice = currentFilteredCases.slice(startIndex, startIndex + wfPageSize);
+
+      tbody.innerHTML = pageSlice.map(c => {
+        let statusClass = 'pending';
+        if (c.grievance_status === 'In Progress' || c.grievance_status === 'Assigned') statusClass = 'in-progress';
+        else if (c.grievance_status === 'Resolved' || c.grievance_status === 'Closed') statusClass = 'resolved';
+        else if (c.grievance_status === 'Awaiting Citizen Confirmation') statusClass = 'awaiting';
+
+        return `
+          <tr>
+            <td>
+              <a href="javascript:void(0)" class="wf-case-link" onclick="viewFullCaseReport('${c.case_number}')">
+                <strong>${c.case_number}</strong>
+              </a>
+            </td>
+            <td><span class="wf-category-pill">${escapeHtml(c.category || 'General')}</span></td>
+            <td style="font-weight: 600; color: #1e293b; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              ${escapeHtml(c.short_description || 'Grievance record')}
+            </td>
+            <td style="color: #475569; font-size: 0.82rem;">${escapeHtml(c.department || 'Awaiting Assignment')}</td>
+            <td style="color: #64748b; font-size: 0.82rem; white-space: nowrap;">${c.submitted_on || '-'}</td>
+            <td style="color: #64748b; font-size: 0.82rem; white-space: nowrap;">${c.updated_on || '-'}</td>
+            <td>
+              <span class="status-pill ${statusClass}">
+                <span class="status-dot"></span>
+                <span>${c.grievance_status}</span>
+              </span>
+            </td>
+            <td>
+              <button type="button" class="btn-wf-view" onclick="viewFullCaseReport('${c.case_number}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>View Details</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function changeWorkflowPage(delta) {
+      wfCurrentPage += delta;
+      renderWorkflowTable();
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // =========================================================================
+    // SECTION TWO: CASE DETAILS — COMPLETE GRIEVANCE REPORT
+    // =========================================================================
+    async function viewFullCaseReport(caseNumber) {
+      currentViewingCase = caseNumber;
+      navigateToPage('report');
+
+      // Populate loading indicators
+      document.getElementById('rep-case-id').innerText = caseNumber;
+      document.getElementById('rep-title').innerText = 'Loading official case record from ServiceNow...';
+      const timelineWrap = document.getElementById('rep-timeline-items');
+      if (timelineWrap) {
+        timelineWrap.innerHTML = `
+          <div style="padding: 24px; color: #64748b;">
+            <span style="display:inline-block; animation:gmapSpin 0.8s linear infinite; margin-right:8px;">⏳</span>
+            Compiling authoritative case audit log from ServiceNow...
+          </div>
+        `;
+      }
+
+      try {
+        const response = await fetch('/api/citizen/case?case_number=' + encodeURIComponent(caseNumber));
+        if (!response.ok) {
+          throw new Error('Authorized grievance record not found or inaccessible.');
+        }
+        const data = await response.json();
+
+        // 1. Header Banner
+        document.getElementById('rep-case-id').innerText = data.case_number;
+        document.getElementById('rep-title').innerText = data.short_description || 'Grievance Record';
+        document.getElementById('rep-submitted-time').innerText = data.submitted_on || '-';
+        document.getElementById('rep-updated-time').innerText = data.updated_on || '-';
+
+        const statusPill = document.getElementById('rep-status-pill');
+        if (statusPill) {
+          let sClass = 'pending';
+          if (data.grievance_status === 'In Progress' || data.grievance_status === 'Assigned') sClass = 'in-progress';
+          else if (data.grievance_status === 'Resolved' || data.grievance_status === 'Closed') sClass = 'resolved';
+          else if (data.grievance_status === 'Awaiting Citizen Confirmation') sClass = 'awaiting';
+
+          statusPill.className = `status-pill ${sClass}`;
+          statusPill.innerHTML = `<span class="status-dot"></span>${data.grievance_status}`;
+        }
+
+        // 2. Citizen Action Alert Banner
+        const actionAlert = document.getElementById('rep-action-alert');
+        if (actionAlert) {
+          if (data.grievance_status === 'Awaiting Citizen Confirmation' || data.grievance_status === 'Resolved') {
+            actionAlert.style.display = 'flex';
+          } else {
+            actionAlert.style.display = 'none';
+          }
+        }
+
+        // 3. Complaint Overview Card
+        document.getElementById('rep-category').innerText = data.category || 'Municipal Grievance';
+        document.getElementById('rep-subcategory').innerText = data.subcategory || 'General Civic Issue';
+        document.getElementById('rep-priority').innerText = data.priority || 'Medium';
+        document.getElementById('rep-location').innerText = data.location || 'Municipal Ward Area';
+        document.getElementById('rep-coords').innerText = data.coordinates || 'Latitude: 12.9716, Longitude: 77.5946';
+        document.getElementById('rep-description').innerText = data.description || data.short_description || 'Citizen submitted grievance.';
+
+        // 4. Department & Worker Info
+        document.getElementById('rep-dept').innerText = data.department || 'Awaiting Department Assignment';
+        document.getElementById('rep-ward').innerText = data.ward || 'Central Zone, Ward 112';
+        document.getElementById('rep-worker').innerText = data.assigned_to || 'Officer/Worker Not Yet Assigned';
+        document.getElementById('rep-worker-role').innerText = data.worker_role || 'Zonal Municipal Engineer';
+        document.getElementById('rep-assign-status').innerText = data.assignment_status || 'Active';
+        document.getElementById('rep-sla-status').innerText = data.sla_status || 'Target: 24 Hours (Within SLA)';
+
+        // 5. Evidence Attachments
+        const evContainer = document.getElementById('rep-evidence-container');
+        if (evContainer) {
+          if (data.attachments && data.attachments.length > 0) {
+            evContainer.innerHTML = data.attachments.map(att => `
+              <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: #334155;">
+                <span>📎</span>
+                <span>${escapeHtml(att.name || att.file_name || 'Proof attachment')}</span>
+              </div>
+            `).join('');
+          } else {
+            evContainer.innerHTML = `<div style="font-size: 0.82rem; color: #94a3b8; font-style: italic;">No citizen evidence files attached.</div>`;
+          }
+        }
+
+        // 6. Chronological Case Activity & Action History
+        if (timelineWrap) {
+          if (data.activity_history && data.activity_history.length > 0) {
+            timelineWrap.innerHTML = data.activity_history.map(item => `
+              <div class="report-timeline-item">
+                <div class="report-timeline-dot ${item.event.toLowerCase().includes('resolved') || item.event.toLowerCase().includes('confirmed') ? 'done' : ''}"></div>
+                <div class="report-timeline-content">
+                  <div class="report-timeline-head">
+                    <span class="report-timeline-event">${escapeHtml(item.event)}</span>
+                    <span class="report-timeline-time">${escapeHtml(item.time)}</span>
+                  </div>
+                  <div class="report-timeline-actor">
+                    🏛️ ${escapeHtml(item.dept || 'Civic Redressal Authority')} &bull; ${escapeHtml(item.actor || 'Municipal System')}
+                  </div>
+                  <p class="report-timeline-desc">${escapeHtml(item.description)}</p>
+                  ${item.outcome ? `<div style="font-size: 0.78rem; font-weight: 700; color: #16a34a;">Outcome: ${escapeHtml(item.outcome)}</div>` : ''}
+                </div>
+              </div>
+            `).join('');
+          } else {
+            timelineWrap.innerHTML = `
+              <div style="padding: 20px; color: #64748b; font-size: 0.88rem;">
+                No additional action history is available for this grievance yet.
+              </div>
+            `;
+          }
+        }
+
+      } catch (err) {
+        alert('Error loading case report: ' + err.message);
+        navigateToPage('my-grievances');
+      }
+    }
+
+    function trackFromReport() {
+      if (currentViewingCase) {
+        performTracking(currentViewingCase);
+      }
+    }
+
+    function printCaseReport() {
+      window.print();
+    }
+
+    // =========================================================================
+    // SECTION THREE: TRACK COMPLAINT CONTROLLER (Workflow & Progress Stepper)
+    // =========================================================================
+    function handleTrackSubmit(event) {
+      if (event) event.preventDefault();
+      const input = document.getElementById('track-search-box-input');
+      const val = (input?.value || '').trim();
+      if (!val) {
+        alert('Please enter a valid Case ID (e.g. CIV0001001).');
+        return;
+      }
+      performTracking(val);
+    }
+
+    async function performTracking(caseNumber) {
+      currentTrackingCase = caseNumber;
+      navigateToPage('track');
+
+      const input = document.getElementById('track-search-box-input');
+      if (input) input.value = caseNumber;
+
+      const errBanner = document.getElementById('track-error-banner');
+      const resContainer = document.getElementById('track-result-container');
+      const btnGo = document.getElementById('btn-track-go');
+
+      if (errBanner) errBanner.style.display = 'none';
+      if (btnGo) btnGo.disabled = true;
+
+      try {
+        const response = await fetch('/api/citizen/track?case_number=' + encodeURIComponent(caseNumber));
+        if (!response.ok) {
+          throw new Error(`No accessible grievance record found with Case ID "${caseNumber}". Please verify the number or check My Grievances.`);
+        }
+        const data = await response.json();
+
+        // Reveal results
+        if (resContainer) resContainer.style.display = 'flex';
+
+        // 1. Result Header
+        document.getElementById('tr-case-badge').innerText = data.case_number;
+        document.getElementById('tr-title').innerText = data.short_description || 'Grievance Track Record';
+        document.getElementById('tr-submitted-time').innerText = data.submitted_on || '-';
+        document.getElementById('tr-dept-name').innerText = data.department || 'Awaiting Assignment';
+
+        const statusBadge = document.getElementById('tr-status-badge');
+        if (statusBadge) {
+          let sClass = 'pending';
+          if (data.grievance_status === 'In Progress' || data.grievance_status === 'Assigned') sClass = 'in-progress';
+          else if (data.grievance_status === 'Resolved' || data.grievance_status === 'Closed') sClass = 'resolved';
+          else if (data.grievance_status === 'Awaiting Citizen Confirmation') sClass = 'awaiting';
+
+          statusBadge.className = `status-pill ${sClass}`;
+          statusBadge.innerHTML = `<span class="status-dot"></span>${data.grievance_status}`;
+        }
+
+        // 2. 6-Stage Visual Status Progress Stepper
+        // Stages: 1. Submitted, 2. Under Review, 3. Assigned to Dept, 4. Work in Progress, 5. Citizen Confirmation, 6. Resolved/Closed
+        const currIndex = data.current_stage_index || 1;
+        for (let s = 1; s <= 6; s++) {
+          const node = document.getElementById('stage-node-' + s);
+          const icon = document.getElementById('stage-icon-' + s);
+          const time = document.getElementById('stage-time-' + s);
+
+          if (!node || !icon) continue;
+
+          node.classList.remove('completed', 'active');
+
+          if (s < currIndex) {
+            node.classList.add('completed');
+            icon.innerHTML = '✓';
+          } else if (s === currIndex) {
+            node.classList.add('active');
+            icon.innerText = s;
+          } else {
+            icon.innerText = s;
+          }
+
+          if (time) {
+            time.innerText = (data.stage_timestamps && data.stage_timestamps[s]) || (s <= currIndex ? data.submitted_on : '-');
+          }
+        }
+
+        // 3. Citizen Action Gate
+        const actionGate = document.getElementById('tr-action-gate');
+        if (actionGate) {
+          if (data.citizen_action_required) {
+            actionGate.style.display = 'flex';
+          } else {
+            actionGate.style.display = 'none';
+          }
+        }
+
+        // 4. Latest Updates Section
+        const updatesList = document.getElementById('tr-latest-updates-list');
+        if (updatesList) {
+          if (data.latest_updates && data.latest_updates.length > 0) {
+            updatesList.innerHTML = data.latest_updates.map(up => `
+              <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                  <span style="font-weight: 800; color: #0f172a; font-size: 0.9rem;">${escapeHtml(up.title)}</span>
+                  <span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">${escapeHtml(up.time)}</span>
+                </div>
+                <p style="margin: 2px 0 0; font-size: 0.84rem; color: #475569; line-height: 1.4;">${escapeHtml(up.description)}</p>
+                <div style="font-size: 0.78rem; font-weight: 700; color: #1d63ed;">By: ${escapeHtml(up.actor || 'Municipal Operations')}</div>
+              </div>
+            `).join('');
+          } else {
+            updatesList.innerHTML = `<div style="font-size: 0.85rem; color: #64748b;">No recent updates recorded yet.</div>`;
+          }
+        }
+
+        // 5. Details Card
+        document.getElementById('tr-kv-category').innerText = data.category || 'General';
+        document.getElementById('tr-kv-location').innerText = data.location || 'Municipal Zone';
+        document.getElementById('tr-kv-officer').innerText = data.assigned_to || 'Officer/Worker Not Yet Assigned';
+        document.getElementById('tr-kv-desc').innerText = data.short_description || 'Grievance description';
+
+      } catch (err) {
+        if (errBanner) {
+          errBanner.style.display = 'block';
+          errBanner.innerText = err.message;
+        }
+        if (resContainer) resContainer.style.display = 'none';
+      } finally {
+        if (btnGo) btnGo.disabled = false;
+      }
+    }
+
+    function refreshCurrentTrack() {
+      if (currentTrackingCase) {
+        performTracking(currentTrackingCase);
+      }
+    }
+
+    function openReportFromTrack() {
+      if (currentTrackingCase) {
+        viewFullCaseReport(currentTrackingCase);
+      }
+    }
+
+    // =========================================================================
+    // CITIZEN REDRESSAL CONFIRMATION & CLOSURE HANDLERS
+    // =========================================================================
+    async function submitReportConfirmation(confirmed) {
+      if (!currentViewingCase) return;
+      await processCitizenConfirmation(currentViewingCase, confirmed);
+      viewFullCaseReport(currentViewingCase);
+    }
+
+    async function submitTrackConfirmation(confirmed) {
+      if (!currentTrackingCase) return;
+      await processCitizenConfirmation(currentTrackingCase, confirmed);
+      performTracking(currentTrackingCase);
+    }
+
+    async function processCitizenConfirmation(caseNo, confirmed) {
+      const endpoint = confirmed ? '/api/citizen/confirm' : '/api/citizen/reopen';
+      const promptText = confirmed
+        ? 'Thank you! Confirming will close this complaint as citizen-verified.'
+        : 'Please tell us why the issue remains unresolved:';
+
+      let comment = 'Citizen verified work completed satisfactorily.';
+      if (!confirmed) {
+        const input = prompt(promptText, 'Work is incomplete / problem persists.');
+        if (!input) return;
+        comment = input;
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            case_number: caseNo,
+            feedback: comment,
+            reason: comment
+          })
+        });
+        const result = await res.json();
+        if (result.success) {
+          alert(result.message || 'Grievance confirmation submitted to ServiceNow successfully.');
+        } else {
+          alert('Submission error: ' + (result.error || 'Operation failed'));
+        }
+      } catch (err) {
+        alert('Network error submitting confirmation: ' + err.message);
       }
     }
 
@@ -1985,23 +3083,12 @@
 
     function performTrack() {
       const q = document.getElementById('track-input').value.trim().toUpperCase();
-      const item = currentCases.find(c => c.no.toUpperCase() === q || (c.case_number && c.case_number.toUpperCase() === q));
-      const res = document.getElementById('track-result');
-      res.style.display = 'block';
-
-      if (item) {
-        res.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#1d63ed;">${item.no || item.case_number}</strong>
-            <span class="status-pill ${item.statusClass || 'pending'}"><span class="status-dot"></span>${item.status || item.grievance_status}</span>
-          </div>
-          <div><strong>Category:</strong> ${item.category}</div>
-          <div><strong>Issue:</strong> ${item.desc || item.short_description}</div>
-          <div style="margin-top:6px; color:#475569;">${item.notes || 'Under review by municipal staff.'}</div>
-        `;
-      } else {
-        res.innerHTML = `<span style="color:#dc2626;">No grievance found with number "${q}". Please check the ID.</span>`;
+      if (!q) {
+        alert('Please enter a valid Case ID.');
+        return;
       }
+      closeModal('track-modal');
+      performTracking(q);
     }
 
     function handleLogout() {

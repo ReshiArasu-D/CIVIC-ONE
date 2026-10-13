@@ -1,0 +1,848 @@
+/* ==========================================================================
+   CivicOne — My Grievances & Track Complaint Dedicated Workflow Styles
+   ========================================================================== */
+
+/* Page layout container */
+.workflow-page-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Header with search & actions */
+.workflow-header-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.workflow-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.workflow-header-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.workflow-header-sub {
+  font-size: 0.88rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* 4 Summary Cards Grid */
+.workflow-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.wf-summary-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.wf-summary-card:hover {
+  transform: translateY(-2px);
+  border-color: #3b82f6;
+  box-shadow: 0 8px 22px rgba(29, 99, 237, 0.08);
+}
+
+.wf-summary-card.active {
+  border-color: #1d63ed;
+  background: #f0f7ff;
+}
+
+.wf-summary-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.wf-summary-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wf-summary-card.total .wf-summary-icon-box {
+  background: #eff6ff;
+  color: #1d63ed;
+}
+
+.wf-summary-card.pending .wf-summary-icon-box {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.wf-summary-card.progress .wf-summary-icon-box {
+  background: #f0f9ff;
+  color: #0284c7;
+}
+
+.wf-summary-card.resolved .wf-summary-icon-box {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.wf-stat-num {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.wf-stat-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Filter Controls Toolbar */
+.workflow-filters-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02);
+}
+
+.workflow-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+}
+
+.workflow-search-box svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.workflow-search-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px 0 40px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.workflow-search-input:focus {
+  background: #ffffff;
+  border-color: #1d63ed;
+  box-shadow: 0 0 0 3px rgba(29, 99, 237, 0.12);
+}
+
+.workflow-filters-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.workflow-filter-select {
+  height: 42px;
+  padding: 0 32px 0 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #334155;
+  background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.2s ease;
+}
+
+.workflow-filter-select:focus {
+  background-color: #ffffff;
+  border-color: #1d63ed;
+}
+
+.btn-wf-clear {
+  height: 42px;
+  padding: 0 16px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-wf-clear:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Data Table Card */
+.workflow-table-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.wf-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.wf-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.86rem;
+}
+
+.wf-data-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 800;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.wf-data-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.wf-data-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.wf-data-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.wf-case-link {
+  color: #1d63ed;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wf-case-link:hover {
+  text-decoration: underline;
+  color: #174fc0;
+}
+
+.wf-category-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.btn-wf-view {
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1d63ed;
+  border: 1px solid #bfdbfe;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-wf-view:hover {
+  background: #1d63ed;
+  color: #ffffff;
+  border-color: #1d63ed;
+  transform: translateY(-1px);
+}
+
+/* Pagination bar */
+.wf-table-footer {
+  padding: 14px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.wf-pagination-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-wf-page {
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-wf-page:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-wf-page:not(:disabled):hover {
+  background: #1d63ed;
+  color: #ffffff;
+  border-color: #1d63ed;
+}
+
+/* ==========================================================================
+   COMPLETE GRIEVANCE REPORT VIEW
+   ========================================================================== */
+.report-page-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.report-header-banner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1.5px solid #e2e8f0;
+}
+
+.report-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.report-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1d63ed;
+}
+
+.report-case-id-heading {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.report-title-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #334155;
+  margin: 0;
+}
+
+.report-timestamps-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.report-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-report-action {
+  padding: 9px 18px;
+  border-radius: 12px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  border: 1.5px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.btn-report-action:hover {
+  background: #eff6ff;
+  color: #1d63ed;
+  border-color: #3b82f6;
+}
+
+.btn-report-action.primary {
+  background: #1d63ed;
+  color: #ffffff;
+  border-color: #1d63ed;
+  box-shadow: 0 4px 14px rgba(29, 99, 237, 0.25);
+}
+
+.btn-report-action.primary:hover {
+  background: #174fc0;
+}
+
+/* Report 2-Column Overview Grid */
+.report-grid-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.report-section-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.report-section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.report-key-val-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-kv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.86rem;
+  border-bottom: 1px dashed #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.report-kv-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.report-kv-key {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.report-kv-val {
+  color: #0f172a;
+  font-weight: 700;
+  text-align: right;
+  max-width: 60%;
+}
+
+/* Chronological Activity Timeline */
+.report-timeline-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.report-timeline-wrap {
+  position: relative;
+  padding-left: 32px;
+  margin-top: 10px;
+}
+
+.report-timeline-wrap::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 11px;
+  width: 2.5px;
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.report-timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.report-timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.report-timeline-dot {
+  position: absolute;
+  left: -32px;
+  top: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #1d63ed;
+  box-shadow: 0 0 0 4px rgba(29, 99, 237, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.report-timeline-dot.done {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15);
+}
+
+.report-timeline-content {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.report-timeline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.report-timeline-event {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.report-timeline-time {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.report-timeline-actor {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1d63ed;
+}
+
+.report-timeline-desc {
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.45;
+  margin: 2px 0 0;
+}
+
+/* ==========================================================================
+   TRACK COMPLAINT VIEW
+   ========================================================================== */
+.track-search-hero-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+}
+
+.track-input-form-wrap {
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.track-main-input {
+  flex: 1;
+  height: 50px;
+  padding: 0 18px;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  background: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.track-main-input:focus {
+  background: #ffffff;
+  border-color: #1d63ed;
+  box-shadow: 0 0 0 4px rgba(29, 99, 237, 0.15);
+}
+
+.btn-track-submit {
+  height: 50px;
+  padding: 0 24px;
+  background: #1d63ed;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(29, 99, 237, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-track-submit:hover {
+  background: #174fc0;
+  transform: translateY(-1px);
+}
+
+/* 6-Stage Workflow Progress Stepper */
+.track-progress-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  padding: 26px 28px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+.track-stages-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 10px 0;
+}
+
+.track-stage-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.track-stage-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 2.5px solid #cbd5e1;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.88rem;
+  transition: all 0.25s ease;
+}
+
+.track-stage-node.completed .track-stage-icon-circle {
+  background: #dcfce7;
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.track-stage-node.active .track-stage-icon-circle {
+  background: #1d63ed;
+  border-color: #1d63ed;
+  color: #ffffff;
+  box-shadow: 0 0 0 6px rgba(29, 99, 237, 0.2);
+  animation: pulseStage 2s infinite;
+}
+
+@keyframes pulseStage {
+  0% { box-shadow: 0 0 0 0 rgba(29, 99, 237, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(29, 99, 237, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(29, 99, 237, 0); }
+}
+
+.track-stage-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #475569;
+}
+
+.track-stage-node.active .track-stage-title {
+  color: #1d63ed;
+}
+
+.track-stage-node.completed .track-stage-title {
+  color: #0f172a;
+}
+
+.track-stage-time {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.track-stage-line {
+  position: absolute;
+  top: 31px;
+  left: 8%;
+  right: 8%;
+  height: 3px;
+  background: #e2e8f0;
+  z-index: 1;
+}
+
+/* Action Gate Buttons */
+.track-citizen-actions-box {
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 18px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* Status Pill styling enhancements */
+.status-pill.awaiting {
+  background: #fef3c7;
+  color: #b45309;
+}
+.status-pill.awaiting .status-dot {
+  background: #d97706;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .workflow-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .report-grid-two-col {
+    grid-template-columns: 1fr;
+  }
+  .track-stages-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding-left: 30px;
+  }
+  .track-stage-line {
+    top: 10px;
+    bottom: 10px;
+    left: 45px;
+    width: 3px;
+    height: auto;
+  }
+  .track-stage-node {
+    flex-direction: row;
+    text-align: left;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .workflow-summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .workflow-filters-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .workflow-filters-right {
+    flex-direction: column;
+  }
+  .workflow-filter-select {
+    width: 100%;
+  }
+}
