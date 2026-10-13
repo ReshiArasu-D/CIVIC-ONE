@@ -528,6 +528,18 @@ body {
   box-shadow: 0 10px 24px rgba(29, 99, 237, 0.35);
 }
 
+.btn-card-action.btn-admin-enter {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  color: var(--white);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+}
+
+.btn-card-action.btn-admin-enter:hover {
+  background: linear-gradient(135deg, #0b1329 0%, #172554 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.35);
+}
+
 .btn-card-action.btn-coming-soon {
   background: #94a3b8;
   color: var(--white);
