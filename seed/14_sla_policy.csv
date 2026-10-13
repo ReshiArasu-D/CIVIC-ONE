@@ -1,0 +1,11 @@
+name,category_code,department_code,urgency,target_resolution_hours,warning_threshold_pct,escalation_level_1_hours,escalation_level_2_hours,active
+Water Pipeline Emergency SLA,CAT-WAT-LEAK,DEPT-WATER,1,24,75,18,24,true
+Drinking Water Contamination Critical SLA,CAT-WAT-CONTAM,DEPT-WATER,1,12,75,9,12,true
+Exposed Electrical Wire Life Safety SLA,CAT-ELEC-WIRE,DEPT-ELEC,1,6,75,4,6,true
+Road Pothole Fast Track SLA,CAT-ROD-POTHOLE,DEPT-ROADS,1,24,75,18,24,true
+Garbage Overflow Rapid Clean SLA,CAT-SAN-GARBAGE,DEPT-SAN,2,24,75,18,24,true
+Street Light Repair Standard SLA,CAT-ELEC-STLIGHT,DEPT-ELEC,2,48,75,36,48,true
+Stormwater Drain Clearance SLA,CAT-ROD-DRAIN,DEPT-ROADS,2,48,75,36,48,true
+Mosquito Control and Fogging SLA,CAT-HLT-MOSQ,DEPT-HEALTH,2,48,75,36,48,true
+Street Sweeping Sanitation SLA,CAT-SAN-SWEEP,DEPT-SAN,3,72,75,54,72,true
+Low Water Pressure Standard SLA,CAT-WAT-LOWPRES,DEPT-WATER,2,48,75,36,48,true

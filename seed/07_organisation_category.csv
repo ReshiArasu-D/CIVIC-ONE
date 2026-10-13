@@ -1,0 +1,11 @@
+code,name,department_code,default_urgency,default_sla_hours,requires_evidence_to_close,active
+CAT-WAT-LEAK,Water Pipeline Leakage or Burst,DEPT-WATER,1,24,true,true
+CAT-WAT-CONTAM,Drinking Water Contamination,DEPT-WATER,1,12,true,true
+CAT-WAT-LOWPRES,Low Water Pressure,DEPT-WATER,2,48,false,true
+CAT-ROD-POTHOLE,Dangerous Road Pothole,DEPT-ROADS,1,24,true,true
+CAT-ROD-DRAIN,Blocked Stormwater Drain,DEPT-ROADS,2,48,true,true
+CAT-ELEC-STLIGHT,Non-functioning Street Light,DEPT-ELEC,2,48,true,true
+CAT-ELEC-WIRE,Exposed Live Electrical Wire,DEPT-ELEC,1,6,true,true
+CAT-SAN-GARBAGE,Uncollected Garbage Dump,DEPT-SAN,2,24,true,true
+CAT-SAN-SWEEP,Street Sweeping Required,DEPT-SAN,3,72,false,true
+CAT-HLT-MOSQ,Mosquito Breeding and Stagnant Water,DEPT-HEALTH,2,48,false,true

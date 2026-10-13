@@ -1,0 +1,28 @@
+TestID,Category,TestName,ExpectedResult,Status,Notes
+TC-01,Foundation,Scoped Application Exists,x_2229367_civicone active in sys_app,PASS,Scope ID 26068197c33b8754e54832f1b40131d5 verified
+TC-02,DataModel,22 Tables Created,All 22 tables registered in sys_db_object,PASS,Geography Org Grievance SLA Language Governance
+TC-03,DataModel,Task Extension for Case,x_2229367_civicone_case super_class is task,PASS,Inherits native task attributes and SLA engine
+TC-04,DataModel,Numbering Configured,CIV MGR AIL BRF prefixes created,PASS,Configured in sys_number
+TC-05,Utilities,JurisdictionUtil Hierarchy,Resolves ward to sub-district district state zone,PASS,Tested in server script
+TC-06,Utilities,GeoRouter Proximity,Matches closest civic asset coordinates,PASS,Nearest neighbor asset lookup
+TC-07,Utilities,PriorityScorer Deterministic,Scores 0-100 based on hazards and vulnerability,PASS,Tested with high-severity keywords
+TC-08,Utilities,PiiMasker Aadhaar PAN Phone,Detects and masks Indian PII patterns,PASS,Replaces raw Aadhaar PAN Phone Email
+TC-09,Utilities,NotificationComposer Multilingual,Populates dynamic tokens in preferred language,PASS,Verified with Hindi and English templates
+TC-10,Utilities,AiLogger Immutability,Records audit payload with confidence and factors,PASS,Writes to x_2229367_civicone_ai_action_log
+TC-11,BusinessRules,BR01 Mandatory Intake,Blocks submission without citizen category ward,PASS,Abort action verified
+TC-12,BusinessRules,BR02 Preserve Raw Text,Preserves raw text in original_description,PASS,Raw preserved and masked in description
+TC-13,BusinessRules,BR05 Duplicate Detection,Flags suspect without deleting or merging,PASS,Verified with 72h window check
+TC-14,BusinessRules,BR07 Eligible Assignment,Rejects unauthorized or absent workers,PASS,Worker eligibility validation verified
+TC-15,BusinessRules,BR08 Assignment Audit,Captures old worker new worker and reason,PASS,Inserts into case_assignment_history
+TC-16,BusinessRules,BR11 Resolution Evidence Gate,Blocks resolution if category requires evidence,PASS,Checks resolution_evidence before resolve
+TC-17,BusinessRules,BR12 Citizen Confirmation Gate,Blocks direct closure without citizen confirmation,PASS,Prevents premature closure
+TC-18,BusinessRules,BR14 Dispute Reopening,Reverts disputed case to In Progress,PASS,Logs dispute reason and escalation step
+TC-19,Flows,F1 Intake Flow,Validates resolves routes assigns and logs,PASS,Registered in sys_hub_flow
+TC-20,Flows,F4 SLA Escalation Flow,Handles 75% warning and 100% breach separately,PASS,Level 1 and Level 2 escalation paths
+TC-21,Flows,F5 Resolution Confirmation Flow,Routes to awaiting confirmation without timeout closure,PASS,Handles confirmed and disputed paths
+TC-22,Flows,F8 Worker Absence Flow,Reassigns cases to backup worker on absence,PASS,Evaluates availability and reassigns
+TC-23,Security,Role Hierarchy,9 project roles created in sys_user_role,PASS,Citizen Worker Heads Officers Commissioner Auditor Admin
+TC-24,Security,Row-Level Citizen Privacy,Citizens query only own complaints,PASS,BR19 and table ACL enforce isolation
+TC-25,Security,Officer Jurisdiction Scoping,Officers query only assigned wards,PASS,BR20 enforces boundary check
+TC-26,SeedData,Repeatable Load,Loads 14 CSV files idempotently,PASS,Tested without duplicates
+TC-27,SeedData,Ward 12 Demo Scenario,Water leak demonstration scenario loaded,PASS,Case CIV0001001 with neighboring duplicates

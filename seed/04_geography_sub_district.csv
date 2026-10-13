@@ -1,0 +1,6 @@
+code,name,district_code,active
+SD-BLR-EAST,Bengaluru East Taluk,DT-BLR-U,true
+SD-BLR-SOUTH,Bengaluru South Taluk,DT-BLR-U,true
+SD-BLR-NORTH,Bengaluru North Taluk,DT-BLR-U,true
+SD-MUM-WARD-A,Colaba Fort Taluk,DT-MUM-C,true
+SD-NDL-CHANAKYA,Chanakyapuri Tehsil,DT-NDL,true

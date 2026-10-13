@@ -1,0 +1,6 @@
+code,name,description,active
+DEPT-WATER,Water Supply and Sewerage Board,Management of municipal water distribution drinking water mains and sewer lines,true
+DEPT-ROADS,Roads and Infrastructure Department,Maintenance of municipal roads potholes stormwater drains and footpaths,true
+DEPT-ELEC,Electricity and Street Lighting,Street light repair municipal transformers and public electrical safety,true
+DEPT-SAN,Solid Waste Management and Sanitation,Garbage collection public dustbins landfill transfer and street sweeping,true
+DEPT-HEALTH,Public Health and Vector Control,Mosquito fogging clinic hygiene food inspection and veterinary control,true

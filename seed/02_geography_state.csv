@@ -1,0 +1,6 @@
+code,name,zone_code,capital,active
+ST-KA,Karnataka,ZN-SOUTH,Bengaluru,true
+ST-MH,Maharashtra,ZN-WEST,Mumbai,true
+ST-DL,Delhi NCT,ZN-NORTH,New Delhi,true
+ST-TN,Tamil Nadu,ZN-SOUTH,Chennai,true
+ST-UP,Uttar Pradesh,ZN-NORTH,Lucknow,true

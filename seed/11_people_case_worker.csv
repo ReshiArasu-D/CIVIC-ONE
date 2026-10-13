@@ -1,0 +1,7 @@
+employee_id,user_name,department_code,ward_code,is_available,active_case_load
+EMP-WAT-001,water_worker_w12,DEPT-WATER,WRD-12,true,2
+EMP-WAT-002,water_worker_w15,DEPT-WATER,WRD-15,true,1
+EMP-ROD-001,road_worker_w12,DEPT-ROADS,WRD-12,true,3
+EMP-ELE-001,elec_worker_w12,DEPT-ELEC,WRD-12,true,0
+EMP-SAN-001,san_worker_w15,DEPT-SAN,WRD-15,true,4
+EMP-WAT-003,water_backup_w12,DEPT-WATER,WRD-12,true,0

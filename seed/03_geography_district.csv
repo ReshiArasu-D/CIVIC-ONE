@@ -1,0 +1,6 @@
+code,name,state_code,collectorate_address,active
+DT-BLR-U,Bengaluru Urban,ST-KA,DC Office Complex Bengaluru,true
+DT-MUM-C,Mumbai City,ST-MH,Old Custom House Fort Mumbai,true
+DT-NDL,New Delhi Central,ST-DL,124 Connaught Place New Delhi,true
+DT-CHN-C,Chennai Central,ST-TN,Rajaji Salai Chennai,true
+DT-LKO,Lucknow District,ST-UP,Kaiserbagh Lucknow,true

@@ -1,0 +1,6 @@
+code,name,sub_district_code,ward_number,population,councillor_name,councillor_contact,active
+WRD-12,Ward 12 Indiranagar,SD-BLR-EAST,12,42500,Smt. Rajeshwari K,9845012345,true
+WRD-15,Ward 15 Koramangala,SD-BLR-SOUTH,15,38900,Shri. Anand V,9845023456,true
+WRD-08,Ward 08 Malleshwaram,SD-BLR-NORTH,8,35200,Smt. Padmavati M,9845034567,true
+WRD-22,Ward 22 Whitefield,SD-BLR-EAST,22,51000,Shri. Ramesh Babu,9845045678,true
+WRD-01,Ward 01 Fort Colaba,SD-MUM-WARD-A,1,28000,Shri. Sunil Mehta,9820056789,true

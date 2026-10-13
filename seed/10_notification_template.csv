@@ -1,0 +1,9 @@
+code,name,language_code,subject,body_template,channel,active
+CASE_INTAKE,Grievance Registered,en,CivicOne: Grievance {case_number} Registered,Dear {citizen_name} your grievance regarding {category} in {ward} has been registered under {case_number}. SLA Target: {sla_hours} hours.,SMS,true
+CASE_INTAKE,Grievance Registered Hindi,hi,CivicOne: शिकायत {case_number} दर्ज की गई,प्रिय {citizen_name} {ward} में {category} के संबंध में आपकी शिकायत {case_number} दर्ज कर ली गई है। समाधान लक्ष्य: {sla_hours} घंटे।,SMS,true
+CASE_ASSIGNED,Officer Assigned,en,CivicOne: Officer Assigned to {case_number},Your grievance {case_number} has been assigned to field officer {officer_name} ({department}). Field work is commencing.,SMS,true
+CASE_RESOLVED,Resolution Evidence Submitted,en,CivicOne: Grievance {case_number} Resolved - Confirmation Required,Your grievance {case_number} has been marked resolved. Summary: {summary}. Please review the resolution evidence and confirm within 48 hours.,SMS,true
+CASE_RESOLVED,Resolution Evidence Submitted Hindi,hi,CivicOne: शिकायत {case_number} का समाधान - पुष्टि आवश्यक,आपकी शिकायत {case_number} का समाधान कर दिया गया है। कृपया समाधान की समीक्षा करें और 48 घंटों के भीतर पुष्टि करें।,SMS,true
+SLA_WARNING,SLA 75% Warning,en,CivicOne Internal Alert: {case_number} Approaching SLA Deadline,ATTENTION: Grievance {case_number} in {ward} has reached 75% of SLA threshold. Supervisor escalation alert triggered.,In-App,true
+SLA_BREACH,SLA 100% Breach Alert,en,CivicOne Urgent Alert: SLA Breached on {case_number},URGENT: Grievance {case_number} in {ward} has breached SLA. Case escalated to District Officer Level 2.,In-App,true
+CASE_DISPUTED,Citizen Disputed Resolution,en,CivicOne Alert: Citizen Disputed Resolution for {case_number},Citizen {citizen_name} has disputed the resolution of {case_number}. Reason: {dispute_reason}. Case reverted to In-Progress.,In-App,true

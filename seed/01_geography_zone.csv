@@ -1,0 +1,6 @@
+code,name,headquarters,active
+ZN-NORTH,North Zone,Chandigarh,true
+ZN-SOUTH,South Zone,Bengaluru,true
+ZN-EAST,East Zone,Kolkata,true
+ZN-WEST,West Zone,Mumbai,true
+ZN-CENTRAL,Central Zone,Bhopal,true

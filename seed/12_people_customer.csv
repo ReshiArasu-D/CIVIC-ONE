@@ -1,0 +1,9 @@
+citizen_id,full_name,phone,email,ward_code,preferred_language_code,is_verified
+CIT-BLR-001,Aarav Sharma,9876543210,aarav.sharma.demo@example.gov.in,WRD-12,en,true
+CIT-BLR-002,Priya Venkatesh,9876543211,priya.v.demo@example.gov.in,WRD-12,kn,true
+CIT-BLR-003,Rohan Kulkarni,9876543212,rohan.k.demo@example.gov.in,WRD-15,en,true
+CIT-BLR-004,Ananya Deshmukh,9876543213,ananya.d.demo@example.gov.in,WRD-08,mr,true
+CIT-BLR-005,Vikram Sengupta,9876543214,vikram.s.demo@example.gov.in,WRD-22,hi,true
+CIT-BLR-006,Meera Sundaram,9876543215,meera.s.demo@example.gov.in,WRD-12,ta,true
+CIT-BLR-007,Kiran Patil,9876543216,kiran.p.demo@example.gov.in,WRD-15,en,true
+CIT-BLR-008,Deepak Verma,9876543217,deepak.v.demo@example.gov.in,WRD-12,hi,true

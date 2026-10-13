@@ -1,0 +1,7 @@
+code,name,native_name,is_default,active
+en,English,English,true,true
+hi,Hindi,हिन्दी,false,true
+kn,Kannada,ಕನ್ನಡ,false,true
+ta,Tamil,தமிழ்,false,true
+te,Telugu,తెలుగు,false,true
+mr,Marathi,मराठी,false,true

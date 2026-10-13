@@ -1,0 +1,7 @@
+asset_id,name,category_code,ward_code,department_code,latitude,longitude,location_address,condition,active
+AST-W12-WAT-01,Indiranagar 100ft Road Main Water Junction,CAT-WAT-LEAK,WRD-12,DEPT-WATER,12.978365,77.640835,Near 12th Main Junction 100ft Road Indiranagar,Operational,true
+AST-W12-WAT-02,Indiranagar Defence Colony Water Booster,CAT-WAT-LEAK,WRD-12,DEPT-WATER,12.971200,77.638500,Defence Colony 5th Cross Indiranagar,Degraded,true
+AST-W12-ROD-01,CMH Road Pothole Sector 4,CAT-ROD-POTHOLE,WRD-12,DEPT-ROADS,12.979100,77.644200,Opposite Metro Pillar 84 CMH Road,Damaged,true
+AST-W12-ELE-01,100ft Road Streetlight Line Pole 14,CAT-ELEC-STLIGHT,WRD-12,DEPT-ELEC,12.977500,77.641200,Pole 14 100ft Road Indiranagar,Degraded,true
+AST-W15-WAT-01,Koramangala 80ft Road Water Sluice Valve,CAT-WAT-LEAK,WRD-15,DEPT-WATER,12.935200,77.624500,80ft Road 4th Block Koramangala,Operational,true
+AST-W15-SAN-01,Koramangala 5th Block Dustbin Compactor,CAT-SAN-GARBAGE,WRD-15,DEPT-SAN,12.934100,77.618900,Near Jyoti Nivas College Koramangala,Operational,true

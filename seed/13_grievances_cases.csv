@@ -1,0 +1,43 @@
+case_number,citizen_id,department_code,category_code,ward_code,short_description,description,channel,grievance_status,priority,sla_hours,is_duplicate_suspect
+CIV0001001,CIT-BLR-001,DEPT-WATER,CAT-WAT-LEAK,WRD-12,Major water pipeline leak flooding road,Drinking water main pipeline burst on Indiranagar 100ft Road near 12th Main junction. Severe water leakage flooding road and submerging footpath.,Web,In Progress,1,24,false
+CIV0001002,CIT-BLR-002,DEPT-WATER,CAT-WAT-LOWPRES,WRD-12,Zero water pressure in 12th Main Indiranagar,Water supply has completely stopped since morning in 12th Main Indiranagar. Possibly due to pipeline work on 100ft road.,Mobile,Submitted,2,48,true
+CIV0001003,CIT-BLR-006,DEPT-WATER,CAT-WAT-CONTAM,WRD-12,Brown muddy water coming from tap,Tap water is yellowish brown with mud smell since yesterday evening in Defence Colony Ward 12.,Mobile,Submitted,1,12,true
+CIV0001004,CIT-BLR-008,DEPT-ROADS,CAT-ROD-POTHOLE,WRD-12,Massive crater pothole opposite Metro Pillar 84,Dangerous deep pothole on CMH road opposite metro pillar 84. Two two-wheelers skidded this morning.,Web,Assigned,1,24,false
+CIV0001005,CIT-BLR-001,DEPT-ELEC,CAT-ELEC-STLIGHT,WRD-12,Dark street lights not working on 14th Main,All 6 street lights between 14th Main and 16th Main Indiranagar are non-functional for 4 days.,Portal,Resolved,3,48,false
+CIV0001006,CIT-BLR-003,DEPT-SAN,CAT-SAN-GARBAGE,WRD-15,Overflowing garbage bin near Jyoti Nivas College,Public dustbin overflowing onto roadway causing foul stench and stray animal menace in Koramangala 5th Block.,Web,In Progress,2,24,false
+CIV0001007,CIT-BLR-007,DEPT-WATER,CAT-WAT-LEAK,WRD-15,Underground pipe leakage near 80ft road junction,Continuous water seepage seen on asphalt near 80ft road 4th Block Koramangala.,Call,Submitted,2,24,false
+CIV0001008,CIT-BLR-004,DEPT-ROADS,CAT-ROD-DRAIN,WRD-08,Stormwater drain slab broken in 8th Cross Malleshwaram,Concrete slab covering stormwater drain collapsed near 8th Cross vegetable market. Pedestrians at risk.,In-Person,Assigned,2,48,false
+CIV0001009,CIT-BLR-004,DEPT-ELEC,CAT-ELEC-WIRE,WRD-08,Exposed live electric wire hanging near government school,Loose low-hanging wire dangling from junction box near primary school gate in Malleshwaram Ward 08.,Web,In Progress,1,6,false
+CIV0001010,CIT-BLR-005,DEPT-HEALTH,CAT-HLT-MOSQ,WRD-22,Heavy mosquito infestation near Varthur Kodi,Stagnant sewage water in open plot leading to severe mosquito menace and dengue risk in Whitefield Ward 22.,Mobile,Submitted,2,48,false
+CIV0001011,CIT-BLR-001,DEPT-SAN,CAT-SAN-SWEEP,WRD-12,Street sweeping neglected in 6th Cross,Leaves and dry waste accumulated across 6th Cross Indiranagar for 5 days without sanitation staff visit.,Web,Closed,4,72,false
+CIV0001012,CIT-BLR-002,DEPT-ROADS,CAT-ROD-POTHOLE,WRD-12,Pothole near Double Road signal,Asphalt peeled off creating sharp edged pothole at signal junction.,Mobile,Closed,2,24,false
+CIV0001013,CIT-BLR-003,DEPT-WATER,CAT-WAT-LEAK,WRD-15,Commercial valve leakage on 1st Main,Water leaking continuously from commercial pipeline valve near petrol bunk.,Portal,Awaiting Citizen Confirmation,2,24,false
+CIV0001014,CIT-BLR-007,DEPT-ELEC,CAT-ELEC-STLIGHT,WRD-15,Blinking street light causing disturbance,Street light flickering continuously outside residence 17th Cross Koramangala.,Call,In Progress,3,48,false
+CIV0001015,CIT-BLR-005,DEPT-SAN,CAT-SAN-GARBAGE,WRD-22,Illegal construction debris dumped on pavement,Tractor load of debris dumped blocking walkway near Hope Farm circle Whitefield.,Web,Submitted,3,24,false
+CIV0001016,CIT-BLR-006,DEPT-WATER,CAT-WAT-CONTAM,WRD-12,Sewage mixing in drinking water line,Sewage water seepage suspected into borewell recharge line in HAL 2nd Stage.,Mobile,Assigned,1,12,false
+CIV0001017,CIT-BLR-008,DEPT-ROADS,CAT-ROD-DRAIN,WRD-12,Clogged drain overflowing during evening rain,Stormwater drain full of silt and plastic bottles overflowing onto CMH road.,Web,In Progress,2,48,false
+CIV0001018,CIT-BLR-003,DEPT-HEALTH,CAT-HLT-MOSQ,WRD-15,Fogging machine request for 7th Block,Multiple fever cases reported in Koramangala 7th block. Requesting urgent insecticidal fogging.,Mobile,Submitted,2,48,false
+CIV0001019,CIT-BLR-004,DEPT-SAN,CAT-SAN-GARBAGE,WRD-08,Garbage truck missed morning pickup,Sanitation van did not visit 11th Main Malleshwaram today.,Call,Resolved,3,24,false
+CIV0001020,CIT-BLR-007,DEPT-ROADS,CAT-ROD-POTHOLE,WRD-15,Road dug up for optical fiber left unpaved,Trench dug across road left without asphalt refilling causing traffic jam.,Web,In Progress,2,24,false
+CIV0001021,CIT-BLR-001,DEPT-WATER,CAT-WAT-LEAK,WRD-12,Gushing water leak from air valve,Air release valve on 100ft road spraying water 10 feet into the air.,Web,In Progress,1,24,true
+CIV0001022,CIT-BLR-005,DEPT-ELEC,CAT-ELEC-WIRE,WRD-22,Sparking transformer near IT park gate,Electric transformer throwing sparks during load peak hours near ITPL back gate.,Mobile,Assigned,1,6,false
+CIV0001023,CIT-BLR-002,DEPT-SAN,CAT-SAN-SWEEP,WRD-12,Tree branches blocking pedestrian footpath,Pruned tree branches dumped on sidewalk after municipal trimming.,Portal,Submitted,3,72,false
+CIV0001024,CIT-BLR-003,DEPT-ROADS,CAT-ROD-DRAIN,WRD-15,Broken grating on roadside drain,Iron grating stolen or broken leaving an open hole on bicycle lane.,Call,Assigned,2,48,false
+CIV0001025,CIT-BLR-006,DEPT-WATER,CAT-WAT-LOWPRES,WRD-12,Low pressure on 2nd floor apartments,Water not reaching overhead tanks in 2nd Stage Indiranagar.,Web,Submitted,3,48,false
+CIV0001026,CIT-BLR-008,DEPT-ELEC,CAT-ELEC-STLIGHT,WRD-12,Street light pole tilted after vehicle hit,Metal pole leaning precariously towards footpath on 80ft road Indiranagar.,Mobile,In Progress,1,48,false
+CIV0001027,CIT-BLR-004,DEPT-WATER,CAT-WAT-LEAK,WRD-08,Valve pit leaking in Temple Street,Municipal valve pit overflowing with clean water into gutter.,Web,Assigned,2,24,false
+CIV0001028,CIT-BLR-007,DEPT-SAN,CAT-SAN-GARBAGE,WRD-15,Commercial kitchen dumping wet waste in open,Restaurant dumping food waste in vacant site near 1st Block Koramangala.,Call,In Progress,2,24,false
+CIV0001029,CIT-BLR-005,DEPT-ROADS,CAT-ROD-POTHOLE,WRD-22,Series of potholes on ECC road,Vehicle suspension damages occurring daily on unpaved stretches of ECC road.,Web,Submitted,2,24,false
+CIV0001030,CIT-BLR-001,DEPT-HEALTH,CAT-HLT-MOSQ,WRD-12,Open drainage breeding mosquitoes near park,Stagnant water pool near Indiranagar club boundary wall.,Mobile,Submitted,2,48,false
+CIV0001031,CIT-BLR-002,DEPT-ELEC,CAT-ELEC-WIRE,WRD-12,Frayed cable touching neem tree branch,Electrical cable insulation damaged touching leafy branches on 9th Main.,Web,Closed,1,6,false
+CIV0001032,CIT-BLR-003,DEPT-ROADS,CAT-ROD-POTHOLE,WRD-15,Pothole on 100ft road inner ring road ramp,Pothole causing near collisions on flyover ramp.,Mobile,In Progress,1,24,false
+CIV0001033,CIT-BLR-006,DEPT-WATER,CAT-WAT-LEAK,WRD-12,Pipeline connection joint leaking under sidewalk,Water bubbling up through interlocking paver blocks on 12th Main.,Web,Submitted,2,24,true
+CIV0001034,CIT-BLR-004,DEPT-SAN,CAT-SAN-GARBAGE,WRD-08,Plastic waste scattered across playground,Public playground littered with discarded single-use plastic.,Portal,Assigned,3,24,false
+CIV0001035,CIT-BLR-007,DEPT-ELEC,CAT-ELEC-STLIGHT,WRD-15,Three lights dark on 6th Cross,Dark zone creating safety concerns for night commuters.,Call,Submitted,2,48,false
+CIV0001036,CIT-BLR-008,DEPT-ROADS,CAT-ROD-DRAIN,WRD-12,Pre-monsoon drain cleaning incomplete,Mud and concrete chunks left inside storm drain channel.,Web,In Progress,2,48,false
+CIV0001037,CIT-BLR-005,DEPT-WATER,CAT-WAT-LOWPRES,WRD-22,Water supply erratic and low pressure,Water supplied only for 20 minutes with very poor pressure in Whitefield.,Mobile,Submitted,2,48,false
+CIV0001038,CIT-BLR-001,DEPT-SAN,CAT-SAN-SWEEP,WRD-12,Dust accumulation along road divider,Road divider needs vacuum cleaning and sweeping due to dust generation.,Web,Closed,3,72,false
+CIV0001039,CIT-BLR-002,DEPT-ROADS,CAT-ROD-POTHOLE,WRD-12,Dangerous edge drop on newly asphalted lane,Height difference of 4 inches between asphalt and road shoulder.,Mobile,Awaiting Citizen Confirmation,2,24,false
+CIV0001040,CIT-BLR-003,DEPT-WATER,CAT-WAT-LEAK,WRD-15,Meter pipe connection leaking,Public water tap meter pipe damaged by road roller.,Call,In Progress,2,24,false
+CIV0001041,CIT-BLR-004,DEPT-HEALTH,CAT-HLT-MOSQ,WRD-08,Basement water stagnation in commercial complex,Underground parking full of stagnant rainwater breeding insects.,Web,Submitted,2,48,false
+CIV0001042,CIT-BLR-006,DEPT-ELEC,CAT-ELEC-WIRE,WRD-12,Overhead wire snapped and resting on car roof,Service cable snapped during gusty winds resting on parked vehicle.,Mobile,Closed,1,6,false
