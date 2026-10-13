@@ -256,3 +256,33 @@
 | `sla_compliance_rate` | Decimal | 5,2 | No | % cases resolved within SLA |
 | `top_grievance_category` | Reference | 32 | No | Most frequent category |
 | `executive_summary` | String | 4000 | No | Executive narrative summary |
+
+---
+
+## 5. Schema Reconciliation & Deprecated Prototype Tables (SCH-01)
+
+### 5.1 Canonical 22-Table Architecture
+The CivicOne Phase 1 data model consists of exactly 22 operational tables:
+- **Geography (5):** `zone`, `state`, `district`, `sub_district`, `ward`
+- **Organisation & Core (5):** `department`, `category`, `civic_asset`, `case_worker`, `customer`
+- **Case Management & Audit (5):** `case` (extends `task`), `case_assignment_history`, `master_grievance`, `resolution_evidence`, `citizen_feedback`
+- **SLA & Policy (2):** `sla_policy`, `escalation_step`
+- **Localization (3):** `language` (23 languages), `ui_translation`, `notification_template`
+- **Governance & Intelligence (2):** `ai_action_log`, `executive_brief`
+
+### 5.2 Deprecated Prototype Tables Inventory
+During initial platform bootstrapping and SDK prototyping, six exploratory tables were created in `sys_db_object`. An exhaustive dependency audit confirms:
+1. **Zero Record Count:** Exactly 0 rows exist in all 6 tables.
+2. **Zero Foreign Keys:** 0 fields in `sys_dictionary` reference them.
+3. **Zero Script Dependencies:** 0 Business Rules, Script Includes, or flows invoke them.
+
+In accordance with strict platform change management (no destructive deletes without change advisory approval), these tables have been formally labeled `[DEPRECATED]` in the live dictionary:
+| Table Name | Label in Live Dictionary | Status | Dependency Count | Recommendation |
+| :--- | :--- | :--- | :---: | :--- |
+| `x_2229367_civicone_ward_village` | `[DEPRECATED] Ward Village` | Deprecated Prototype | 0 | Safe to drop upon Change Approval |
+| `x_2229367_civicone_civic_case` | `[DEPRECATED] Civic Case` | Deprecated Prototype | 0 | Safe to drop upon Change Approval |
+| `x_2229367_civicone_test_task_extension` | `[DEPRECATED] Test Task Extension` | Deprecated Prototype | 0 | Safe to drop upon Change Approval |
+| `x_2229367_civicone_grievance_category` | `[DEPRECATED] Grievance Category` | Deprecated Prototype | 0 | Safe to drop upon Change Approval |
+| `x_2229367_civicone_state_ut` | `[DEPRECATED] State UT` | Deprecated Prototype | 0 | Safe to drop upon Change Approval |
+| `x_2229367_civicone_citizen_customer` | `[DEPRECATED] Citizen Customer` | Deprecated Prototype | 0 | Safe to drop upon Change Approval |
+

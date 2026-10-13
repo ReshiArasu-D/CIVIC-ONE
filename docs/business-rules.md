@@ -28,3 +28,11 @@ This catalogue documents all 22 server-side business rules implemented in `x_222
 | **BR20** | `Enforce_Officer_Jurisdiction_Scoping` | `case` | `before_query` | N/A | N/A | Boundary security for officers | Scopes worker queries strictly to cases within their authorized ward and department. |
 | **BR21** | `Protect_AI_Action_Log_Immutability` | `ai_action_log` | `before` | No | Yes (block) | Preserves governance integrity | Aborts any update or delete action on `ai_action_log`. |
 | **BR22** | `Protect_Preserved_PII_Fields` | `case` | `before` | No | Yes (block) | Protects original complaint text | Aborts changes to `original_description` once inserted, preserving legal evidence. |
+
+---
+
+### Rule Deployment Hygiene & Single-Instance Enforcement
+Following Phase 1 Remediation Sprint (LOG-01):
+- `BR05_Detect_Potential_Duplicate_Grievanc`: Exactly one authoritative instance (`aa1f8dd3c3bb8754e54832f1b40131de`) is active; redundant deployment duplicates (`33ff0997...`, `546099d7...`) are deactivated.
+- `BR12_Protect_Citizen_Confirmation_Closur`: Exactly one authoritative instance (`f9005997c3bb8754e54832f1b40131bb`) is active; redundant deployment duplicate (`fd601dd7...`) is deactivated.
+- `BR19` and `BR20` are active as `before_query` server-side rules, operating in tandem with the hardened Case Read ACL.

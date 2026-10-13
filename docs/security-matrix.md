@@ -51,9 +51,15 @@ This document establishes the security architecture, role permissions, row-level
 - Ward Heads are restricted to cases within their ward.
 - District Officers are restricted to cases within their district.
 
-### 3.3 Field-Level Protection
-- **`original_description`**: Restricted to Admin, Auditor, and Supervisor. Immutable once inserted (`BR22_Protect_Preserved_PII_Fields`).
-- **`masked_description`**: Visible to field workers and public reports.
+### 3.3 Field-Level Protection & ACL Implementation
+- **Case Read Authorization (`sys_security_acl`: `78ce0993c3bb8754e54832f1b40131b0`)**:
+  - Direct record read ACL evaluates advanced server-side script matching citizen ownership (`current.citizen.user == gs.getUserID()`) and worker jurisdiction (`ward` and `department`).
+  - Works with `before_query` rule `BR19` and `BR20` to prevent unauthorized record access via Table API, REST, or list queries.
+- **`original_description` Field ACL (`sys_security_acl`: `d0a9d553c33f8754e54832f1b4013140`)**:
+  - Restricts raw unmasked complaint text to `x_2229367_civicone.admin` and `x_2229367_civicone.auditor` only.
+  - Citizens, case workers, and external roles cannot read raw PII (Aadhaar/PAN).
+  - Field is immutable once inserted (`BR22_Protect_Preserved_PII_Fields`).
+- **`masked_description`**: Visible to field workers, citizens, and public reports.
 - **`ai_action_log`**: Fully hidden from Citizens; read-only for Auditors; immutable on update/delete (`BR21_Protect_AI_Action_Log_Immutability`).
 
 ---

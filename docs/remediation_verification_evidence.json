@@ -1,0 +1,47 @@
+{
+  "users": {
+    "cit1": true,
+    "cit2": true,
+    "wrkWater": true,
+    "wrkRoads": true,
+    "auditor": true,
+    "admin": true
+  },
+  "caseA_found": true,
+  "caseB_found": true,
+  "sec02_citizen_isolation": {
+    "citizen1_own_read_allowed": true,
+    "citizen1_cross_read_denied": true,
+    "citizen1_list_sees_caseA": true,
+    "citizen1_list_excludes_caseB": true,
+    "citizen2_own_read_allowed": true,
+    "citizen2_cross_read_denied": true,
+    "citizen2_list_sees_caseB": true,
+    "citizen2_list_excludes_caseA": true
+  },
+  "sec03_worker_isolation": {
+    "worker_water_in_jurisdiction_allowed": true,
+    "worker_water_cross_jurisdiction_denied": true,
+    "worker_water_list_sees_caseA": true,
+    "worker_water_list_excludes_caseB": true,
+    "worker_roads_in_jurisdiction_allowed": true,
+    "worker_roads_cross_jurisdiction_denied": true,
+    "worker_roads_list_sees_caseB": true,
+    "worker_roads_list_excludes_caseA": true
+  },
+  "sec04_original_text_protection": {
+    "citizen_can_read_masked": true,
+    "citizen_denied_original_pii": true,
+    "worker_can_read_masked": true,
+    "worker_denied_original_pii": true,
+    "auditor_authorized_original": true,
+    "admin_authorized_original": true
+  },
+  "log01_rule_deduplication": {
+    "br05_active_count": 1,
+    "br12_active_count": 1,
+    "br12_closure_gate_still_enforces": true
+  },
+  "dat01_language_count": 23,
+  "sch01_orphans_labeled_deprecated": true
+}

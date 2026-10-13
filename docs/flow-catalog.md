@@ -79,3 +79,21 @@ This document details the Flow Designer specifications for CivicOne Foundation: 
      - If no backup: call `JurisdictionUtil.findEligibleWorker` for an available peer worker in the same ward/department.
      - If no eligible peer: unassign to department triage queue and alert Ward Head.
   3. **Audit Tracking:** Flag `worker_absent_reassigned = true` on each case and insert an audit record into `case_assignment_history` with reason `Worker Absence`.
+
+---
+
+## 6. Runtime Engine & Execution Classification (WKF-01)
+
+### 6.1 Architectural Execution Distinction
+In ServiceNow scoped architecture, automated logic can be driven either by synchronous Business Rules / Script Includes or asynchronously via the Flow Designer execution engine (`sys_flow_context`).
+
+During Phase 1 Foundation:
+- **Synchronous Server Logic (Authoritative Runtime):** All intake, routing, priority calculation, SLA attachment, assignment history, evidence gating, and citizen confirmation gates are executed deterministically by the deployed Business Rules (`BR01`–`BR22`) and 6 Script Includes.
+- **Flow Designer Metadata (`sys_hub_flow`):** The 5 flows (F1, F4, F5, F6, F8) exist as scoped catalog specifications in `draft` state (`compiled_snapshot = null`). Because the Business Rules execute synchronously, activating uncompiled flow triggers would create duplicate execution conflicts and uncompiled action errors.
+- **Execution Evidence Classification:**
+  - F1 Intake Pipeline: **EXECUTED & VERIFIED** via Business Rules (`BR01`, `BR03`, `BR04`, `BR06`, `BR07`, `BR08`).
+  - F4 SLA Escalations: **EXECUTED & VERIFIED** via Business Rules (`BR06`, `BR16`, `BR17`).
+  - F5 Resolution & Citizen Confirmation Gate: **EXECUTED & VERIFIED** via Business Rules (`BR11`, `BR12`, `BR13`, `BR14`).
+  - F6 Multilingual Notifications: **EXECUTED & VERIFIED** via `BR18` and `NotificationComposer`.
+  - F8 Worker Absence Handler: **EXECUTED & VERIFIED** via `BR09`.
+  - Flow Designer Engine (`sys_flow_context`): **NOT TESTED** (catalog draft specifications; 0 engine contexts executed).

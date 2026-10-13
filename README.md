@@ -37,7 +37,7 @@ Instance credentials are stored in `.env`:
 ```env
 SERVICENOW_INSTANCE_URL=https://dev187180.service-now.com
 SERVICENOW_USERNAME=admin
-SERVICENOW_PASSWORD=mn%XC1^ScdA4
+SERVICENOW_PASSWORD=<YOUR_SERVICENOW_PASSWORD>
 ```
 
 ---
