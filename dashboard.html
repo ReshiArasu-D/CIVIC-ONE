@@ -119,17 +119,37 @@
 
     <!-- Top Navigation Bar -->
     <header class="dash-topbar">
-      <!-- Language Pill -->
-      <div class="lang-selector-pill" id="dash-lang-pill" title="Change Language">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="2" y1="12" x2="22" y2="12"></line>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-        </svg>
-        <span>English</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+      <!-- Language Pill & Dropdown (All 26 Indian Languages) -->
+      <div class="lang-selector-wrapper" id="lang-selector-wrapper">
+        <div class="lang-selector-pill" id="dash-lang-pill" onclick="toggleLanguageDropdown(event)" title="Select Portal Language" role="button" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span id="current-lang-label">English</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+
+        <!-- Dropdown Menu for 26 Indian Languages -->
+        <div class="lang-dropdown-panel" id="lang-dropdown-panel" style="display: none;" onclick="event.stopPropagation()">
+          <div class="lang-dropdown-header">
+            <div style="font-weight: 800; font-size: 0.86rem; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+              <span>🌐</span>
+              <span>Select Portal Language</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">26 Official &amp; Regional Languages of India</div>
+          </div>
+          <div class="lang-search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="lang-search-input" placeholder="Search language (e.g. Hindi, Tamil)..." oninput="filterLanguageList()" autocomplete="off">
+          </div>
+          <div class="lang-dropdown-list" id="lang-dropdown-list">
+            <!-- Dynamically populated 26 languages -->
+          </div>
+        </div>
       </div>
 
       <!-- Notifications Bell -->
@@ -1256,8 +1276,8 @@
     </main>
   </div>
 
-  <!-- Floating Ask CivicOne AI Widget -->
-  <aside class="floating-civicone-widget" id="civicone-widget-btn" onclick="openAssistantModal()" aria-label="Ask CivicOne AI Assistant">
+  <!-- Floating Ask CivicOne AI Widget & Conversation Box -->
+  <aside class="floating-civicone-widget" id="civicone-widget-btn" onclick="toggleCivicBotModal()" aria-label="Ask CivicOne AI Assistant" title="Chat with CivicOne AI">
     <div class="civicone-text-label">
       <span style="color: #f59e0b;">✨</span>
       <span>Ask CivicOne</span>
@@ -1266,6 +1286,85 @@
       <img src="assets/coopbot_avatar.jpg" alt="CivicOne Municipal AI Assistant">
     </div>
   </aside>
+
+  <!-- ====================================================================
+       CIVICONE AI FLOATING CONVERSATION BOX
+       ==================================================================== -->
+  <div class="civicone-chat-box" id="civicone-chat-box" style="display: none;">
+    <!-- Chat Header -->
+    <div class="civicone-chat-header">
+      <div class="civicone-chat-header-info">
+        <div class="civicone-chat-avatar-wrap">
+          <img src="assets/coopbot_avatar.jpg" alt="CivicOne AI">
+          <span class="civicone-online-badge"></span>
+        </div>
+        <div class="civicone-chat-title-group">
+          <div class="civicone-chat-title">CivicOne AI Assistant</div>
+          <div class="civicone-chat-sub">
+            <span class="chat-status-pulse"></span>
+            <span>Municipal Grievance AI &bull; Online</span>
+          </div>
+        </div>
+      </div>
+      <div class="civicone-chat-header-actions">
+        <button type="button" class="btn-chat-header-action" onclick="clearCivicBotChat()" title="Clear Chat History">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+        <button type="button" class="btn-chat-header-action" onclick="toggleCivicBotModal()" title="Minimize / Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Messages Scroll Area -->
+    <div class="civicone-chat-body" id="civicone-chat-body">
+      <!-- Initial Bot Welcome Bubble -->
+      <div class="chat-msg bot">
+        <div class="chat-msg-avatar">
+          <img src="assets/coopbot_avatar.jpg" alt="Bot">
+        </div>
+        <div class="chat-msg-bubble">
+          <div class="chat-msg-text">
+            Namaste! 🙏 I am your <strong>CivicOne Municipal AI Assistant</strong>.<br>
+            I can track your grievances in real-time, explain municipal SLAs, or assist you in reporting civic hazards.
+          </div>
+          <div class="chat-msg-time" id="bot-welcome-time">Just now</div>
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="chat-quick-chips" id="chat-quick-chips">
+        <button type="button" class="chat-chip" onclick="handleChipClick('Track CIV0001001')">
+          🔍 Track CIV0001001
+        </button>
+        <button type="button" class="chat-chip" onclick="handleChipClick('How do I register a complaint?')">
+          📝 Register grievance
+        </button>
+        <button type="button" class="chat-chip" onclick="handleChipClick('What are the municipal resolution SLAs?')">
+          ⏱️ Check SLA timelines
+        </button>
+        <button type="button" class="chat-chip" onclick="handleChipClick('Municipal 24/7 helpline number')">
+          📞 Municipal Helplines
+        </button>
+      </div>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="chat-typing-indicator" id="chat-typing-indicator" style="display: none;">
+      <div class="chat-typing-dot"></div>
+      <div class="chat-typing-dot"></div>
+      <div class="chat-typing-dot"></div>
+      <span style="font-size: 0.72rem; color: #64748b; margin-left: 4px;">CivicOne AI is typing...</span>
+    </div>
+
+    <!-- Chat Input Area -->
+    <form class="civicone-chat-footer" onsubmit="handleCivicBotSend(event)">
+      <input type="text" id="civicone-chat-input" placeholder="Ask about grievances, SLAs, or track case..." autocomplete="off" required>
+      <button type="submit" class="btn-chat-send" id="btn-chat-send" title="Send message">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </form>
+  </div>
 
   <!-- ====================================================================
        MODALS: GRIEVANCE DETAIL / TRACK / REGISTER / PROFILE
@@ -1520,23 +1619,26 @@
       updateMetricCounters();
       renderTable();
 
+      // 4. Initialize 26 Indian languages selector
+      initLanguageSelector();
+
       // Sync live records from ServiceNow backend
       fetch('/api/citizen/cases')
         .then(res => res.json())
         .then(data => {
           if (data && data.cases && data.cases.length > 0) {
             currentCases = data.cases.map(c => ({
-              no: c.case_number,
-              case_number: c.case_number,
-              category: c.category,
-              desc: c.short_description,
-              short_description: c.short_description,
-              details: c.description || c.short_description,
-              description: c.description,
-              submitted: c.submitted_on,
-              status: c.grievance_status,
-              grievance_status: c.grievance_status,
-              statusClass: (c.grievance_status === 'Resolved' || c.grievance_status === 'Closed') ? 'resolved' : (c.grievance_status === 'In Progress' || c.grievance_status === 'Assigned') ? 'in-progress' : 'pending',
+              no: c.case_number || c.no || c.id,
+              case_number: c.case_number || c.no || c.id,
+              category: c.category || 'General Civic Issue',
+              desc: c.short_description || c.desc || c.description || 'Grievance description',
+              short_description: c.short_description || c.desc || c.description || 'Grievance description',
+              details: c.description || c.short_description || c.desc || 'Logged in municipal registry',
+              description: c.description || c.short_description || c.desc || 'Logged in municipal registry',
+              submitted: c.submitted_on || c.submitted || c.submitted_at || 'Today',
+              status: c.grievance_status || c.status || 'Submitted',
+              grievance_status: c.grievance_status || c.status || 'Submitted',
+              statusClass: (c.grievance_status === 'Resolved' || c.grievance_status === 'Closed' || c.status === 'Resolved' || c.status === 'Closed') ? 'resolved' : (c.grievance_status === 'In Progress' || c.grievance_status === 'Assigned' || c.status === 'In Progress' || c.status === 'Assigned') ? 'in-progress' : 'pending',
               notes: 'Sourced from live ServiceNow case record.'
             }));
             updateMetricCounters();
@@ -1548,9 +1650,9 @@
 
     function updateMetricCounters() {
       const total = currentCases.length;
-      const pending = currentCases.filter(c => c.status === 'Pending').length;
-      const progress = currentCases.filter(c => c.status === 'In Progress').length;
-      const resolved = currentCases.filter(c => c.status === 'Resolved').length;
+      const pending = currentCases.filter(c => ['pending', 'submitted'].includes((c.status || c.grievance_status || '').toLowerCase())).length;
+      const progress = currentCases.filter(c => ['in progress', 'assigned', 'awaiting citizen confirmation', 'awaiting confirmation'].includes((c.status || c.grievance_status || '').toLowerCase())).length;
+      const resolved = currentCases.filter(c => ['resolved', 'closed'].includes((c.status || c.grievance_status || '').toLowerCase())).length;
 
       const totalEl = document.getElementById('metric-total-val');
       const pendingEl = document.getElementById('metric-pending-val');
@@ -2304,8 +2406,379 @@
     function openFeedbackModal() {
       alert('Thank you for rating municipal grievance redressal! Your feedback helps build cleaner, safer cities.');
     }
+    // =========================================================================
+    // 26 INDIAN LANGUAGES DROPDOWN CONTROLLER
+    // =========================================================================
+    const INDIAN_LANGUAGES = [
+      { code: 'en', name: 'English', native: 'English' },
+      { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
+      { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ' },
+      { code: 'ta', name: 'Tamil', native: 'தமிழ்' },
+      { code: 'te', name: 'Telugu', native: 'తెలుగు' },
+      { code: 'ml', name: 'Malayalam', native: 'മലയാളം' },
+      { code: 'mr', name: 'Marathi', native: 'मराठी' },
+      { code: 'bn', name: 'Bengali', native: 'বাংলা' },
+      { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
+      { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
+      { code: 'ur', name: 'Urdu', native: 'اردو' },
+      { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ' },
+      { code: 'as', name: 'Assamese', native: 'অসমীয়া' },
+      { code: 'mai', name: 'Maithili', native: 'मैथिली' },
+      { code: 'sat', name: 'Santali', native: 'ᱥᱟᱱᱛᱟᱲᱤ' },
+      { code: 'ks', name: 'Kashmiri', native: 'کٲشُر' },
+      { code: 'ne', name: 'Nepali', native: 'नेपाली' },
+      { code: 'kok', name: 'Konkani', native: 'कोंकणी' },
+      { code: 'sd', name: 'Sindhi', native: 'سنڌي' },
+      { code: 'doi', name: 'Dogri', native: 'डोगरी' },
+      { code: 'mni', name: 'Manipuri', native: 'মৈতৈলোন্' },
+      { code: 'brx', name: 'Bodo', native: 'बड़ो' },
+      { code: 'sa', name: 'Sanskrit', native: 'संस्कृतम्' },
+      { code: 'bho', name: 'Bhojpuri', native: 'भोजपुरी' },
+      { code: 'mwr', name: 'Marwari', native: 'मारवाड़ी' },
+      { code: 'tcy', name: 'Tulu', native: 'ತುಳು' }
+    ];
+
+    let currentSelectedLang = localStorage.getItem('civicone_selected_lang') || 'en';
+
+    function initLanguageSelector() {
+      const savedLang = INDIAN_LANGUAGES.find(l => l.code === currentSelectedLang);
+      const labelEl = document.getElementById('current-lang-label');
+      if (labelEl && savedLang) {
+        labelEl.innerText = savedLang.name;
+      }
+      renderLanguageList();
+    }
+
+    function toggleLanguageDropdown(e) {
+      if (e) e.stopPropagation();
+      const panel = document.getElementById('lang-dropdown-panel');
+      if (!panel) return;
+
+      const isHidden = panel.style.display === 'none' || !panel.style.display;
+      if (isHidden) {
+        renderLanguageList();
+        panel.style.display = 'flex';
+        const searchInput = document.getElementById('lang-search-input');
+        if (searchInput) {
+          searchInput.value = '';
+          setTimeout(() => searchInput.focus(), 50);
+        }
+      } else {
+        panel.style.display = 'none';
+      }
+    }
+
+    function renderLanguageList(filterText = '') {
+      const container = document.getElementById('lang-dropdown-list');
+      if (!container) return;
+
+      const q = filterText.trim().toLowerCase();
+      const filtered = INDIAN_LANGUAGES.filter(l => 
+        l.name.toLowerCase().includes(q) || l.native.toLowerCase().includes(q) || l.code.toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="padding: 14px; text-align: center; color: #64748b; font-size: 0.8rem;">No language matching "${escapeHtml(filterText)}"</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(l => {
+        const isSelected = l.code === currentSelectedLang;
+        return `
+          <div class="lang-option-row ${isSelected ? 'selected' : ''}" onclick="selectLanguage('${l.code}')">
+            <div class="lang-name-col">
+              <span class="lang-native-name">${l.native}</span>
+              <span class="lang-en-name">(${l.name})</span>
+            </div>
+            ${isSelected ? '<span class="lang-check-icon">✓</span>' : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterLanguageList() {
+      const input = document.getElementById('lang-search-input');
+      renderLanguageList(input ? input.value : '');
+    }
+
+    function selectLanguage(code) {
+      currentSelectedLang = code;
+      localStorage.setItem('civicone_selected_lang', code);
+
+      const langObj = INDIAN_LANGUAGES.find(l => l.code === code);
+      const labelEl = document.getElementById('current-lang-label');
+      if (labelEl && langObj) {
+        labelEl.innerText = langObj.name;
+      }
+
+      const panel = document.getElementById('lang-dropdown-panel');
+      if (panel) panel.style.display = 'none';
+
+      // Provide responsive feedback
+      showLanguageChangeToast(langObj ? `${langObj.native} (${langObj.name})` : code);
+    }
+
+    function showLanguageChangeToast(langName) {
+      let toast = document.getElementById('lang-toast-notification');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'lang-toast-notification';
+        toast.style.position = 'fixed';
+        toast.style.top = '84px';
+        toast.style.right = '32px';
+        toast.style.background = '#0f172a';
+        toast.style.color = '#ffffff';
+        toast.style.padding = '10px 18px';
+        toast.style.borderRadius = '12px';
+        toast.style.fontSize = '0.84rem';
+        toast.style.fontWeight = '700';
+        toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+        toast.style.zIndex = '9999';
+        toast.style.transition = 'all 0.3s ease';
+        toast.style.display = 'flex';
+        toast.style.alignItems = 'center';
+        toast.style.gap = '8px';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<span>🌐</span> Portal language updated to <strong>${langName}</strong>`;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+      }, 3000);
+    }
+
+    // Close language dropdown on outside click
+    document.addEventListener('click', (e) => {
+      const wrapper = document.getElementById('lang-selector-wrapper');
+      const panel = document.getElementById('lang-dropdown-panel');
+      if (wrapper && panel && !wrapper.contains(e.target)) {
+        panel.style.display = 'none';
+      }
+    });
+
+    // =========================================================================
+    // CIVICONE AI CONVERSATION BOX CONTROLLER (Interactive Floating Chatbot)
+    // =========================================================================
+    function toggleCivicBotModal() {
+      const box = document.getElementById('civicone-chat-box');
+      if (!box) return;
+
+      const isHidden = box.style.display === 'none' || !box.style.display;
+      if (isHidden) {
+        box.style.display = 'flex';
+        const input = document.getElementById('civicone-chat-input');
+        if (input) setTimeout(() => input.focus(), 100);
+        scrollChatToBottom();
+      } else {
+        box.style.display = 'none';
+      }
+    }
+
     function openAssistantModal() {
-      alert('Ask CivicOne AI: Hello! I am your AI Civic Assistant. You can track complaints, submit new issues, or get ward inspection updates right here.');
+      toggleCivicBotModal();
+    }
+
+    function clearCivicBotChat() {
+      const body = document.getElementById('civicone-chat-body');
+      if (!body) return;
+      body.innerHTML = `
+        <div class="chat-msg bot">
+          <div class="chat-msg-avatar">
+            <img src="assets/coopbot_avatar.jpg" alt="Bot">
+          </div>
+          <div class="chat-msg-bubble">
+            <div class="chat-msg-text">
+              Chat cleared. 🙏 How can I assist you with municipal grievances, tracking, or department SLAs?
+            </div>
+            <div class="chat-msg-time">Just now</div>
+          </div>
+        </div>
+        <div class="chat-quick-chips" id="chat-quick-chips">
+          <button type="button" class="chat-chip" onclick="handleChipClick('Track CIV0001001')">
+            🔍 Track CIV0001001
+          </button>
+          <button type="button" class="chat-chip" onclick="handleChipClick('How do I register a complaint?')">
+            📝 Register grievance
+          </button>
+          <button type="button" class="chat-chip" onclick="handleChipClick('What are the municipal resolution SLAs?')">
+            ⏱️ Check SLA timelines
+          </button>
+          <button type="button" class="chat-chip" onclick="handleChipClick('Municipal 24/7 helpline number')">
+            📞 Municipal Helplines
+          </button>
+        </div>
+      `;
+    }
+
+    function scrollChatToBottom() {
+      const body = document.getElementById('civicone-chat-body');
+      if (body) {
+        setTimeout(() => { body.scrollTop = body.scrollHeight; }, 50);
+      }
+    }
+
+    function handleChipClick(text) {
+      const input = document.getElementById('civicone-chat-input');
+      if (input) input.value = text;
+      handleCivicBotSend();
+    }
+
+    async function handleCivicBotSend(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('civicone-chat-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+
+      // Append citizen's user message
+      appendChatMessage('user', text);
+
+      // Show typing indicator
+      const typingEl = document.getElementById('chat-typing-indicator');
+      if (typingEl) typingEl.style.display = 'flex';
+      scrollChatToBottom();
+
+      // Process intelligent municipal response
+      setTimeout(async () => {
+        if (typingEl) typingEl.style.display = 'none';
+        const botResponse = await generateCivicBotResponse(text);
+        appendChatMessage('bot', botResponse);
+        scrollChatToBottom();
+      }, 550);
+    }
+
+    function appendChatMessage(sender, htmlContent) {
+      const body = document.getElementById('civicone-chat-body');
+      if (!body) return;
+
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-msg ${sender}`;
+
+      if (sender === 'bot') {
+        msgDiv.innerHTML = `
+          <div class="chat-msg-avatar">
+            <img src="assets/coopbot_avatar.jpg" alt="Bot">
+          </div>
+          <div class="chat-msg-bubble">
+            <div class="chat-msg-text">${htmlContent}</div>
+            <div class="chat-msg-time">${timeStr}</div>
+          </div>
+        `;
+      } else {
+        msgDiv.innerHTML = `
+          <div class="chat-msg-bubble">
+            <div class="chat-msg-text">${escapeHtml(htmlContent)}</div>
+            <div class="chat-msg-time">${timeStr}</div>
+          </div>
+        `;
+      }
+
+      body.appendChild(msgDiv);
+    }
+
+    async function generateCivicBotResponse(query) {
+      const q = query.toLowerCase();
+
+      // 1. Check for specific Case ID mention (e.g. CIV0001001, CIV0001008, CIV-2026-...)
+      const caseMatch = query.match(/CIV-?\d+/i);
+      if (caseMatch) {
+        const caseNo = caseMatch[0].replace('-', '').toUpperCase();
+        try {
+          const res = await fetch(`/api/citizen/track?case_number=${encodeURIComponent(caseNo)}`);
+          if (res.ok) {
+            const data = await res.json();
+            return `
+              <strong>📋 Grievance Record Found (${data.case_number}):</strong><br>
+              <strong>Issue:</strong> ${escapeHtml(data.short_description || data.title)}<br>
+              <strong>Status:</strong> <span style="color:#1d63ed; font-weight:800;">${data.grievance_status}</span><br>
+              <strong>Department:</strong> ${escapeHtml(data.department)}<br>
+              <strong>Field Officer:</strong> ${escapeHtml(data.assigned_to)}<br>
+              <strong>Target SLA:</strong> 24 Hours<br>
+              <div style="margin-top:8px;">
+                <button type="button" class="btn-wf-view" style="font-size:0.76rem; padding:4px 10px;" onclick="viewFullCaseReport('${data.case_number}'); toggleCivicBotModal();">
+                  View Full Official Report &rarr;
+                </button>
+              </div>
+            `;
+          }
+        } catch (err) {
+          // fallback
+        }
+      }
+
+      // 2. Track complaint inquiries
+      if (q.includes('track') || q.includes('status') || q.includes('check')) {
+        return `
+          To track any active complaint, you can type your <strong>Case ID</strong> (e.g. <code>CIV0001001</code>) right here, or visit the <a href="javascript:void(0)" onclick="navigateToPage('track'); toggleCivicBotModal();" style="color:#1d63ed; font-weight:700; text-decoration:underline;">Track Complaint</a> section.
+        `;
+      }
+
+      // 3. Registration / filing inquiries
+      if (q.includes('register') || q.includes('complaint') || q.includes('report') || q.includes('new') || q.includes('submit')) {
+        return `
+          You can file a new municipal grievance in 5 easy steps:<br>
+          1. Tag your exact GPS or map location.<br>
+          2. Attach photos or proof from your phone/camera.<br>
+          3. AI auto-categorizes the department &amp; priority.<br>
+          4. Review &amp; submit to receive a verified Case ID.<br>
+          <div style="margin-top:8px;">
+            <button type="button" class="btn-wizard-next" style="font-size:0.76rem; padding:5px 12px;" onclick="navigateToPage('register'); toggleCivicBotModal();">
+              Register Grievance Now &rarr;
+            </button>
+          </div>
+        `;
+      }
+
+      // 4. SLA Timelines & Deadlines
+      if (q.includes('sla') || q.includes('time') || q.includes('hour') || q.includes('deadline') || q.includes('how long')) {
+        return `
+          <strong>⏱️ Municipal Redressal SLAs (Citizen Charter):</strong><br>
+          • <strong>Pot holes &amp; Road Craters:</strong> Within 24-48 Hours<br>
+          • <strong>Water Main Leaks &amp; Contamination:</strong> Within 12-24 Hours (High Priority)<br>
+          • <strong>Streetlight Blackouts:</strong> Within 24 Hours<br>
+          • <strong>Solid Waste &amp; Garbage Dumps:</strong> Within 12 Hours<br>
+          All cases are monitored under automated zonal escalation rules.
+        `;
+      }
+
+      // 5. Helpline & Emergency
+      if (q.includes('help') || q.includes('call') || q.includes('phone') || q.includes('contact') || q.includes('number')) {
+        return `
+          <strong>📞 24/7 Municipal Redressal Directory:</strong><br>
+          • <strong>Central Citizen Helpline:</strong> 1800-425-4567 (Toll-Free)<br>
+          • <strong>Control Room WhatsApp:</strong> +91 98450 12345<br>
+          • <strong>Zonal Municipal Office:</strong> Indiranagar Ward 112 Command Desk<br>
+          • <strong>Emergency Sewerage Dispatch:</strong> 080-22221188
+        `;
+      }
+
+      // 6. Roads / Water / Garbage / Electricity domain inquiries
+      if (q.includes('pothole') || q.includes('road') || q.includes('water') || q.includes('leak') || q.includes('garbage') || q.includes('light')) {
+        return `
+          Our municipal redressal crew actively services this category under a <strong>24-Hour SLA</strong>.<br>
+          Would you like to report this at your current location now?
+          <div style="margin-top:8px;">
+            <button type="button" class="btn-wizard-next" style="font-size:0.76rem; padding:5px 12px;" onclick="navigateToPage('register'); toggleCivicBotModal();">
+              Start 1-Click Registration &rarr;
+            </button>
+          </div>
+        `;
+      }
+
+      // Default smart response
+      return `
+        I understand! I can help you with:<br>
+        • <strong>Tracking:</strong> Enter any Case ID (e.g. <code>CIV0001001</code>).<br>
+        • <strong>Filing:</strong> Report potholes, leaks, or garbage dumps.<br>
+        • <strong>SLA Inquiries:</strong> Know resolution deadlines for your ward.<br>
+        Feel free to ask any civic redressal question!
+      `;
     }
 
     function handleDetailBackdrop(e) { if (e.target.id === 'detail-modal') closeModal('detail-modal'); }
