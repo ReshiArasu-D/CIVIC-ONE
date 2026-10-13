@@ -2643,6 +2643,17 @@
       if (typingEl) typingEl.style.display = 'flex';
       scrollChatToBottom();
 
+      // Sync inquiry with ServiceNow AI Action Log in background
+      const caseMatch = text.match(/CIV-?\d+/i);
+      fetch('/api/assistant/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: text,
+          case_number: caseMatch ? caseMatch[0].replace('-', '').toUpperCase() : ''
+        })
+      }).catch(() => {});
+
       // Process intelligent municipal response
       setTimeout(async () => {
         if (typingEl) typingEl.style.display = 'none';

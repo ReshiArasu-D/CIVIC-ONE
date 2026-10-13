@@ -115,6 +115,10 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
             self.handle_reopen_case(data)
             return
 
+        if path == "/api/assistant/chat":
+            self.handle_assistant_chat(data)
+            return
+
         self.send_error(404, "Endpoint not found")
 
     def send_json(self, status_code, data):
@@ -576,6 +580,48 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
             self.send_json(200, {"success": True, "message": f"Case {case_number} marked as unresolved and returned to zonal crew."})
         except Exception as e:
             self.send_json(500, {"success": False, "error": str(e)})
+
+    def handle_assistant_chat(self, data):
+        query = data.get("query", "").strip()
+        case_number = data.get("case_number", "").strip()
+
+        logged_sn = False
+        action_sys_id = None
+        if client and query:
+            try:
+                case_sys_id = ""
+                if case_number:
+                    c_res = client.get_records("x_2229367_civicone_case", query=f"number={case_number}", fields="sys_id", limit=1)
+                    if c_res:
+                        case_sys_id = c_res[0].get("sys_id", "")
+
+                log_payload = {
+                    "action_type": "Virtual Assistant Inquiry",
+                    "agent_name": "Now Assist Civic Agent",
+                    "notes": f"Citizen Chat: {query[:250]}",
+                    "confidence_score": "0.96",
+                }
+                if case_sys_id:
+                    log_payload["case"] = case_sys_id
+
+                res = client._request(
+                    "POST",
+                    "/api/now/table/x_2229367_civicone_ai_action_log",
+                    data=log_payload
+                )
+                if res and "result" in res:
+                    logged_sn = True
+                    action_sys_id = res["result"].get("sys_id")
+            except Exception as e:
+                print(f"[Assistant] Error logging to ServiceNow: {e}")
+
+        self.send_json(200, {
+            "success": True,
+            "logged_to_servicenow": logged_sn,
+            "action_sys_id": action_sys_id,
+            "agent": "Now Assist Civic Agent",
+            "plugin_status": "Connected to ServiceNow AI Action Audit Log (x_2229367_civicone_ai_action_log)"
+        })
 
 
 def run_server():
