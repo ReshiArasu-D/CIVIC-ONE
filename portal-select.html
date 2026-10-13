@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Your Portal — CivicOne</title>
+  <meta name="description" content="Access the right portal based on your role. Together, we build a cleaner, safer and better city for everyone with CivicOne.">
+  <link rel="stylesheet" href="app/ui/portal_select.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231d63ed%22><path d=%22M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z%22/></svg>">
+</head>
+<body>
+
+  <!-- Background Panoramic Canvas Layer -->
+  <div class="portal-bg-canvas" aria-hidden="true"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="portal-topbar">
+    <a href="index.html" class="back-home-link" title="Return to CivicOne Home">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <div class="brand-inline">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z"/>
+        </svg>
+        <span>CivicOne</span>
+      </div>
+    </a>
+
+    <div class="topbar-right">
+      <div class="lang-pill" id="portal-lang-toggle" title="Select Language">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span>English</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- Script Calligraphy Tagline on Upper Right -->
+  <aside class="script-tagline-wrap" aria-hidden="true">
+    <!-- Flying Bird Silhouettes SVG -->
+    <div class="script-birds">
+      <svg width="64" height="34" viewBox="0 0 100 50" fill="#334155">
+        <path d="M10 20 Q 20 10, 30 20 Q 40 10, 50 20 Q 40 16, 30 18 Q 20 16, 10 20 Z" transform="scale(0.55) translate(0, 0)"/>
+        <path d="M10 20 Q 20 10, 30 20 Q 40 10, 50 20 Q 40 16, 30 18 Q 20 16, 10 20 Z" transform="scale(0.4) translate(70, -20)"/>
+        <path d="M10 20 Q 20 10, 30 20 Q 40 10, 50 20 Q 40 16, 30 18 Q 20 16, 10 20 Z" transform="scale(0.32) translate(130, 25)"/>
+      </svg>
+    </div>
+    <span class="script-text">
+      People First<br>
+      Cleaner Cities<br>
+      Brighter Tomorrows
+    </span>
+    <!-- Tricolor Flag Line Accent -->
+    <div class="script-tricolor-line">
+      <span class="c-saffron"></span>
+      <span class="c-white"></span>
+      <span class="c-green"></span>
+    </div>
+  </aside>
+
+  <!-- Main Selection Content -->
+  <main class="portal-content-wrap">
+    <!-- Hero Heading Section -->
+    <section class="portal-header-block">
+      <div class="badge-tagline">
+        ONE PLATFORM • CLEANER CITIES • STRONGER COMMUNITIES
+      </div>
+
+      <h1 class="portal-title">
+        Choose <span class="title-accent">Your Portal</span>
+      </h1>
+
+      <p class="portal-subtitle">
+        Access the right portal based on your role. Together, we build a cleaner, safer and better city for everyone.
+      </p>
+
+      <!-- Center Indian Tricolor Stripe -->
+      <div class="tricolor-stripe-center" aria-hidden="true">
+        <span class="stripe-saffron"></span>
+        <span class="stripe-white"></span>
+        <span class="stripe-green"></span>
+      </div>
+    </section>
+
+    <!-- Two Portal Selection Cards -->
+    <section class="portal-cards-grid" aria-label="Portal Options">
+      
+      <!-- ====================================================================
+           CARD 1: CITIZEN PORTAL (ACTIVE)
+           ==================================================================== -->
+      <article class="portal-card citizen-portal-card" id="card-citizen">
+        <!-- Card Header -->
+        <div class="card-header-top">
+          <div class="card-header-left">
+            <div class="card-icon-box" aria-hidden="true">
+              <!-- Community / Citizens Group Icon -->
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="card-heading-group">
+              <span class="card-badge-category">CITIZEN SERVICES</span>
+              <h2 class="card-title-text">Citizen Portal</h2>
+            </div>
+          </div>
+
+          <a href="index.html#intake" class="card-circle-arrow" title="Enter Citizen Portal" aria-label="Enter Citizen Portal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+
+        <p class="card-desc-text">
+          Register complaints, track progress, receive updates and share feedback.
+        </p>
+
+        <!-- Card Split Body: 3D Illustration + 4 Feature Items -->
+        <div class="card-body-split">
+          <!-- 3D Graphic Column -->
+          <div class="card-visual-column">
+            <img src="assets/citizen_card_ill.jpg" alt="Citizen Grievance and Compliance Checklist 3D Illustration" loading="lazy">
+          </div>
+
+          <!-- Feature Items Column -->
+          <div class="features-list">
+            <!-- Feature 1 -->
+            <div class="feature-item">
+              <div class="feature-icon-pill icon-blue" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                  <line x1="9" y1="11" x2="15" y2="11"></line>
+                  <line x1="9" y1="15" x2="13" y2="15"></line>
+                </svg>
+              </div>
+              <div class="feature-text-group">
+                <span class="feature-title">Register a Grievance</span>
+                <span class="feature-subtitle">Report civic issues easily</span>
+              </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature-item">
+              <div class="feature-icon-pill icon-cyan" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <div class="feature-text-group">
+                <span class="feature-title">Track Complaint Status</span>
+                <span class="feature-subtitle">Get real-time updates</span>
+              </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-item">
+              <div class="feature-icon-pill icon-amber" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <div class="feature-text-group">
+                <span class="feature-title">Receive Notifications</span>
+                <span class="feature-subtitle">Stay informed</span>
+              </div>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="feature-item">
+              <div class="feature-icon-pill icon-orange" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <div class="feature-text-group">
+                <span class="feature-title">Give Feedback</span>
+                <span class="feature-subtitle">Help us serve you better</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="card-action-footer">
+          <a href="index.html#intake" class="btn-card-action btn-citizen-enter" id="enter-citizen-portal-btn">
+            <span>Enter Citizen Portal</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- ====================================================================
+           CARD 2: OFFICER / ADMIN PORTAL (PHASE 3 / COMING SOON)
+           ==================================================================== -->
+      <article class="portal-card admin-portal-card" id="card-admin">
+        <!-- Card Header -->
+        <div class="card-header-top">
+          <div class="card-header-left">
+            <div class="card-icon-box" aria-hidden="true">
+              <!-- Neoclassical Municipal Pillar Building Icon -->
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z"/>
+              </svg>
+            </div>
+            <div class="card-heading-group">
+              <span class="card-badge-category">PUBLIC OFFICIALS</span>
+              <h2 class="card-title-text">Officer / Admin Portal</h2>
+            </div>
+          </div>
+
+          <div class="card-circle-arrow" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <p class="card-desc-text">
+          Manage, resolve and monitor grievances across jurisdictions.
+        </p>
+
+        <!-- Card Split Body: 3D Illustration + 4 Feature Items -->
+        <div class="card-body-split">
+          <!-- 3D Graphic Column -->
+          <div class="card-visual-column">
+            <img src="assets/admin_card_ill.jpg" alt="Officer and Admin Data Analytics Dashboard 3D Illustration" loading="lazy">
+          </div>
+
+          <!-- Feature Items Column -->
+          <div class="features-list">
+            <!-- Feature 1 -->
+            <div class="feature-item">
+              <div class="feature-icon-pill icon-purple" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 20V10"></path>
+                  <path d="M12 20V4"></path>
+                  <path d="M6 20v-6"></path>
+                </svg>
+              </div>
+              <div class="feature-text-group">
+                <span class="feature-title">View Grievance Queue</span>
+                <span class="feature-subtitle">Monitor and manage cases</span>
+              </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature-item">
+              <div class="feature-icon-pill icon-green" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+              </div>
+              <div class="feature-text-group">
+                <span class="feature-title">Update Case Status</span>
+                <span class="feature-subtitle">Resolve and close complaints</span>
+              </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-item">
+              <div class="feature-icon-pill icon-orange" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="feature-text-group">
+                <span class="feature-title">Manage Assignments</span>
+                <span class="feature-subtitle">Assign and reassign cases</span>
+              </div>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="feature-item">
+              <div class="feature-icon-pill icon-cyan" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                  <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+              </div>
+              <div class="feature-text-group">
+                <span class="feature-title">View Reports & Analytics</span>
+                <span class="feature-subtitle">Track performance and SLA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button (Locked / Coming Soon) -->
+        <div class="card-action-footer">
+          <button class="btn-card-action btn-coming-soon" id="admin-coming-soon-btn" onclick="showAdminComingSoonNotice()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <span>Coming Soon</span>
+          </button>
+          <span class="coming-soon-disclaimer">Officer and Admin access will be available in a later phase.</span>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <!-- Floating Ask CoopBot AI Widget -->
+  <aside class="floating-coopbot-widget" id="coopbot-widget-btn" onclick="toggleCoopBotModal()" aria-label="Ask CoopBot AI Assistant">
+    <div class="coopbot-text-label">
+      <span class="coopbot-sparkle-icon">✨</span>
+      <span>Ask CoopBot AI</span>
+    </div>
+    <div class="coopbot-avatar-thumb">
+      <img src="assets/coopbot_avatar.jpg" alt="CoopBot AI Municipal Assistant">
+    </div>
+  </aside>
+
+  <!-- Interactive CoopBot Modal Dialog -->
+  <div class="coopbot-modal-overlay" id="coopbot-modal" onclick="handleCoopBotBackdropClick(event)">
+    <div class="coopbot-chat-panel" role="dialog" aria-modal="true" aria-labelledby="chat-bot-title">
+      <div class="chat-panel-header">
+        <div class="chat-bot-info">
+          <div class="chat-bot-avatar">
+            <img src="assets/coopbot_avatar.jpg" alt="CoopBot AI">
+          </div>
+          <div class="chat-bot-title-group">
+            <span class="chat-bot-name" id="chat-bot-title">CoopBot AI Assistant</span>
+            <span class="chat-bot-status">● Municipal Grievance Guide</span>
+          </div>
+        </div>
+        <button class="close-chat-btn" onclick="toggleCoopBotModal()" aria-label="Close Chat">&times;</button>
+      </div>
+
+      <div class="chat-panel-body" id="chat-messages-container">
+        <div class="bot-msg-bubble">
+          👋 Hello! I am <strong>CoopBot</strong>, your AI Municipal Assistant. How can I help you navigate the CivicOne portals today?
+        </div>
+
+        <div class="quick-prompts-group">
+          <button class="quick-prompt-btn" onclick="askQuickPrompt('How do I register a new grievance?')">
+            👉 How do I register a new grievance?
+          </button>
+          <button class="quick-prompt-btn" onclick="askQuickPrompt('How do I track my complaint status?')">
+            👉 How do I track my complaint status?
+          </button>
+          <button class="quick-prompt-btn" onclick="askQuickPrompt('When will Officer and Admin Portal launch?')">
+            👉 When does Officer & Admin Portal launch?
+          </button>
+        </div>
+      </div>
+
+      <form class="chat-panel-footer" onsubmit="handleSendChat(event)">
+        <input type="text" id="chat-user-input" class="chat-input" placeholder="Ask CoopBot anything..." autocomplete="off">
+        <button type="submit" class="chat-send-btn" aria-label="Send message">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript Interactions -->
+  <script>
+    function toggleCoopBotModal() {
+      const modal = document.getElementById('coopbot-modal');
+      modal.classList.toggle('active');
+      if (modal.classList.contains('active')) {
+        document.getElementById('chat-user-input').focus();
+      }
+    }
+
+    function handleCoopBotBackdropClick(event) {
+      if (event.target === document.getElementById('coopbot-modal')) {
+        toggleCoopBotModal();
+      }
+    }
+
+    function showAdminComingSoonNotice() {
+      alert('Officer & Admin Portal is currently undergoing security hardening and verification in Phase 1/Phase 2. It will be enabled in Phase 3 for designated municipal officers.');
+    }
+
+    function askQuickPrompt(question) {
+      appendChatMessage(question, 'user');
+      setTimeout(() => {
+        let answer = "To submit a grievance or track your status, click on 'Enter Citizen Portal' on the left card!";
+        if (question.includes('track')) {
+          answer = "You can track your case by clicking 'Enter Citizen Portal' and using your Reference Ticket ID (e.g., CIV0001001) in the tracker.";
+        } else if (question.includes('Officer') || question.includes('Admin')) {
+          answer = "The Officer & Admin Portal is scheduled for deployment in Phase 3 after citizen onboarding is complete.";
+        }
+        appendChatMessage(answer, 'bot');
+      }, 400);
+    }
+
+    function handleSendChat(event) {
+      event.preventDefault();
+      const input = document.getElementById('chat-user-input');
+      const val = input.value.trim();
+      if (!val) return;
+      appendChatMessage(val, 'user');
+      input.value = '';
+      setTimeout(() => {
+        appendChatMessage("I can help you navigate CivicOne! Please select 'Enter Citizen Portal' to report issues or check grievance status in your zone.", 'bot');
+      }, 500);
+    }
+
+    function appendChatMessage(text, sender) {
+      const container = document.getElementById('chat-messages-container');
+      const bubble = document.createElement('div');
+      bubble.className = sender === 'user' ? 'bot-msg-bubble' : 'bot-msg-bubble';
+      if (sender === 'user') {
+        bubble.style.background = '#1d63ed';
+        bubble.style.color = '#ffffff';
+        bubble.style.marginLeft = 'auto';
+        bubble.style.borderTopLeftRadius = '14px';
+        bubble.style.borderTopRightRadius = '4px';
+      }
+      bubble.innerText = text;
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+    }
+  </script>
+</body>
+</html>

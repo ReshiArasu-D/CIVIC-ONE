@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CivicOne — Citizen Grievance Redressal Portal</title>
-  <meta name="description" content="CivicOne is the next-generation citizen grievance redressal platform. Report civic issues, track complaints in real-time, and help build a cleaner, safer, and better city.">
+  <meta name="description"
+    content="CivicOne is the next-generation citizen grievance redressal platform. Report civic issues, track complaints in real-time, and help build a cleaner, safer, and better city.">
   <link rel="stylesheet" href="app/ui/landing_page.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230066CC'><path d='M12 2L2 7v2h20V7L12 2zm-7 9v8h2v-8H5zm5 0v8h2v-8h-2zm5 0v8h2v-8h-2zm5 0v8h2v-8h-2zM2 20v2h20v-2H2z'/></svg>">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230066CC'><path d='M12 2L2 7v2h20V7L12 2zm-7 9v8h2v-8H5zm5 0v8h2v-8h-2zm5 0v8h2v-8h-2zm5 0v8h2v-8h-2zM2 20v2h20v-2H2z'/></svg>">
 </head>
+
 <body>
 
   <!-- ========================================================================
@@ -20,7 +24,8 @@
         <div class="logo-icon-wrap">
           <!-- Classical Neoclassical Monument / Civic Building Icon -->
           <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z"/>
+            <path
+              d="M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z" />
           </svg>
         </div>
         <div class="logo-text-group">
@@ -46,14 +51,17 @@
         <div class="lang-dropdown-wrapper">
           <button class="lang-btn" id="lang-btn" aria-expanded="false" aria-haspopup="true">
             <!-- Globe Icon -->
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+              </path>
             </svg>
             <span id="current-lang-text">English</span>
             <!-- Chevron Down Icon -->
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
@@ -87,7 +95,8 @@
         <!-- Top Micro-Badge -->
         <div class="hero-badge" onclick="openGrievanceModal()">
           <span>A Cleaner &bull; A Safer &bull; A Better City</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
@@ -101,14 +110,16 @@
 
         <!-- Subtitle -->
         <p class="hero-subtitle">
-          Report civic issues, track complaints, and help build a cleaner, safer, and better city with <strong>CivicOne</strong>.
+          Report civic issues, track complaints, and help build a cleaner, safer, and better city with
+          <strong>CivicOne</strong>.
         </p>
 
         <!-- CTA Buttons Group -->
         <div class="hero-cta-group">
           <button class="btn-hero-primary" id="hero-get-started-btn" onclick="openGrievanceModal()">
             <span>Get Started</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
@@ -129,7 +140,8 @@
           <!-- Metric 1: Resolved -->
           <div class="metric-item">
             <div class="metric-icon-bubble green">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
             </div>
@@ -142,7 +154,8 @@
           <!-- Metric 2: Zones -->
           <div class="metric-item">
             <div class="metric-icon-bubble blue">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
@@ -156,9 +169,12 @@
           <!-- Metric 3: Support -->
           <div class="metric-item">
             <div class="metric-icon-bubble orange">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                <path
+                  d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z">
+                </path>
               </svg>
             </div>
             <div class="metric-text-group">
@@ -170,7 +186,8 @@
           <!-- Metric 4: Communities -->
           <div class="metric-item">
             <div class="metric-icon-bubble gold">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -188,7 +205,8 @@
       <!-- Right Floating Glass Card (Overlapping Skyline) -->
       <div class="hero-right-card">
         <div class="card-pin-bubble">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
             <circle cx="12" cy="10" r="3"></circle>
           </svg>
@@ -208,7 +226,8 @@
       <div class="section-header-row">
         <div class="section-title-wrap">
           <div class="section-header-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="7" height="7"></rect>
               <rect x="14" y="3" width="7" height="7"></rect>
               <rect x="14" y="14" width="7" height="7"></rect>
@@ -219,7 +238,8 @@
         </div>
         <a href="#services" class="section-view-all-link" onclick="openGrievanceModal('all')">
           <span>View All Services</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
@@ -248,7 +268,8 @@
         <div class="service-card" onclick="openGrievanceModal('CAT-ROD-POTHOLE')">
           <div class="service-card-top">
             <div class="service-icon-box roads">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 19L8 5h8l4 14H4z"></path>
                 <line x1="12" y1="8" x2="12" y2="10"></line>
                 <line x1="12" y1="14" x2="12" y2="16"></line>
@@ -266,7 +287,8 @@
         <div class="service-card" onclick="openGrievanceModal('CAT-SAN-GARBAGE')">
           <div class="service-card-top">
             <div class="service-icon-box waste">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                 <line x1="10" y1="11" x2="10" y2="17"></line>
@@ -301,7 +323,8 @@
         <div class="service-card" onclick="openGrievanceModal('CAT-ROD-DRAIN')">
           <div class="service-card-top">
             <div class="service-icon-box sanitation">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path>
                 <path d="M8 10V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"></path>
                 <line x1="2" y1="14" x2="22" y2="14"></line>
@@ -327,9 +350,12 @@
         <div>
           <div class="section-title-wrap">
             <div class="section-header-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                </path>
               </svg>
             </div>
             <h2 class="section-heading">How It Works</h2>
@@ -339,7 +365,8 @@
 
         <a href="#about" class="section-view-all-link" onclick="openWatchModal()">
           <span>Learn More</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
@@ -352,7 +379,8 @@
         <div class="step-card">
           <div class="step-icon-wrapper">
             <div class="step-badge-num step-1">1</div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
@@ -369,7 +397,8 @@
         <div class="step-card">
           <div class="step-icon-wrapper">
             <div class="step-badge-num step-2">2</div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
               <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -389,7 +418,8 @@
         <div class="step-card">
           <div class="step-icon-wrapper">
             <div class="step-badge-num step-3">3</div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -406,7 +436,8 @@
         <div class="step-card">
           <div class="step-icon-wrapper">
             <div class="step-badge-num step-4">4</div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
           </div>
@@ -424,17 +455,26 @@
        ======================================================================== -->
   <footer class="footer-quote-banner" id="help">
     <!-- Stylized Architectural Monument Silhouette SVG -->
-    <svg class="skyline-svg-bg" viewBox="0 0 1200 120" preserveAspectRatio="none" fill="none" stroke="#38BDF8" stroke-width="1.2">
+    <svg class="skyline-svg-bg" viewBox="0 0 1200 120" preserveAspectRatio="none" fill="none" stroke="#38BDF8"
+      stroke-width="1.2">
       <!-- Monument Palace Dome & Columns -->
-      <path d="M 0,120 L 0,90 L 40,90 L 40,70 L 60,70 L 60,90 L 100,90 L 100,60 L 120,60 L 120,30 Q 150,10 180,30 L 180,60 L 200,60 L 200,90 L 240,90 L 240,120 Z" opacity="0.6"></path>
+      <path
+        d="M 0,120 L 0,90 L 40,90 L 40,70 L 60,70 L 60,90 L 100,90 L 100,60 L 120,60 L 120,30 Q 150,10 180,30 L 180,60 L 200,60 L 200,90 L 240,90 L 240,120 Z"
+        opacity="0.6"></path>
       <!-- High-rise Skyline -->
-      <path d="M 240,120 L 240,50 L 270,50 L 270,30 L 300,30 L 300,50 L 330,50 L 330,80 L 380,80 L 380,20 L 420,20 L 420,80 L 470,80 L 470,120 Z" opacity="0.5"></path>
+      <path
+        d="M 240,120 L 240,50 L 270,50 L 270,30 L 300,30 L 300,50 L 330,50 L 330,80 L 380,80 L 380,20 L 420,20 L 420,80 L 470,80 L 470,120 Z"
+        opacity="0.5"></path>
       <!-- Vidhana Soudha Style Grand Dome Palace -->
-      <path d="M 470,120 L 470,70 L 520,70 L 520,50 L 570,50 L 570,30 Q 600,0 630,30 L 630,50 L 680,50 L 680,70 L 730,70 L 730,120 Z" opacity="0.8"></path>
+      <path
+        d="M 470,120 L 470,70 L 520,70 L 520,50 L 570,50 L 570,30 Q 600,0 630,30 L 630,50 L 680,50 L 680,70 L 730,70 L 730,120 Z"
+        opacity="0.8"></path>
       <!-- Modern City Towers & Clock Tower -->
-      <path d="M 730,120 L 730,60 L 760,60 L 760,25 L 780,10 L 800,25 L 800,60 L 840,60 L 840,40 L 890,40 L 890,120 Z" opacity="0.5"></path>
+      <path d="M 730,120 L 730,60 L 760,60 L 760,25 L 780,10 L 800,25 L 800,60 L 840,60 L 840,40 L 890,40 L 890,120 Z"
+        opacity="0.5"></path>
       <!-- Metro Pillars and Cable Bridge -->
-      <path d="M 890,120 L 890,80 L 950,80 L 980,40 L 1010,80 L 1070,80 L 1100,40 L 1130,80 L 1200,80 L 1200,120 Z" opacity="0.6"></path>
+      <path d="M 890,120 L 890,80 L 950,80 L 980,40 L 1010,80 L 1070,80 L 1100,40 L 1130,80 L 1200,80 L 1200,120 Z"
+        opacity="0.6"></path>
       <!-- Ground line -->
       <line x1="0" y1="120" x2="1200" y2="120" stroke="#38BDF8" stroke-width="2"></line>
     </svg>
@@ -453,7 +493,8 @@
 
       <!-- Footer Meta Row -->
       <div class="footer-meta-row">
-        <span>&copy; 2026 CivicOne Portal &bull; Department of Municipal Administration &bull; Scope: <code>x_2229367_civicone</code></span>
+        <span>&copy; 2026 CivicOne Portal &bull; Department of Municipal Administration &bull; Scope:
+          <code>x_2229367_civicone</code></span>
         <ul class="footer-meta-links">
           <li><a href="#home" class="footer-meta-link" onclick="openTrackModal()">Track Ticket</a></li>
           <li><a href="#services" class="footer-meta-link">Citizen Charter</a></li>
@@ -506,18 +547,25 @@
 
           <div class="form-group">
             <label class="form-label" for="intake-short">Brief Title *</label>
-            <input type="text" class="form-input" id="intake-short" placeholder="e.g. Major water pipeline leakage on 12th Main" required>
+            <input type="text" class="form-input" id="intake-short"
+              placeholder="e.g. Major water pipeline leakage on 12th Main" required>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="intake-desc">Detailed Complaint &bull; Automated PII Protection Active *</label>
-            <textarea class="form-textarea" id="intake-desc" placeholder="Describe the location and issue. Any Aadhaar, PAN, phone numbers or email will be automatically masked on server." required oninput="previewPiiMasking(this.value)"></textarea>
-            <div id="pii-preview" style="display:none; margin-top:8px; padding:10px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:6px; font-size:12px; color:#166534;"></div>
+            <label class="form-label" for="intake-desc">Detailed Complaint &bull; Automated PII Protection Active
+              *</label>
+            <textarea class="form-textarea" id="intake-desc"
+              placeholder="Describe the location and issue. Any Aadhaar, PAN, phone numbers or email will be automatically masked on server."
+              required oninput="previewPiiMasking(this.value)"></textarea>
+            <div id="pii-preview"
+              style="display:none; margin-top:8px; padding:10px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:6px; font-size:12px; color:#166534;">
+            </div>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="intake-phone">Citizen Contact Number</label>
-            <input type="tel" class="form-input" id="intake-phone" placeholder="10-digit mobile number for SMS tracking updates">
+            <input type="tel" class="form-input" id="intake-phone"
+              placeholder="10-digit mobile number for SMS tracking updates">
           </div>
 
           <div id="submission-result" style="display:none; margin-top:14px; padding:14px; border-radius:8px;"></div>
@@ -547,10 +595,14 @@
         <div class="form-group">
           <label class="form-label" for="track-ticket-input">Ticket / Case Reference Number</label>
           <div style="display:flex; gap:10px;">
-            <input type="text" class="form-input" id="track-ticket-input" placeholder="e.g. CIV0001001 or CIV0001004" value="CIV0001001">
-            <button type="button" class="btn-hero-primary" style="padding:10px 20px; flex-shrink:0;" onclick="lookupTicketStatus()">Search</button>
+            <input type="text" class="form-input" id="track-ticket-input" placeholder="e.g. CIV0001001 or CIV0001004"
+              value="CIV0001001">
+            <button type="button" class="btn-hero-primary" style="padding:10px 20px; flex-shrink:0;"
+              onclick="lookupTicketStatus()">Search</button>
           </div>
-          <small style="color:#64748B; display:block; margin-top:4px;">Try demo cases: <strong>CIV0001001</strong> (Water Leak), <strong>CIV0001004</strong> (Pothole), <strong>CIV0001013</strong> (Awaiting Confirmation)</small>
+          <small style="color:#64748B; display:block; margin-top:4px;">Try demo cases: <strong>CIV0001001</strong>
+            (Water Leak), <strong>CIV0001004</strong> (Pothole), <strong>CIV0001013</strong> (Awaiting
+            Confirmation)</small>
         </div>
 
         <div id="track-result-card" style="margin-top:18px; display:none;"></div>
@@ -573,32 +625,47 @@
       <div class="modal-body" style="padding:28px 24px;">
         <div style="display:flex; flex-direction:column; gap:20px;">
           <div style="display:flex; gap:16px; align-items:flex-start;">
-            <div style="width:36px; height:36px; border-radius:50%; background:#E0F2FE; color:#0284C7; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">1</div>
+            <div
+              style="width:36px; height:36px; border-radius:50%; background:#E0F2FE; color:#0284C7; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">
+              1</div>
             <div>
-              <h4 style="font-size:15px; font-weight:700; color:#0B2545;">Deterministic Intake &amp; PII Sanitization</h4>
-              <p style="font-size:13px; color:#64748B; margin-top:3px;">Your raw complaint is scrubbed with <code>PiiMasker</code> to redact Aadhaar, PAN, phone numbers, and emails before field workers inspect the case.</p>
+              <h4 style="font-size:15px; font-weight:700; color:#0B2545;">Deterministic Intake &amp; PII Sanitization
+              </h4>
+              <p style="font-size:13px; color:#64748B; margin-top:3px;">Your raw complaint is scrubbed with
+                <code>PiiMasker</code> to redact Aadhaar, PAN, phone numbers, and emails before field workers inspect
+                the case.</p>
             </div>
           </div>
 
           <div style="display:flex; gap:16px; align-items:flex-start;">
-            <div style="width:36px; height:36px; border-radius:50%; background:#EDE9FE; color:#7C3AED; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">2</div>
+            <div
+              style="width:36px; height:36px; border-radius:50%; background:#EDE9FE; color:#7C3AED; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">
+              2</div>
             <div>
               <h4 style="font-size:15px; font-weight:700; color:#0B2545;">GeoRouter &amp; Priority Scoring Engine</h4>
-              <p style="font-size:13px; color:#64748B; margin-top:3px;"><code>GeoRouter</code> resolves the geographic ward and nearest civic asset. <code>PriorityScorer</code> computes a deterministic priority score (e.g. Life-safety wire hazard: 6h SLA).</p>
+              <p style="font-size:13px; color:#64748B; margin-top:3px;"><code>GeoRouter</code> resolves the geographic
+                ward and nearest civic asset. <code>PriorityScorer</code> computes a deterministic priority score (e.g.
+                Life-safety wire hazard: 6h SLA).</p>
             </div>
           </div>
 
           <div style="display:flex; gap:16px; align-items:flex-start;">
-            <div style="width:36px; height:36px; border-radius:50%; background:#DCFCE7; color:#16A34A; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">3</div>
+            <div
+              style="width:36px; height:36px; border-radius:50%; background:#DCFCE7; color:#16A34A; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">
+              3</div>
             <div>
-              <h4 style="font-size:15px; font-weight:700; color:#0B2545;">Resolution Evidence &amp; Citizen Confirmation Gate</h4>
-              <p style="font-size:13px; color:#64748B; margin-top:3px;">Officers cannot close cases arbitrarily. Resolution proof photos must be attached, and the citizen receives a confirmation prompt. If disputed, the case automatically reopens.</p>
+              <h4 style="font-size:15px; font-weight:700; color:#0B2545;">Resolution Evidence &amp; Citizen Confirmation
+                Gate</h4>
+              <p style="font-size:13px; color:#64748B; margin-top:3px;">Officers cannot close cases arbitrarily.
+                Resolution proof photos must be attached, and the citizen receives a confirmation prompt. If disputed,
+                the case automatically reopens.</p>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn-primary-pill" onclick="closeModals(); openGrievanceModal();">Report an Issue Now &rarr;</button>
+        <button class="btn-primary-pill" onclick="closeModals(); openGrievanceModal();">Report an Issue Now
+          &rarr;</button>
       </div>
     </div>
   </div>
@@ -799,4 +866,5 @@
     }
   </script>
 </body>
+
 </html>
