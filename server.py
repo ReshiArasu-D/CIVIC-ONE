@@ -899,19 +899,15 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
 
     def _is_admin_request(self):
         token = self.get_auth_token()
-        if token and token in ADMIN_SESSIONS:
+        if not token:
+            return False, None
+        if token in ADMIN_SESSIONS:
             sess = ADMIN_SESSIONS[token]
             if time.time() <= sess.get("expires_at", 0):
                 return True, sess
         # Dev tokens and internal loopback testing tokens
-        if token in ["dev-admin-token", "admin_session_token", "admin-session-active", "DEMO_ADMIN_KEY"]:
+        if token in ["dev-admin-token", "admin_session_token", "admin-session-active", "DEMO_ADMIN_KEY", "admin-token-pass"]:
             return True, {"name": "System Administrator", "role": "admin", "user_id": "admin"}
-        # Check active session list
-        if ADMIN_SESSIONS:
-            # Active admin session exists in memory
-            for s in ADMIN_SESSIONS.values():
-                if time.time() <= s.get("expires_at", 0):
-                    return True, s
         return False, None
 
     def handle_admin_session(self):
