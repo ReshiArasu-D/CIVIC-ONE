@@ -4905,4 +4905,234 @@ body {
   gap: 8px;
 }
 
+/* ==========================================================================
+   AI ORCHESTRATION & FOUR SUBAGENTS STYLING (PS07 AI SPECIFICATION)
+   ========================================================================== */
+
+/* Header AI Orchestrator Button */
+.btn-header-ai-orchestrator {
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  color: #1d63ed;
+  border-radius: 9px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(29, 99, 237, 0.08);
+}
+
+.btn-header-ai-orchestrator:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+}
+
+.ai-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.ai-mode-pill {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #fef3c7;
+  color: #b45309;
+  letter-spacing: 0.5px;
+  border: 1px solid #fde68a;
+}
+
+.ai-mode-pill.live {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+/* Simulation & Safeguard Banners */
+.ai-simulation-banner {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.76rem;
+  color: #92400e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.ai-safeguard-banner {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.76rem;
+  color: #1e40af;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+/* AI 2-Column Split Cards */
+.ai-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .ai-split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ai-card-panel {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ai-card-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ai-fact-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.78rem;
+  border-bottom: 1px dashed #f1f5f9;
+}
+
+.ai-fact-row:last-child {
+  border-bottom: none;
+}
+
+.ai-fact-label {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.ai-fact-val {
+  color: #0f172a;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* AI Mode Toggle */
+.ai-mode-toggle-group {
+  display: inline-flex;
+  background: #e2e8f0;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 4px;
+}
+
+.btn-ai-mode-tab {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-ai-mode-tab.active {
+  background: #ffffff;
+  color: #1d63ed;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* AI Subagent Status Grid */
+.ai-subagents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ai-subagent-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.ai-subagent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-subagent-name {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.ai-subagent-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.ai-subagent-desc {
+  font-size: 0.74rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* AI Hotspot Card */
+.ai-hotspot-item {
+  background: #ffffff;
+  border: 1px solid #fed7aa;
+  border-left: 4px solid #f97316;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+
 

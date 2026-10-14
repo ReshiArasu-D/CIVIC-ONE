@@ -19,6 +19,7 @@ from pathlib import Path
 # Add project root to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from servicenow_client import ServiceNowClient
+from app.ai.orchestrator import CivicAIOrchestrator
 
 PORT = 3000
 AARAV_CUSTOMER_SYS_ID = 'dde0d55bc3bb8754e54832f1b40131ab' # CIT-BLR-001 (Aarav / Rishi demo citizen)
@@ -33,6 +34,9 @@ try:
     print(f"[CivicOne Server] Connected to ServiceNow: {client.instance_url}")
 except Exception as e:
     print(f"[CivicOne Server] Warning: Could not initialize ServiceNow client: {e}")
+
+# Initialize CivicOne Central AI Orchestrator
+ai_orchestrator = CivicAIOrchestrator(mode="demo", servicenow_client=client)
 
 
 def get_display(field_dict, default=""):
@@ -130,6 +134,15 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
             self.handle_admin_reports_export(query)
             return
 
+        # AI Orchestration & Governance Endpoints
+        if path == "/api/ai/status":
+            self.handle_ai_status(query)
+            return
+
+        if path == "/api/ai/audit-logs":
+            self.handle_ai_audit_logs(query)
+            return
+
         # Serve static files
         return super().do_GET()
 
@@ -203,6 +216,35 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
 
         if path == "/api/admin/officers/deactivate":
             self.handle_admin_officer_deactivate(data)
+            return
+
+        # AI Orchestration Endpoints (PS07 Specification)
+        if path == "/api/ai/mode":
+            self.handle_ai_set_mode(data)
+            return
+
+        if path == "/api/ai/orchestrate":
+            self.handle_ai_orchestrate(data)
+            return
+
+        if path == "/api/ai/triage":
+            self.handle_ai_triage(data)
+            return
+
+        if path == "/api/ai/collective":
+            self.handle_ai_collective(data)
+            return
+
+        if path == "/api/ai/case-intelligence":
+            self.handle_ai_case_intelligence(data)
+            return
+
+        if path == "/api/ai/civic-insights":
+            self.handle_ai_civic_insights(data)
+            return
+
+        if path == "/api/ai/audit-decision":
+            self.handle_ai_audit_decision(data)
             return
 
         self.send_error(404, "Endpoint not found")
@@ -2184,7 +2226,7 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
         })
 
     def handle_admin_officer_assign_case(self, data):
-        officer_id = data.get("employee_id", "").strip().upper()
+        officer_id = (data.get("employee_id") or data.get("officer_id") or "").strip().upper()
         case_id = data.get("case_id", "").strip().upper()
         notes = data.get("notes", "").strip()
 
@@ -2382,7 +2424,7 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
         })
 
     def handle_admin_officer_deactivate(self, data):
-        officer_id = data.get("employee_id", "").strip().upper()
+        officer_id = (data.get("employee_id") or data.get("officer_id") or "").strip().upper()
         reason = data.get("reason", "").strip()
 
         if not officer_id:
@@ -2978,6 +3020,321 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
             "timestamp": "Just now",
             "actor": "System Administrator"
         })
+
+    # =========================================================================
+    # CIVICONE AI ORCHESTRATION & FOUR SUBAGENTS (PS07 AI SPECIFICATION)
+    # =========================================================================
+    VERIFIED_PLUGINS_MANIFEST = [
+        {
+            "purpose": "Predictive classification",
+            "component": "Predictive Intelligence",
+            "identifier": "com.glide.platform_ml",
+            "status": "Installed and Active",
+            "version": "1.0.0",
+            "dependencies": "Glide Platform Core",
+            "licensing": "Platform entitlement",
+            "pdi_status": "Active in dev187180",
+            "mode": "servicenow_ai"
+        },
+        {
+            "purpose": "SLA management",
+            "component": "Service Level Management",
+            "identifier": "com.snc.sla",
+            "status": "Installed and Active",
+            "version": "1.0.0",
+            "dependencies": "Task SLA Engine",
+            "licensing": "Platform entitlement",
+            "pdi_status": "Active in dev187180",
+            "mode": "deterministic_workflow"
+        },
+        {
+            "purpose": "Analytics",
+            "component": "Performance Analytics",
+            "identifier": "com.snc.pa",
+            "status": "Installed and Active",
+            "version": "1.0.0",
+            "dependencies": "Glide Analytics Core",
+            "licensing": "Standard entitlement",
+            "pdi_status": "Active in dev187180",
+            "mode": "deterministic_query"
+        },
+        {
+            "purpose": "Conversational interface",
+            "component": "Virtual Agent",
+            "identifier": "com.glide.cs.chatbot",
+            "status": "Installed and Active",
+            "version": "1.0.0",
+            "dependencies": "Glide Conversation Engine",
+            "licensing": "Platform entitlement",
+            "pdi_status": "Active in dev187180",
+            "mode": "servicenow_conversational"
+        },
+        {
+            "purpose": "Complaint/case management",
+            "component": "Customer Service Management",
+            "identifier": "com.sn_customerservice",
+            "status": "Installed (Inactive)",
+            "version": "29.0.20",
+            "dependencies": "CSM Core",
+            "licensing": "Requires Admin activation",
+            "pdi_status": "Installed but inactive; Scoped table x_2229367_civicone_case used as system of record",
+            "mode": "demo_fallback"
+        },
+        {
+            "purpose": "Grievance case types",
+            "component": "Customer Service Case Types",
+            "identifier": "com.snc.csm_case_types",
+            "status": "Unavailable in PDI",
+            "version": "N/A",
+            "dependencies": "com.sn_customerservice",
+            "licensing": "CSM Enterprise entitlement",
+            "pdi_status": "Store plugin requiring elevated enterprise entitlement",
+            "mode": "demo_fallback"
+        },
+        {
+            "purpose": "Similar grievance detection",
+            "component": "Predictive Intelligence Similarity",
+            "identifier": "com.snc.contextualsearchml",
+            "status": "Unavailable in PDI",
+            "version": "N/A",
+            "dependencies": "Predictive Intelligence + Contextual Search",
+            "licensing": "Contextual Search ML entitlement",
+            "pdi_status": "Simulated AI adapter active with strict no-auto-merge safeguard",
+            "mode": "simulated_adapter"
+        },
+        {
+            "purpose": "Generative AI",
+            "component": "Now Assist / Generative AI Controller",
+            "identifier": "sn_generative_ai",
+            "status": "Unavailable in PDI",
+            "version": "N/A",
+            "dependencies": "Generative AI Controller / Store",
+            "licensing": "Now Assist Pro Plus licensing",
+            "pdi_status": "Requires Pro Plus license; simulated case summarizer active",
+            "mode": "simulated_adapter"
+        },
+        {
+            "purpose": "AI governance",
+            "component": "AI Control Tower for Now Assist",
+            "identifier": "sn_ai_governance",
+            "status": "Unavailable in PDI",
+            "version": "N/A",
+            "dependencies": "sn_generative_ai",
+            "licensing": "Now Assist Governance entitlement",
+            "pdi_status": "Audited via live scoped table x_2229367_civicone_ai_action_log",
+            "mode": "scoped_table_audit"
+        },
+        {
+            "purpose": "Public-sector analytics",
+            "component": "PA Content Pack for Public Sector Digital Services",
+            "identifier": "sn_psds_pa",
+            "status": "Unavailable in PDI",
+            "version": "N/A",
+            "dependencies": "com.snc.pa + PSDS",
+            "licensing": "Public Sector Digital Services license",
+            "pdi_status": "Deterministic query aggregator active",
+            "mode": "deterministic_query"
+        }
+    ]
+
+    def handle_ai_status(self, query):
+        total_audits = len(ai_orchestrator.audit_buffer)
+        sn_connected = bool(client)
+        self.send_json(200, {
+            "success": True,
+            "mode": ai_orchestrator.mode,
+            "simulation_label": "Simulated AI recommendation — not production AI" if ai_orchestrator.mode == "demo" else "ServiceNow Native AI",
+            "orchestrator": {
+                "name": ai_orchestrator.ORCHESTRATOR_NAME,
+                "confidence_threshold": ai_orchestrator.DEFAULT_CONFIDENCE_THRESHOLD,
+                "human_review_rule": "Confidence < 0.75 or missing info triggers mandatory Human Review"
+            },
+            "subagents": [
+                {"name": "Triage Agent", "role": "Category/Dept/Priority classification, PII masking, 0.75 threshold gating"},
+                {"name": "Collective Grievance Agent", "role": "Semantic/geographic duplicate detection, cluster recommendation, no-auto-merge safeguard"},
+                {"name": "Case Intelligence Agent", "role": "Factual timeline, SLA milestone, and concise case summarization under 120 words"},
+                {"name": "Civic Insights Agent", "role": "Deterministic query metrics aggregation and executive brief synthesis"}
+            ],
+            "plugins_manifest": self.VERIFIED_PLUGINS_MANIFEST,
+            "servicenow_sync": {
+                "connected": sn_connected,
+                "instance_url": "https://dev187180.service-now.com",
+                "table_case": "x_2229367_civicone_case",
+                "table_audit": "x_2229367_civicone_ai_action_log",
+                "table_master_grievance": "x_2229367_civicone_master_grievance",
+                "table_executive_brief": "x_2229367_civicone_executive_brief"
+            },
+            "audit_records_buffered": total_audits
+        })
+
+    def handle_ai_set_mode(self, data):
+        new_mode = data.get("mode", "demo")
+        if new_mode not in ["demo", "servicenow_ai"]:
+            self.send_json(400, {"success": False, "error": "Invalid mode. Must be 'demo' or 'servicenow_ai'."})
+            return
+        ai_orchestrator.set_mode(new_mode)
+        self.send_json(200, {
+            "success": True,
+            "mode": ai_orchestrator.mode,
+            "message": f"AI Orchestrator mode switched to '{new_mode}'."
+        })
+
+    def handle_ai_orchestrate(self, data):
+        action = data.get("action", "")
+        payload = data.get("payload", {})
+        user_ctx = data.get("user") or self._resolve_user_context()
+        result = ai_orchestrator.route_request(action, payload, user_context=user_ctx)
+        self.send_json(200 if result.get("success") else 400, result)
+
+    def handle_ai_triage(self, data):
+        user_ctx = self._resolve_user_context()
+        result = ai_orchestrator.route_request("triage", data, user_context=user_ctx)
+        self.send_json(200, result)
+
+    def handle_ai_collective(self, data):
+        user_ctx = self._resolve_user_context()
+        target_case = data.get("target_case", {})
+        candidate_cases = data.get("candidate_cases", [])
+        if not candidate_cases:
+            candidate_cases = self._get_candidate_cases_for_similarity(target_case)
+        result = ai_orchestrator.route_request("collective", {"target_case": target_case, "candidate_cases": candidate_cases}, user_context=user_ctx)
+        self.send_json(200, result)
+
+    def handle_ai_case_intelligence(self, data):
+        user_ctx = self._resolve_user_context()
+        case_rec = data.get("case_record", {})
+        case_id = data.get("case_id")
+        if not case_rec and case_id:
+            case_rec = self._lookup_case_record(case_id)
+        result = ai_orchestrator.route_request("case_intelligence", {"case_record": case_rec}, user_context=user_ctx)
+        self.send_json(200, result)
+
+    def handle_ai_civic_insights(self, data):
+        user_ctx = self._resolve_user_context()
+        filters = data.get("filters", {})
+        result = ai_orchestrator.route_request("civic_insights", {"filters": filters}, user_context=user_ctx)
+        self.send_json(200, result)
+
+    def handle_ai_audit_decision(self, data):
+        exec_id = data.get("execution_id", "")
+        decision = data.get("decision", "accepted")
+        reviewer = data.get("reviewer_id") or "Current Admin"
+        reason = data.get("override_reason", "")
+        case_id = data.get("case_id", "")
+        result = ai_orchestrator.record_human_decision(exec_id, decision, reviewer, reason, case_id)
+        self.send_json(200, result)
+
+    def handle_ai_audit_logs(self, query):
+        limit = int(query.get("limit", [20])[0])
+        sn_logs = []
+        if client:
+            try:
+                sn_logs = client.get_records(
+                    "x_2229367_civicone_ai_action_log",
+                    query="ORDERBYDESCsys_created_on",
+                    limit=limit
+                )
+            except Exception as e:
+                print(f"[Audit Logs] SN query note: {e}")
+
+        combined = []
+        for l in sn_logs:
+            combined.append({
+                "sys_id": l.get("sys_id"),
+                "timestamp": l.get("sys_created_on") or l.get("audit_timestamp"),
+                "agent_name": l.get("agent_name"),
+                "action_type": l.get("action_type"),
+                "confidence_score": l.get("confidence_score"),
+                "review_required": l.get("review_required") in ["true", True, "1"],
+                "applied_to_case": l.get("applied_to_case") in ["true", True, "1"],
+                "notes": l.get("notes") or l.get("output_payload") or "",
+                "source": "ServiceNow x_2229367_civicone_ai_action_log"
+            })
+
+        for b in ai_orchestrator.audit_buffer:
+            combined.append({
+                "sys_id": b.get("execution_id"),
+                "timestamp": b.get("timestamp"),
+                "agent_name": b.get("agent_name"),
+                "action_type": b.get("action_type"),
+                "confidence_score": b.get("confidence_score"),
+                "review_required": b.get("review_required"),
+                "applied_to_case": b.get("applied_to_case"),
+                "notes": b.get("notes") or f"Actor: {b.get('actor')}",
+                "source": "CivicOne Orchestrator Live Session"
+            })
+
+        self.send_json(200, {
+            "success": True,
+            "total": len(combined),
+            "logs": combined[:limit]
+        })
+
+    def _resolve_user_context(self):
+        token = self.get_auth_token()
+        session = ADMIN_SESSIONS.get(token)
+        if session:
+            return {"role": session.get("role", "admin"), "user_id": session.get("user_id", "admin"), "name": session.get("name", "Administrator")}
+        return {"role": "admin", "user_id": "admin_console", "name": "System Administrator"}
+
+    def _lookup_case_record(self, case_id):
+        for off in self.OFFICERS_ROSTER:
+            for c in off.get("assigned_cases", []):
+                if c.get("case_id") == case_id or c.get("id") == case_id:
+                    return {**c, "id": case_id, "department": off.get("department"), "assigned_officer": off.get("name")}
+        return {
+            "id": case_id,
+            "category": "Roads & Footpaths",
+            "subcategory": "Dangerous Road Pothole",
+            "status": "In Progress",
+            "department": "Roads and Infrastructure Department",
+            "assigned_officer": "R. Kumar (EMP-ROD-001)",
+            "location": "Adyar 2nd Cross, Ward 12 (Indiranagar)",
+            "sla_deadline": "14 Oct 2026, 06:00 PM",
+            "sla_status": "Within SLA (8.5 hrs remaining)",
+            "description": "Severe road crater and peeling asphalt causing transit hazards.",
+            "evidence": ["photo_evidence_crater_01.jpg"]
+        }
+
+    def _get_candidate_cases_for_similarity(self, target_case):
+        return [
+            {
+                "id": "CIV0001017",
+                "title": "Severe road pothole near Adyar junction",
+                "category": "Roads & Footpaths",
+                "subcategory": "Dangerous Road Pothole",
+                "description": "Deep 2-meter road crater at 100ft road junction causing vehicle blockage.",
+                "location": "Adyar Junction, Ward 12",
+                "latitude": 13.0015,
+                "longitude": 80.2568,
+                "status": "In Progress",
+                "priority": "High (Priority 1)"
+            },
+            {
+                "id": "CIV0001021",
+                "title": "Crater hazard on 100ft road corridor",
+                "category": "Roads & Footpaths",
+                "subcategory": "Damaged Asphalt / Crater",
+                "description": "Asphalt cave-in and continuous pothole cluster on main road corridor.",
+                "location": "Adyar Main Road, Ward 12",
+                "latitude": 13.0022,
+                "longitude": 80.2575,
+                "status": "In Progress",
+                "priority": "Normal (Priority 2)"
+            },
+            {
+                "id": "CIV0001014",
+                "title": "Main distribution pipe leakage causing water pressure loss",
+                "category": "Water Supply",
+                "subcategory": "Water Pipeline Leakage or Burst",
+                "description": "Continuous water stream flooding pavement from ruptured distribution line.",
+                "location": "Adyar 2nd Cross, Ward 12",
+                "latitude": 13.0060,
+                "longitude": 80.2510,
+                "status": "In Progress",
+                "priority": "High (Priority 1)"
+            }
+        ]
 
 
 def run_server():

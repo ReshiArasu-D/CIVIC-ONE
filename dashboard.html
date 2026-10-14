@@ -3345,8 +3345,50 @@
       const scenarioKey = wizardState.selectedScenario;
 
       try {
-        // Backend AI operation: auto-classify without showing fake scan screen to the user
-        const aiResponse = await DemoAIProvider.processEvidenceAndClassify(files, area, scenarioKey);
+        // PS07 Central Orchestrator / Triage Agent (Server Integration)
+        let aiResponse = null;
+        try {
+          const srvRes = await fetch('/api/ai/triage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              description: wizardState.description || wizardState.title || (area ? `Civic grievance near ${area}` : 'Civic grievance'),
+              location: { area: area, ward: wizardState.ward },
+              attachments: files,
+              scenario_key: scenarioKey
+            })
+          });
+          if (srvRes.ok) {
+            const data = await srvRes.json();
+            const r = data.result || {};
+            aiResponse = {
+              category: r.category,
+              subcategory: r.subcategory,
+              subcategory_code: 'CAT-AUTO',
+              department: r.department,
+              suggested_priority: r.priority_recommendation,
+              suggested_title: r.english_text || 'Reported municipal civic issue',
+              suggested_description: r.english_text || 'Reported municipal civic issue',
+              confidence: r.confidence || 0.94,
+              confidence_display: r.confidence_display || '94%',
+              review_required: r.review_required,
+              simulation_label: r.simulation_label || 'Simulated AI recommendation — not production AI',
+              analysis_tags: [
+                `Triage: ${r.category}`,
+                `Confidence: ${r.confidence_display || '94%'}`,
+                r.review_required ? 'Flagged for Human Review (< 0.75 / missing info)' : 'Automated Routing Eligible',
+                'Simulated AI recommendation — not production AI'
+              ]
+            };
+          }
+        } catch (srvErr) {
+          console.warn('Live server triage fetch note:', srvErr);
+        }
+
+        if (!aiResponse) {
+          aiResponse = await DemoAIProvider.processEvidenceAndClassify(files, area, scenarioKey);
+        }
+
         wizardState.aiResult = aiResponse;
 
         // Apply suggestions into wizard state

@@ -270,6 +270,12 @@
 
     <!-- Header Right Controls -->
     <div class="header-controls-right">
+      <!-- AI Orchestrator & Governance Button -->
+      <button type="button" class="btn-header-ai-orchestrator" onclick="openAiOrchestratorModal()" title="AI Orchestrator & Governance Console">
+        <span class="ai-pulse-dot"></span>
+        <span>AI Orchestrator</span>
+        <span class="ai-mode-pill" id="header-ai-mode-pill">DEMO</span>
+      </button>
       <!-- Language Selector -->
       <div class="header-lang-selector" onclick="alert('Language preferences can be configured in the Settings workspace.')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -1300,6 +1306,10 @@
                 <p>Executive summaries, SLA performance audits, and municipal compliance.</p>
               </div>
               <div class="reports-header-actions">
+                <button type="button" class="btn-reports-primary" style="background:#0284c7; color:#fff; border:none; padding:8px 14px; border-radius:8px; font-weight:700; font-size:0.84rem; display:inline-flex; align-items:center; gap:6px; cursor:pointer;" onclick="openCivicInsightsModal()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span>AI Civic Insights Brief</span>
+                </button>
                 <button type="button" class="btn-reports-refresh" onclick="refreshReportsAnalytics()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                   Refresh Analytics
@@ -2775,6 +2785,375 @@
     </div>
   </div>
 
+  <!-- ====================================================================
+       AI MODAL 1: CASE INTELLIGENCE AGENT (NOW ASSIST SUMMARIZATION)
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="case-intelligence-modal" onclick="handleAiModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 820px; max-height: 90vh; overflow-y: auto;">
+      <div class="case-modal-header" style="border-bottom: 1.5px solid #e2e8f0;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:9px; background:#eff6ff; color:#1d63ed; display:flex; align-items:center; justify-content:center; font-weight:800;">
+            ⚡
+          </div>
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">Case Intelligence Dossier</h3>
+            <p style="font-size: 0.78rem; color: #64748b; margin: 2px 0 0 0;">Agent 3 &bull; Now Assist Case Summarization &bull; Under 120 Words Factual Brief</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeCaseIntelligenceModal()">&times;</button>
+      </div>
+
+      <div style="padding: 22px;">
+        <!-- Simulation Label Banner -->
+        <div class="ai-simulation-banner" id="ci-simulation-banner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="ci-sim-label-text">Simulated AI recommendation — not production AI (Demo Mode Active)</span>
+        </div>
+
+        <!-- Factual Summary Box -->
+        <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:12px; padding:16px; margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#0369a1; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Executive Case Brief (Factual Synthesis)</strong>
+            <span style="font-size:0.72rem; background:#e0f2fe; color:#0284c7; padding:2px 8px; border-radius:6px; font-weight:700;" id="ci-word-count-badge">62 words</span>
+          </div>
+          <p id="ci-summary-text" style="font-size:0.86rem; color:#0c4a6e; line-height:1.6; margin:0; font-weight:500;">
+            Loading factual summary...
+          </p>
+        </div>
+
+        <!-- Split Grid: Factual Records vs AI Advisory -->
+        <div class="ai-split-grid">
+          <!-- Left: Verified Record Facts -->
+          <div class="ai-card-panel">
+            <div class="ai-card-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Verified ServiceNow Record Fields</span>
+            </div>
+            <div class="ai-fact-row">
+              <span class="ai-fact-label">Case Identifier:</span>
+              <span class="ai-fact-val" id="ci-fact-id" style="font-family:monospace;">CIV0001013</span>
+            </div>
+            <div class="ai-fact-row">
+              <span class="ai-fact-label">Category / Sub:</span>
+              <span class="ai-fact-val" id="ci-fact-cat">Roads & Footpaths</span>
+            </div>
+            <div class="ai-fact-row">
+              <span class="ai-fact-label">Assigned Officer:</span>
+              <span class="ai-fact-val" id="ci-fact-officer">R. Kumar (EMP-ROD-001)</span>
+            </div>
+            <div class="ai-fact-row">
+              <span class="ai-fact-label">Department:</span>
+              <span class="ai-fact-val" id="ci-fact-dept">Roads and Infrastructure</span>
+            </div>
+            <div class="ai-fact-row">
+              <span class="ai-fact-label">Ward Location:</span>
+              <span class="ai-fact-val" id="ci-fact-loc">Indiranagar Ward 12</span>
+            </div>
+            <div class="ai-fact-row">
+              <span class="ai-fact-label">SLA Window / Status:</span>
+              <span class="ai-fact-val" id="ci-fact-sla" style="color:#1d63ed;">Within SLA</span>
+            </div>
+            <div class="ai-fact-row">
+              <span class="ai-fact-label">Evidence on File:</span>
+              <span class="ai-fact-val" id="ci-fact-evidence">1 photo attachment</span>
+            </div>
+          </div>
+
+          <!-- Right: Advisory AI Recommendations -->
+          <div class="ai-card-panel" style="background:#faf5ff; border-color:#e9d5ff;">
+            <div class="ai-card-title" style="color:#7e22ce; border-bottom-color:#e9d5ff;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>AI Advisory Recommendation</span>
+            </div>
+            <div style="font-size:0.8rem; color:#581c87; line-height:1.5; margin-bottom:12px;">
+              <strong>Recommended Action Pathway:</strong>
+              <p id="ci-rec-next-step" style="margin:4px 0 0 0; color:#6b21a8;">
+                Dispatch road surface contractor for hot-mix asphalt patching and compaction.
+              </p>
+            </div>
+            <div style="background:#ffffff; border:1px solid #d8b4fe; border-radius:8px; padding:10px; font-size:0.75rem; color:#6b21a8;">
+              🛡️ <strong>Statutory Safeguard:</strong> AI recommendations do not bypass administrative approvals. Citizen confirmation is mandatory prior to case closure.
+            </div>
+          </div>
+        </div>
+
+        <!-- Recorded Factual Timeline -->
+        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:16px;">
+          <div style="font-size:0.82rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Factual Recorded Timeline Milestones</div>
+          <div id="ci-timeline-list" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Modal Actions Footer -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:14px; border-top:1px solid #e2e8f0;">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeCaseIntelligenceModal()">Close Dossier</button>
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="btn-officer-tbl assign" onclick="recordAiDecisionForCase('overridden', 'Flagged for Senior Engineer Review')">Override / Flag</button>
+            <button type="button" class="btn-zone-primary" onclick="recordAiDecisionForCase('accepted', 'Accepted by Administrator')">Accept Recommendation</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       AI MODAL 2: COLLECTIVE GRIEVANCE AGENT (SIMILARITY & CLUSTERING)
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="collective-similarity-modal" onclick="handleAiModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 860px; max-height: 90vh; overflow-y: auto;">
+      <div class="case-modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:9px; background:#f0fdf4; color:#16a34a; display:flex; align-items:center; justify-content:center; font-weight:800;">
+            👥
+          </div>
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">Collective Grievance &amp; Similarity Radar</h3>
+            <p style="font-size: 0.78rem; color: #64748b; margin: 2px 0 0 0;">Agent 2 &bull; Predictive Intelligence Similarity &bull; Non-Destructive Duplicate Detection</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeCollectiveSimilarityModal()">&times;</button>
+      </div>
+
+      <div style="padding: 22px;">
+        <!-- Mandatory Non-Destructive Safeguard Banner -->
+        <div class="ai-safeguard-banner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <strong>MANDATORY NON-DESTRUCTIVE SAFEGUARD:</strong> Citizen tickets are <u>NEVER</u> automatically merged or deleted. Every citizen retains their unique Case ID, notifications, and independent confirmation rights.
+          </div>
+        </div>
+
+        <!-- Target Case Context -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px 16px; margin-bottom:16px; font-size:0.8rem; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <strong>Target Grievance:</strong> <span id="cs-target-id" style="font-family:monospace; color:#1d63ed;">CIV0001013</span> &bull; <span id="cs-target-cat">Roads & Footpaths</span>
+            <div id="cs-target-desc" style="color:#64748b; font-size:0.75rem; margin-top:3px;">Dangerous road crater on 100ft road junction.</div>
+          </div>
+          <span class="officer-kpi-pill green" id="cs-matches-count">2 Candidates Found</span>
+        </div>
+
+        <!-- Matching Candidates Table -->
+        <div class="officers-table-wrap" style="margin-bottom:18px;">
+          <table class="officers-table">
+            <thead>
+              <tr>
+                <th>CASE ID</th>
+                <th>SIMILARITY</th>
+                <th>PROXIMITY</th>
+                <th>SAME ISSUE?</th>
+                <th>CATEGORY &amp; WARD</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="cs-candidates-tbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Proposed Master Grievance Box -->
+        <div id="cs-master-proposal-box" style="background:#fefce8; border:1.5px dashed #ca8a04; border-radius:12px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#854d0e; font-size:0.86rem; display:flex; align-items:center; gap:6px;">
+              ⭐ Proposed Master Grievance Grouping
+            </strong>
+            <span style="font-size:0.72rem; background:#fef08a; color:#854d0e; padding:3px 8px; border-radius:6px; font-weight:800;">CLUSTER RECOMMENDED</span>
+          </div>
+          <p id="cs-master-title" style="font-size:0.84rem; color:#713f12; margin:0 0 10px 0; font-weight:600;">
+            Cluster: Multiple road crater complaints at Adyar junction (3 reporters affected)
+          </p>
+          <p style="font-size:0.76rem; color:#854d0e; line-height:1.4; margin:0 0 12px 0;">
+            Authorized Officer may link these cases under a single Master Grievance to coordinate field contractor assignment while keeping all citizen notifications distinct.
+          </p>
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="btn-zone-primary" style="background:#ca8a04; border-color:#ca8a04;" onclick="handleApproveMasterGrouping()">
+              Approve Master Grievance Grouping
+            </button>
+            <button type="button" class="btn-case-nav-action secondary" onclick="closeCollectiveSimilarityModal()">Dismiss</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       AI MODAL 3: CIVIC INSIGHTS AGENT (EXECUTIVE BRIEF & ANALYTICS)
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="civic-insights-modal" onclick="handleAiModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 860px; max-height: 90vh; overflow-y: auto;">
+      <div class="case-modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:9px; background:#eff6ff; color:#0284c7; display:flex; align-items:center; justify-content:center; font-weight:800;">
+            📊
+          </div>
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">Civic Insights Executive Brief</h3>
+            <p style="font-size: 0.78rem; color: #64748b; margin: 2px 0 0 0;">Agent 4 &bull; Grounded Deterministic Metrics &bull; Table x_2229367_civicone_executive_brief</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeCivicInsightsModal()">&times;</button>
+      </div>
+
+      <div style="padding: 22px;">
+        <!-- Simulation Label Banner -->
+        <div class="ai-simulation-banner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Metrics calculated from authorized ServiceNow records. AI narrative draft subject to Administrator review.</span>
+        </div>
+
+        <!-- 4 Deterministic KPI Cards -->
+        <div class="officers-summary-grid" style="margin-bottom:18px;">
+          <div class="officer-kpi-card">
+            <div class="officer-kpi-label">Total Grievances</div>
+            <div class="officer-kpi-val" id="ins-kpi-total">12,486</div>
+            <div class="officer-kpi-sub">Verified operations</div>
+          </div>
+          <div class="officer-kpi-card">
+            <div class="officer-kpi-label">Resolved &amp; Confirmed</div>
+            <div class="officer-kpi-val" id="ins-kpi-resolved" style="color:#16a34a;">10,863</div>
+            <div class="officer-kpi-sub">Citizen confirmed</div>
+          </div>
+          <div class="officer-kpi-card">
+            <div class="officer-kpi-label">SLA Compliance</div>
+            <div class="officer-kpi-val" id="ins-kpi-sla" style="color:#1d63ed;">87.0%</div>
+            <div class="officer-kpi-sub">Charter: &ge; 85%</div>
+          </div>
+          <div class="officer-kpi-card">
+            <div class="officer-kpi-label">Overdue Breaches</div>
+            <div class="officer-kpi-val" id="ins-kpi-overdue" style="color:#dc2626;">467</div>
+            <div class="officer-kpi-sub">3.7% of volume</div>
+          </div>
+        </div>
+
+        <!-- Grounded Executive Narrative Brief -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#0f172a; font-size:0.88rem;">Executive Analytical Brief Narrative</strong>
+            <span style="font-size:0.72rem; color:#64748b; font-family:monospace;" id="ins-brief-id">BRF-2026-W41</span>
+          </div>
+          <div id="ins-brief-text" style="font-family:inherit; font-size:0.84rem; color:#334155; line-height:1.65; white-space:pre-line;">
+            Loading executive brief narrative...
+          </div>
+        </div>
+
+        <!-- Hotspot Alert Items -->
+        <div style="margin-bottom:18px;">
+          <div style="font-size:0.84rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Identified Recurring Failure Hotspots</div>
+          <div id="ins-hotspots-container">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px solid #e2e8f0;">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeCivicInsightsModal()">Close</button>
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="btn-zone-primary" onclick="exportReport('pdf')">Export PDF Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       AI MODAL 4: AI ORCHESTRATOR & GOVERNANCE CONTROL TOWER
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="ai-orchestrator-modal" onclick="handleAiModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+      <div class="case-modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:9px; background:#eff6ff; color:#1d63ed; display:flex; align-items:center; justify-content:center; font-weight:800;">
+            🛡️
+          </div>
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">AI Orchestrator &amp; Governance Tower</h3>
+            <p style="font-size: 0.78rem; color: #64748b; margin: 2px 0 0 0;">PS07 Architecture &bull; Dual Mode Adapter &bull; Audit Table x_2229367_civicone_ai_action_log</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeAiOrchestratorModal()">&times;</button>
+      </div>
+
+      <div style="padding: 22px;">
+        <!-- Dual Mode Switcher Bar -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <div>
+            <strong style="color:#0f172a; font-size:0.88rem;">AI Engine Operating Mode</strong>
+            <p style="font-size:0.76rem; color:#64748b; margin:2px 0 0 0;">Toggle between simulated hackathon demo and native ServiceNow AI services</p>
+          </div>
+          <div class="ai-mode-toggle-group">
+            <button type="button" class="btn-ai-mode-tab active" id="btn-mode-demo" onclick="switchAiEngineMode('demo')">Demo Mode (Simulated)</button>
+            <button type="button" class="btn-ai-mode-tab" id="btn-mode-real" onclick="switchAiEngineMode('servicenow_ai')">ServiceNow AI Mode</button>
+          </div>
+        </div>
+
+        <!-- 4 Subagents Status Cards -->
+        <div style="font-size:0.84rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Specialist Subagent Inventory</div>
+        <div class="ai-subagents-grid">
+          <div class="ai-subagent-card">
+            <div class="ai-subagent-header">
+              <span class="ai-subagent-name">Agent 1: Triage</span>
+              <span class="ai-subagent-badge">ACTIVE</span>
+            </div>
+            <p class="ai-subagent-desc">Predicts category, department, priority; masks PII; gates on 0.75 confidence threshold.</p>
+          </div>
+          <div class="ai-subagent-card">
+            <div class="ai-subagent-header">
+              <span class="ai-subagent-name">Agent 2: Collective</span>
+              <span class="ai-subagent-badge">ACTIVE</span>
+            </div>
+            <p class="ai-subagent-desc">Scans duplicate candidates; suggests Master Grievance; strictly preserves separate tickets.</p>
+          </div>
+          <div class="ai-subagent-card">
+            <div class="ai-subagent-header">
+              <span class="ai-subagent-name">Agent 3: Case Intel</span>
+              <span class="ai-subagent-badge">ACTIVE</span>
+            </div>
+            <p class="ai-subagent-desc">Generates concise factual summaries under 120 words; tracks timeline &amp; SLA milestones.</p>
+          </div>
+          <div class="ai-subagent-card">
+            <div class="ai-subagent-header">
+              <span class="ai-subagent-name">Agent 4: Civic Insights</span>
+              <span class="ai-subagent-badge">ACTIVE</span>
+            </div>
+            <p class="ai-subagent-desc">Aggregates deterministic metrics; detects repeat hotspots; drafts executive brief.</p>
+          </div>
+        </div>
+
+        <!-- Live Audit Trail Log Table -->
+        <div style="margin-top:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="font-size:0.84rem; font-weight:800; color:#0f172a;">Live AI Recommendation Audit Trail (ServiceNow)</div>
+            <button type="button" class="btn-zone-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="loadAiAuditLogs()">Refresh Audit Trail</button>
+          </div>
+          <div class="officers-table-wrap" style="max-height:260px; overflow-y:auto;">
+            <table class="officers-table">
+              <thead>
+                <tr>
+                  <th>TIMESTAMP</th>
+                  <th>AGENT</th>
+                  <th>ACTION TYPE</th>
+                  <th>CONFIDENCE</th>
+                  <th>REVIEW?</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="ai-audit-tbody">
+                <tr><td colspan="6" style="text-align:center; color:#64748b;">Loading live audit trail...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="display:flex; justify-content:flex-end; margin-top:18px; padding-top:14px; border-top:1px solid #e2e8f0;">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeAiOrchestratorModal()">Close Tower</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Client-side Logic Script -->
   <script>
     // State management
@@ -2818,6 +3197,7 @@
 
       // Initial load of overview statistics
       refreshDashboardStats();
+      checkAiEngineStatus();
     });
 
     function updateHeaderProfile(user) {
@@ -3416,13 +3796,17 @@
             </div>
           </div>
           <div class="case-nav-right">
+            <button type="button" class="btn-case-nav-action secondary" onclick="openCollectiveSimilarityModal('${escapeHtml(caseNum)}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>Similar Grievances (Agent 2)</span>
+            </button>
+            <button type="button" class="btn-case-nav-action primary" onclick="openCaseIntelligenceModal('${escapeHtml(caseNum)}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Summarize with AI (Agent 3)</span>
+            </button>
             <button type="button" class="btn-case-nav-action secondary" onclick="window.print()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-              Print Dossier
-            </button>
-            <button type="button" class="btn-case-nav-action primary" onclick="regenerateCaseAiSummary('${escapeHtml(caseNum)}')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              Re-Synthesize AI
+              <span>Print Dossier</span>
             </button>
           </div>
         </div>
