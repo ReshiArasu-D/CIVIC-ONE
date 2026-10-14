@@ -814,22 +814,75 @@
       }
     };
 
-    function lookupTicketStatus() {
+    async function lookupTicketStatus() {
       const ticketInput = document.getElementById('track-ticket-input').value.trim().toUpperCase();
       const card = document.getElementById('track-result-card');
       card.style.display = 'block';
 
-      const data = demoCases[ticketInput] || {
-        title: 'Reported Civic Grievance',
-        category: 'Municipal Services',
-        ward: 'Ward 12 Indiranagar',
-        status: 'In Progress',
-        priority: 'Priority 2 (Normal)',
-        sla: '48 Hours',
-        progressPct: 50,
-        worker: 'Assigned Zonal Field Team',
-        notes: 'Grievance verified by Ward Supervisor. Field crew dispatched.'
-      };
+      card.innerHTML = `
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:20px; text-align:center;">
+          <div style="display:inline-block; width:22px; height:22px; border:3px solid #cbd5e1; border-top-color:#0066CC; border-radius:50%; animation:spin 0.7s linear infinite;"></div>
+          <p style="margin-top:10px; font-size:13px; font-weight:700; color:#0B2545;">Retrieving real-time status for ${ticketInput}...</p>
+        </div>
+        <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+      `;
+
+      let data = null;
+      try {
+        const res = await fetch('/api/citizen/track?case_number=' + encodeURIComponent(ticketInput));
+        if (res.ok) {
+          const live = await res.json();
+          let prog = 35;
+          if (live.grievance_status === 'In Progress' || live.grievance_status === 'Assigned') prog = 65;
+          else if (live.grievance_status === 'Awaiting Citizen Confirmation') prog = 88;
+          else if (live.grievance_status === 'Resolved' || live.grievance_status === 'Closed') prog = 100;
+
+          let latestNote = 'Field team dispatched. Operational resolution in progress.';
+          if (live.latest_updates && live.latest_updates.length > 0) {
+            latestNote = live.latest_updates[0].title + ': ' + live.latest_updates[0].description;
+          }
+
+          data = {
+            title: live.short_description || 'Civic Infrastructure Grievance',
+            category: live.category || 'Municipal Services',
+            ward: live.ward || live.location || 'Ward 12 Indiranagar',
+            status: live.grievance_status || 'Under Review',
+            priority: live.priority || 'High',
+            sla: (live.sla_target_hours || '24') + ' Hours',
+            progressPct: prog,
+            worker: live.assigned_to || 'Assigned Zonal Field Engineer',
+            notes: latestNote,
+            actionRequired: live.citizen_action_required || false
+          };
+        }
+      } catch (e) {
+        console.warn('Live track fetch failed, using local cache:', e);
+      }
+
+      if (!data) {
+        data = demoCases[ticketInput] || {
+          title: 'Reported Civic Grievance',
+          category: 'Municipal Services',
+          ward: 'Ward 12 Indiranagar',
+          status: 'In Progress',
+          priority: 'Priority 2 (Normal)',
+          sla: '48 Hours',
+          progressPct: 50,
+          worker: 'Assigned Zonal Field Team',
+          notes: 'Grievance verified by Ward Supervisor. Field crew dispatched.',
+          actionRequired: false
+        };
+      }
+
+      let statusBg = '#DCFCE7';
+      let statusColor = '#166534';
+      if (data.status === 'In Progress') {
+        statusBg = '#DBEAFE';
+        statusColor = '#1D4ED8';
+      } else if (data.status.includes('Awaiting')) {
+        statusBg = '#FEF3C7';
+        statusColor = '#92400E';
+      }
 
       card.innerHTML = `
         <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:18px;">
@@ -838,14 +891,14 @@
               <span style="font-size:11px; font-weight:800; background:#E0F2FE; color:#0284C7; padding:3px 8px; border-radius:9999px;">${ticketInput}</span>
               <h4 style="font-size:15px; font-weight:800; color:#0B2545; margin-top:6px;">${data.title}</h4>
             </div>
-            <span style="font-size:12px; font-weight:700; background:#DCFCE7; color:#166534; padding:4px 10px; border-radius:9999px;">${data.status}</span>
+            <span style="font-size:12px; font-weight:700; background:${statusBg}; color:${statusColor}; padding:4px 10px; border-radius:9999px;">${data.status}</span>
           </div>
 
           <div style="font-size:12px; color:#64748B; margin-bottom:12px; display:grid; grid-template-columns:1fr 1fr; gap:6px;">
             <div><strong>Category:</strong> ${data.category}</div>
             <div><strong>Ward:</strong> ${data.ward}</div>
             <div><strong>Target SLA:</strong> ${data.sla}</div>
-            <div><strong>Urgency:</strong> ${data.priority}</div>
+            <div><strong>Assigned To:</strong> ${data.worker}</div>
           </div>
 
           <div style="margin-bottom:8px;">
@@ -854,12 +907,18 @@
               <span>${data.progressPct}%</span>
             </div>
             <div style="height:6px; background:#E2E8F0; border-radius:9999px; overflow:hidden;">
-              <div style="width:${data.progressPct}%; height:100%; background:#0066CC; border-radius:9999px;"></div>
+              <div style="width:${data.progressPct}%; height:100%; background:#0066CC; border-radius:9999px; transition:width 0.6s ease;"></div>
             </div>
           </div>
 
-          <div style="font-size:12px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:10px; color:#334155;">
-            <strong>Latest Officer Note:</strong> ${data.notes}
+          <div style="font-size:12px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:10px; color:#334155; margin-top:10px;">
+            <strong>Latest Redressal Update:</strong> ${data.notes}
+          </div>
+
+          <div style="margin-top:12px; text-align:right;">
+            <a href="dashboard.html" style="font-size:12px; font-weight:700; color:#0066CC; text-decoration:none;">
+              Open in Full Citizen Dashboard &rsaquo;
+            </a>
           </div>
         </div>
       `;
