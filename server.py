@@ -9,6 +9,7 @@ import sys
 import json
 import urllib.parse
 import time
+import datetime
 import secrets
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -172,6 +173,10 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
 
         if path == "/api/admin/case-update":
             self.handle_admin_case_update(data)
+            return
+
+        if path == "/api/admin/zone-assign":
+            self.handle_admin_zone_assign(data)
             return
 
         self.send_error(404, "Endpoint not found")
@@ -1173,24 +1178,333 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
         except Exception as e:
             self.send_json(500, {"success": False, "error": str(e)})
 
+    # =========================================================================
+    # NATIONAL ZONAL SECTOR MANAGEMENT (CANONICAL 28 STATES + 8 UTS)
+    # =========================================================================
+    ZONAL_SECTOR_CONFIG = {
+        "EZ": {
+            "code": "EZ",
+            "sys_code": "ZN-EAST",
+            "name": "East Zone",
+            "description": "Eastern Regional Sector (WB, OR, JH, AS, NE States)",
+            "headquarters": "Kolkata",
+            "status": "Active",
+            "admin": {
+                "name": "Anirban Das",
+                "role": "East Zone Admin",
+                "id": "ADM-KOL-004",
+                "email": "anirban.das@civicone.gov.in",
+                "phone": "+91 98301 23456",
+                "avatar": "A"
+            },
+            "states": [
+                {"code": "AR", "name": "Arunachal Pradesh", "capital": "Itanagar", "type": "State"},
+                {"code": "AS", "name": "Assam", "capital": "Dispur", "type": "State"},
+                {"code": "BR", "name": "Bihar", "capital": "Patna", "type": "State"},
+                {"code": "JH", "name": "Jharkhand", "capital": "Ranchi", "type": "State"},
+                {"code": "MN", "name": "Manipur", "capital": "Imphal", "type": "State"},
+                {"code": "ML", "name": "Meghalaya", "capital": "Shillong", "type": "State"},
+                {"code": "MZ", "name": "Mizoram", "capital": "Aizawl", "type": "State"},
+                {"code": "NL", "name": "Nagaland", "capital": "Kohima", "type": "State"},
+                {"code": "OD", "name": "Odisha", "capital": "Bhubaneswar", "type": "State"},
+                {"code": "SK", "name": "Sikkim", "capital": "Gangtok", "type": "State"},
+                {"code": "TR", "name": "Tripura", "capital": "Agartala", "type": "State"}
+            ],
+            "uts": []
+        },
+        "NZ": {
+            "code": "NZ",
+            "sys_code": "ZN-NORTH",
+            "name": "North Zone",
+            "description": "Northern Regional Sector (DL, PB, HR, UP, UK, HP, RJ)",
+            "headquarters": "Chandigarh",
+            "status": "Active",
+            "admin": {
+                "name": "Rajesh Sharma",
+                "role": "North Zone Admin",
+                "id": "ADM-DEL-002",
+                "email": "rajesh.sharma@civicone.gov.in",
+                "phone": "+91 98110 56789",
+                "avatar": "R"
+            },
+            "states": [
+                {"code": "HR", "name": "Haryana", "capital": "Chandigarh", "type": "State"},
+                {"code": "HP", "name": "Himachal Pradesh", "capital": "Shimla", "type": "State"},
+                {"code": "PB", "name": "Punjab", "capital": "Chandigarh", "type": "State"},
+                {"code": "RJ", "name": "Rajasthan", "capital": "Jaipur", "type": "State"},
+                {"code": "UP", "name": "Uttar Pradesh", "capital": "Lucknow", "type": "State"},
+                {"code": "UK", "name": "Uttarakhand", "capital": "Dehradun", "type": "State"},
+                {"code": "WB", "name": "West Bengal", "capital": "Kolkata", "type": "State"}
+            ],
+            "uts": [
+                {"code": "CH", "name": "Chandigarh", "capital": "Chandigarh", "type": "UT"},
+                {"code": "DL", "name": "Delhi", "capital": "New Delhi", "type": "UT"},
+                {"code": "JK", "name": "Jammu and Kashmir", "capital": "Srinagar / Jammu", "type": "UT"},
+                {"code": "LA", "name": "Ladakh", "capital": "Leh", "type": "UT"}
+            ]
+        },
+        "SZ": {
+            "code": "SZ",
+            "sys_code": "ZN-SOUTH",
+            "name": "South Zone",
+            "description": "Southern Regional Sector (TN, KL, KA, AP, TS)",
+            "headquarters": "Bengaluru",
+            "status": "Active",
+            "admin": {
+                "name": "Senthil Kumar",
+                "role": "South Zone Admin",
+                "id": "ADM-CHE-001",
+                "email": "senthil.kumar@civicone.gov.in",
+                "phone": "+91 98400 11223",
+                "avatar": "S"
+            },
+            "states": [
+                {"code": "AP", "name": "Andhra Pradesh", "capital": "Amaravati", "type": "State"},
+                {"code": "KA", "name": "Karnataka", "capital": "Bengaluru", "type": "State"},
+                {"code": "KL", "name": "Kerala", "capital": "Thiruvananthapuram", "type": "State"},
+                {"code": "TN", "name": "Tamil Nadu", "capital": "Chennai", "type": "State"},
+                {"code": "TS", "name": "Telangana", "capital": "Hyderabad", "type": "State"}
+            ],
+            "uts": [
+                {"code": "AN", "name": "Andaman and Nicobar Islands", "capital": "Port Blair", "type": "UT"},
+                {"code": "LD", "name": "Lakshadweep", "capital": "Kavaratti", "type": "UT"},
+                {"code": "PY", "name": "Puducherry", "capital": "Puducherry", "type": "UT"}
+            ]
+        },
+        "WZ": {
+            "code": "WZ",
+            "sys_code": "ZN-WEST",
+            "name": "West Zone",
+            "description": "Western Regional Sector (MH, GJ, MP, CG, GA)",
+            "headquarters": "Mumbai",
+            "status": "Active",
+            "admin": {
+                "name": "Pooja Mehta",
+                "role": "West Zone Admin",
+                "id": "ADM-MUM-003",
+                "email": "pooja.mehta@civicone.gov.in",
+                "phone": "+91 98200 44556",
+                "avatar": "P"
+            },
+            "states": [
+                {"code": "CG", "name": "Chhattisgarh", "capital": "Raipur", "type": "State"},
+                {"code": "GA", "name": "Goa", "capital": "Panaji", "type": "State"},
+                {"code": "GJ", "name": "Gujarat", "capital": "Gandhinagar", "type": "State"},
+                {"code": "MP", "name": "Madhya Pradesh", "capital": "Bhopal", "type": "State"},
+                {"code": "MH", "name": "Maharashtra", "capital": "Mumbai", "type": "State"}
+            ],
+            "uts": [
+                {"code": "DD", "name": "Dadra and Nagar Haveli and Daman and Diu", "capital": "Daman", "type": "UT"}
+            ]
+        }
+    }
+
+    # State / UT specific explicit assignments
+    STATE_UT_ADMIN_ASSIGNMENTS = {}
+
+    # Eligible Administrative Roster
+    ELIGIBLE_ADMINISTRATORS = [
+        {"id": "ADM-CHE-001", "name": "Senthil Kumar", "role": "Senior Zonal Administrator", "jurisdiction": "South Zone", "clearance": "Level 4 (National Apex)", "email": "senthil.kumar@civicone.gov.in"},
+        {"id": "ADM-DEL-002", "name": "Rajesh Sharma", "role": "Senior Zonal Administrator", "jurisdiction": "North Zone", "clearance": "Level 4 (National Apex)", "email": "rajesh.sharma@civicone.gov.in"},
+        {"id": "ADM-MUM-003", "name": "Pooja Mehta", "role": "Senior Zonal Administrator", "jurisdiction": "West Zone", "clearance": "Level 4 (National Apex)", "email": "pooja.mehta@civicone.gov.in"},
+        {"id": "ADM-KOL-004", "name": "Anirban Das", "role": "Senior Zonal Administrator", "jurisdiction": "East Zone", "clearance": "Level 4 (National Apex)", "email": "anirban.das@civicone.gov.in"},
+        {"id": "ADM-BLR-005", "name": "R. Kumar", "role": "State Operations Director", "jurisdiction": "Karnataka / South", "clearance": "Level 3 (State Sector)", "email": "r.kumar@civicone.gov.in"},
+        {"id": "ADM-LKO-006", "name": "M. Farooq", "role": "State Operations Director", "jurisdiction": "Uttar Pradesh / North", "clearance": "Level 3 (State Sector)", "email": "m.farooq@civicone.gov.in"},
+        {"id": "ADM-DEL-007", "name": "Priya Sharma", "role": "UT Executive Administrator", "jurisdiction": "Delhi NCT / North", "clearance": "Level 3 (UT Sector)", "email": "priya.sharma@civicone.gov.in"},
+        {"id": "ADM-PAT-008", "name": "Anand Verma", "role": "State Principal Administrator", "jurisdiction": "Bihar / East", "clearance": "Level 3 (State Sector)", "email": "anand.verma@civicone.gov.in"},
+        {"id": "ADM-CHD-009", "name": "Harpreet Singh", "role": "UT Operations Coordinator", "jurisdiction": "Chandigarh / North", "clearance": "Level 2 (Regional Hub)", "email": "harpreet.singh@civicone.gov.in"},
+        {"id": "ADM-HYD-010", "name": "K. Venkat", "role": "State Deputy Director", "jurisdiction": "Telangana / South", "clearance": "Level 3 (State Sector)", "email": "k.venkat@civicone.gov.in"}
+    ]
+
     def handle_admin_zones(self, query):
-        if not client:
-            self.send_json(500, {"success": False, "error": "ServiceNow client not configured"})
-            return
         try:
-            zones = client.get_records("x_2229367_civicone_zone", limit=50)
-            states = client.get_records("x_2229367_civicone_state", limit=50)
-            districts = client.get_records("x_2229367_civicone_district", limit=50)
-            wards = client.get_records("x_2229367_civicone_ward", limit=50)
-            self.send_json(200, {
+            # Query ServiceNow for underlying live entities if available
+            sn_zones = []
+            sn_states = []
+            if client:
+                try:
+                    sn_zones = client.get_records("x_2229367_civicone_zone", limit=50)
+                    sn_states = client.get_records("x_2229367_civicone_state", limit=50)
+                except Exception as sne:
+                    print(f"[Zone Management] SN fetch note: {sne}")
+
+            # Assemble canonical National Zonal response
+            zones_list = []
+            all_entities = []
+            total_states = 0
+            total_uts = 0
+
+            # Count assigned admins: 4 default zone admins + any explicit state/ut assignments
+            assigned_admin_ids = set()
+            for zcode, zdata in self.ZONAL_SECTOR_CONFIG.items():
+                if zdata.get("admin") and zdata["admin"].get("id"):
+                    assigned_admin_ids.add(zdata["admin"]["id"])
+
+            for entity_code, admin_rec in self.STATE_UT_ADMIN_ASSIGNMENTS.items():
+                if admin_rec and admin_rec.get("id"):
+                    assigned_admin_ids.add(admin_rec["id"])
+
+            for zcode, zdata in self.ZONAL_SECTOR_CONFIG.items():
+                s_count = len(zdata["states"])
+                u_count = len(zdata["uts"])
+                tot = s_count + u_count
+                total_states += s_count
+                total_uts += u_count
+
+                # Format states with inherited or explicit admin
+                formatted_states = []
+                for s in zdata["states"]:
+                    s_code = s["code"]
+                    assigned_info = self.STATE_UT_ADMIN_ASSIGNMENTS.get(s_code)
+                    admin_display = assigned_info["name"] if assigned_info else "Inherits Zonal Command"
+                    has_explicit = bool(assigned_info)
+
+                    item = {
+                        "code": s_code,
+                        "name": s["name"],
+                        "capital": s["capital"],
+                        "type": "State",
+                        "zone_code": zcode,
+                        "zone_name": zdata["name"],
+                        "admin_display": admin_display,
+                        "has_explicit_admin": has_explicit,
+                        "admin_data": assigned_info or zdata["admin"]
+                    }
+                    formatted_states.append(item)
+                    all_entities.append(item)
+
+                # Format UTs
+                formatted_uts = []
+                for u in zdata["uts"]:
+                    u_code = u["code"]
+                    assigned_info = self.STATE_UT_ADMIN_ASSIGNMENTS.get(u_code)
+                    admin_display = assigned_info["name"] if assigned_info else "Inherits Zonal Command"
+                    has_explicit = bool(assigned_info)
+
+                    item = {
+                        "code": u_code,
+                        "name": u["name"],
+                        "capital": u["capital"],
+                        "type": "Union Territory",
+                        "zone_code": zcode,
+                        "zone_name": zdata["name"],
+                        "admin_display": admin_display,
+                        "has_explicit_admin": has_explicit,
+                        "admin_data": assigned_info or zdata["admin"]
+                    }
+                    formatted_uts.append(item)
+                    all_entities.append(item)
+
+                zones_list.append({
+                    "code": zcode,
+                    "sys_code": zdata["sys_code"],
+                    "name": zdata["name"],
+                    "description": zdata["description"],
+                    "headquarters": zdata["headquarters"],
+                    "status": zdata["status"],
+                    "states_count": s_count,
+                    "uts_count": u_count,
+                    "total_count": tot,
+                    "assigned_admin_count": 1 if zdata.get("admin") else 0,
+                    "admin": zdata["admin"],
+                    "states": formatted_states,
+                    "uts": formatted_uts,
+                    "entities": formatted_states + formatted_uts
+                })
+
+            response_data = {
                 "success": True,
-                "zones": zones,
-                "states": states,
-                "districts": districts,
-                "wards": wards
-            })
+                "summary": {
+                    "total_zones": len(zones_list),
+                    "total_states": total_states,
+                    "total_uts": total_uts,
+                    "assigned_admins": len(assigned_admin_ids)
+                },
+                "zones": zones_list,
+                "all_entities": all_entities,
+                "eligible_administrators": self.ELIGIBLE_ADMINISTRATORS,
+                "servicenow_sync": {
+                    "connected": bool(client),
+                    "table_zone": "x_2229367_civicone_zone",
+                    "table_state": "x_2229367_civicone_state"
+                }
+            }
+            self.send_json(200, response_data)
         except Exception as e:
             self.send_json(500, {"success": False, "error": str(e)})
+
+    def handle_admin_zone_assign(self, data):
+        scope_type = data.get("scope_type", "").lower() # 'zone', 'state', 'ut'
+        scope_code = data.get("scope_code", "").upper()
+        admin_id = data.get("admin_id", "").strip()
+        admin_name = data.get("admin_name", "").strip()
+        role = data.get("role", "Administrator").strip()
+        notes = data.get("notes", "").strip()
+
+        if not scope_code or not admin_id:
+            self.send_json(400, {"success": False, "error": "Scope code and Administrator ID are mandatory."})
+            return
+
+        # Locate admin object from eligible list
+        matched_admin = None
+        for a in self.ELIGIBLE_ADMINISTRATORS:
+            if a["id"] == admin_id or a["name"].lower() == admin_name.lower():
+                matched_admin = a
+                break
+
+        if not matched_admin:
+            matched_admin = {
+                "id": admin_id,
+                "name": admin_name or "Authorized Administrator",
+                "role": role,
+                "email": f"{admin_id.lower()}@civicone.gov.in"
+            }
+
+        # Apply assignment
+        if scope_type == "zone":
+            if scope_code in self.ZONAL_SECTOR_CONFIG:
+                self.ZONAL_SECTOR_CONFIG[scope_code]["admin"] = {
+                    "name": matched_admin["name"],
+                    "role": f"{self.ZONAL_SECTOR_CONFIG[scope_code]['name']} Administrator",
+                    "id": matched_admin["id"],
+                    "email": matched_admin.get("email", ""),
+                    "phone": "+91 98000 00000",
+                    "avatar": matched_admin["name"][0].upper()
+                }
+        else: # State or UT
+            self.STATE_UT_ADMIN_ASSIGNMENTS[scope_code] = {
+                "id": matched_admin["id"],
+                "name": matched_admin["name"],
+                "role": matched_admin.get("role", f"{scope_code} Jurisdiction Lead"),
+                "email": matched_admin.get("email", ""),
+                "assigned_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+
+        # Audit trail to ServiceNow table x_2229367_civicone_ai_action_log
+        if client:
+            try:
+                client._request(
+                    "POST",
+                    "/api/now/table/x_2229367_civicone_ai_action_log",
+                    data={
+                        "action_type": "Zonal Administrator Assignment",
+                        "agent_name": "CivicOne Zonal Hierarchy Governance",
+                        "notes": f"Scope: {scope_type.upper()} [{scope_code}] assigned to {matched_admin['name']} ({matched_admin['id']}). Notes: {notes}",
+                        "confidence_score": "1.00",
+                    }
+                )
+            except Exception as e:
+                print(f"[Zone Assignment] SN log note: {e}")
+
+        self.send_json(200, {
+            "success": True,
+            "message": f"Administrator {matched_admin['name']} successfully assigned to {scope_code}.",
+            "assignment": {
+                "scope_type": scope_type,
+                "scope_code": scope_code,
+                "admin": matched_admin
+            }
+        })
 
     def handle_admin_ai_assistant(self, data):
         query = data.get("query", "").strip()

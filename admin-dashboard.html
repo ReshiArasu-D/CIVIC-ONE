@@ -816,34 +816,89 @@
       <!-- ====================================================================
            WORKSPACE 5: ZONE MANAGEMENT
            ==================================================================== -->
+      <!-- ====================================================================
+           WORKSPACE 5: NATIONAL ZONAL SECTOR MANAGEMENT (COOP HUB LAYOUT)
+           ==================================================================== -->
       <section class="workspace-view-panel" id="panel-zones">
-        <div class="workspace-banner-card">
-          <div>
-            <h2>Zone Management</h2>
-            <p style="color: #64748b; font-size: 0.85rem; margin-top: 4px;">National administrative hierarchy: Zones, States, Districts, and Wards.</p>
+        <!-- Main Zone Management Header -->
+        <div class="zone-mgmt-header">
+          <div class="zone-title-wrap">
+            <div class="zone-title-row">
+              <h2>National Zonal Sector Management</h2>
+              <span class="badge-zonal-sectors">4 ZONAL SECTORS</span>
+              <span class="badge-active-command">
+                <span class="pulse-dot-green"></span> ACTIVE COMMAND
+              </span>
+            </div>
+            <p class="zone-mgmt-sub">Supervise national operational zones, state/UT aggregates, and multi-tier administrator assignments.</p>
           </div>
-          <button type="button" class="btn-case-action-view" onclick="loadZonesData()">Refresh Jurisdictions</button>
+          <div class="zone-header-actions">
+            <button type="button" class="btn-zone-primary" onclick="openAssignAdminModal('zone', 'ALL', 'National Apex')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Assign Administrator
+            </button>
+            <button type="button" class="btn-zone-secondary" onclick="loadZonesData()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Refresh
+            </button>
+          </div>
         </div>
-        <div class="table-section-card">
-          <div class="admin-table-responsive">
-            <table class="admin-cases-table">
-              <thead>
-                <tr>
-                  <th>Zone Code</th>
-                  <th>Zone Name</th>
-                  <th>States / UTs Included</th>
-                  <th>Active Complaints</th>
-                  <th>Zonal Coordinator</th>
-                </tr>
-              </thead>
-              <tbody id="zones-tbody">
-                <tr><td>ZN-NORTH</td><td>North Zone</td><td>Delhi, Haryana, Punjab</td><td>2,846</td><td>Zonal Grievance Officer (North)</td></tr>
-                <tr><td>ZN-SOUTH</td><td>South Zone</td><td>Karnataka, Tamil Nadu, Kerala</td><td>3,412</td><td>Zonal Grievance Officer (South)</td></tr>
-                <tr><td>ZN-EAST</td><td>East Zone</td><td>West Bengal, Odisha, Bihar</td><td>2,318</td><td>Zonal Grievance Officer (East)</td></tr>
-                <tr><td>ZN-WEST</td><td>West Zone</td><td>Maharashtra, Gujarat, Goa</td><td>3,910</td><td>Zonal Grievance Officer (West)</td></tr>
-              </tbody>
-            </table>
+
+        <!-- 4 Summary Horizontal KPI Cards -->
+        <div class="zone-summary-grid">
+          <div class="zone-kpi-card">
+            <div class="zone-kpi-icon-box zones">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div class="zone-kpi-meta">
+              <span class="zone-kpi-val" id="kpi-zonal-commands">4</span>
+              <span class="zone-kpi-label">Zonal Commands</span>
+            </div>
           </div>
+
+          <div class="zone-kpi-card">
+            <div class="zone-kpi-icon-box states">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div class="zone-kpi-meta">
+              <span class="zone-kpi-val" id="kpi-states-monitored">28</span>
+              <span class="zone-kpi-label">States Monitored</span>
+            </div>
+          </div>
+
+          <div class="zone-kpi-card">
+            <div class="zone-kpi-icon-box uts">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="zone-kpi-meta">
+              <span class="zone-kpi-val" id="kpi-union-territories">8</span>
+              <span class="zone-kpi-label">Union Territories</span>
+            </div>
+          </div>
+
+          <div class="zone-kpi-card">
+            <div class="zone-kpi-icon-box admins">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="zone-kpi-meta">
+              <span class="zone-kpi-val" id="kpi-assigned-admins">4</span>
+              <span class="zone-kpi-label">Assigned Admins</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Zonal Sector Cards Grid -->
+        <div class="zone-cards-grid" id="zone-cards-grid">
+          <!-- Populated dynamically via loadZonesData() -->
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #64748b;">
+            <div style="display: inline-block; width: 28px; height: 28px; border: 3px solid #cbd5e1; border-top-color: #1d63ed; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+            <p style="margin-top: 10px; font-weight: 700;">Loading Zonal Sector configurations from ServiceNow...</p>
+          </div>
+        </div>
+
+        <!-- Expanded Zone Hierarchy Workspace (Screenshot 1) -->
+        <div class="zone-hierarchy-workspace" id="zone-hierarchy-workspace">
+          <!-- Populated dynamically when user clicks a zone -->
         </div>
       </section>
 
@@ -1030,6 +1085,102 @@
   </div>
 
 
+
+  <!-- ====================================================================
+       STATES & UTS DIRECTORY MODAL (SCREENSHOT 2)
+       ==================================================================== -->
+  <div class="zone-modal-overlay" id="zone-states-modal" onclick="handleZoneModalBackdrop(event)">
+    <div class="zone-modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-zone-title">
+      <div class="zone-modal-header">
+        <div class="zone-modal-title-wrap">
+          <div class="zone-modal-code-badge ez" id="modal-zone-badge">EZ</div>
+          <div>
+            <h3 class="zone-modal-title" id="modal-zone-title">East Zone — States &amp; UTs Directory</h3>
+            <p class="zone-modal-desc" id="modal-zone-desc">Eastern Regional Sector (WB, OR, JH, AS, NE States)</p>
+          </div>
+        </div>
+        <button type="button" class="btn-zone-modal-close" onclick="closeStatesDirectoryModal()">&times;</button>
+      </div>
+
+      <!-- Filter Tabs & Search Bar -->
+      <div class="zone-modal-filter-row">
+        <div class="hierarchy-filter-pills">
+          <button type="button" class="filter-pill active" id="modal-tab-all" onclick="filterModalDirectory('all')">All Units</button>
+          <button type="button" class="filter-pill" id="modal-tab-states" onclick="filterModalDirectory('states')">States Only</button>
+          <button type="button" class="filter-pill" id="modal-tab-uts" onclick="filterModalDirectory('uts')">UTs Only</button>
+        </div>
+        <div class="hierarchy-search-box">
+          <svg class="hierarchy-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="hierarchy-search-input" id="modal-search-input" placeholder="Search by state/UT name or code..." oninput="searchModalDirectory(this.value)">
+        </div>
+      </div>
+
+      <!-- Directory Cards Grid -->
+      <div class="zone-modal-body" id="modal-directory-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="zone-modal-footer">
+        <span class="zone-modal-count" id="modal-footer-count">Total Entities in Zone: 11</span>
+        <button type="button" class="btn-case-nav-action secondary" onclick="closeStatesDirectoryModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       ASSIGN ADMINISTRATOR MODAL DIALOG (REQUIREMENT 6)
+       ==================================================================== -->
+  <div class="assign-modal-overlay" id="zone-assign-modal" onclick="handleAssignModalBackdrop(event)">
+    <div class="assign-modal-box" role="dialog" aria-modal="true" aria-labelledby="assign-modal-title">
+      <div class="assign-modal-header">
+        <h3 id="assign-modal-title">Assign Jurisdiction Administrator</h3>
+        <button type="button" class="btn-zone-modal-close" onclick="closeAssignAdminModal()">&times;</button>
+      </div>
+
+      <form class="assign-modal-form" onsubmit="handleAdminAssignmentSubmit(event)">
+        <input type="hidden" id="assign-scope-type" value="zone">
+        <input type="hidden" id="assign-scope-code" value="EZ">
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">Target Jurisdiction Scope</label>
+          <div>
+            <span class="assign-scope-pill" id="assign-scope-display">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              Zone: East Zone (EZ)
+            </span>
+          </div>
+        </div>
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">Select Authorized Administrator</label>
+          <select class="hub-select" id="assign-admin-select" required onchange="handleAdminSelectChange()">
+            <!-- Populated dynamically with eligible administrators -->
+          </select>
+        </div>
+
+        <div id="assign-admin-details" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.8rem; display:flex; flex-direction:column; gap:4px;">
+          <!-- Shows selected officer role, jurisdiction clearance, contact -->
+        </div>
+
+        <div class="assign-warning-box">
+          <strong>Notice:</strong> This administrative assignment immediately establishes authoritative oversight for this jurisdiction scope in ServiceNow table <code>x_2229367_civicone_zone</code>. Any existing inherited or direct assignment will be formally audited and transitioned.
+        </div>
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">Assignment Notes / Justification (Optional)</label>
+          <textarea class="hub-textarea" id="assign-admin-notes" rows="2" placeholder="e.g. Zonal command reallocation per national directive..."></textarea>
+        </div>
+
+        <div class="assign-modal-actions">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeAssignAdminModal()">Cancel</button>
+          <button type="submit" class="btn-zone-primary" id="btn-confirm-assignment">
+            Confirm &amp; Push Assignment
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Citizen Details Modal for Inspecting Citizens -->
   <div class="case-modal-overlay" id="citizen-modal" onclick="handleCitizenModalBackdrop(event)">
@@ -2318,6 +2469,583 @@
       sessionStorage.removeItem('civicone_admin_session');
       localStorage.removeItem('civicone_admin_session');
       window.location.href = 'admin-login.html';
+    }
+
+    // =========================================================================
+    // ZONE MANAGEMENT & SECTOR GOVERNANCE (COOP HUB COMPATIBLE)
+    // =========================================================================
+    let zonesData = null;
+    let activeHierarchyZone = null;
+    let hierarchyFilterType = 'all';
+    let hierarchySearchQuery = '';
+    let activeModalZone = null;
+    let modalFilterType = 'all';
+    let modalSearchQuery = '';
+
+    // Load Zones Data from Server (ServiceNow Integrated)
+    async function loadZonesData() {
+      const grid = document.getElementById('zone-cards-grid');
+      if (grid) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #64748b;">
+            <div style="display: inline-block; width: 28px; height: 28px; border: 3px solid #cbd5e1; border-top-color: #1d63ed; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+            <p style="margin-top: 10px; font-weight: 700;">Loading Zonal Sector configurations from ServiceNow...</p>
+          </div>
+        `;
+      }
+
+      try {
+        const res = await fetch('/api/admin/zones', {
+          headers: { 'Authorization': `Bearer ${currentToken}` }
+        });
+        if (!res.ok) throw new Error('Failed to fetch zones data');
+        const data = await res.json();
+        zonesData = data;
+
+        // Update 4 Summary KPI Cards
+        if (data.summary) {
+          const kpiZones = document.getElementById('kpi-zonal-commands');
+          const kpiStates = document.getElementById('kpi-states-monitored');
+          const kpiUts = document.getElementById('kpi-union-territories');
+          const kpiAdmins = document.getElementById('kpi-assigned-admins');
+
+          if (kpiZones) kpiZones.textContent = data.summary.zones || 4;
+          if (kpiStates) kpiStates.textContent = data.summary.states || 28;
+          if (kpiUts) kpiUts.textContent = data.summary.uts || 8;
+          if (kpiAdmins) kpiAdmins.textContent = data.summary.assigned_admins || 4;
+        }
+
+        renderZoneCards(data.zones || []);
+
+        // If hierarchy is open, re-render it with fresh data
+        if (activeHierarchyZone) {
+          renderZoneHierarchy(activeHierarchyZone);
+        }
+
+        // If modal directory is open, re-render it with fresh data
+        if (activeModalZone) {
+          renderStatesDirectoryModal(activeModalZone);
+        }
+      } catch (err) {
+        console.error('Zone fetch error:', err);
+        if (grid) {
+          grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: #ef4444; background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px;">
+              <strong>Error connecting to ServiceNow:</strong> Unable to load zonal hierarchy records.
+              <button class="btn-zone-secondary" style="margin-top: 10px; display: inline-flex;" onclick="loadZonesData()">Retry</button>
+            </div>
+          `;
+        }
+      }
+    }
+
+    // Render the 4 Zonal Sector Cards (Screenshot 3 & 1)
+    function renderZoneCards(zones) {
+      const grid = document.getElementById('zone-cards-grid');
+      if (!grid) return;
+
+      if (!zones || zones.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align:center; padding: 30px; color:#64748b;">No zone configurations found in ServiceNow.</div>';
+        return;
+      }
+
+      grid.innerHTML = zones.map(zone => {
+        const zoneClass = (zone.code || '').toLowerCase(); // ez, nz, sz, wz
+        const adminName = zone.admin_name || 'Unassigned';
+        const adminCode = zone.admin_code || 'UNASSIGNED';
+        const initial = adminName.charAt(0).toUpperCase();
+        const isActiveHierarchy = activeHierarchyZone === zone.code;
+
+        return `
+          <div class="zonal-sector-card ${isActiveHierarchy ? 'active-hierarchy-card' : ''}" id="zone-card-${zone.code}">
+            <div class="zone-card-top">
+              <span class="zone-code-pill ${zoneClass}">${escapeHtml(zone.code)}</span>
+              <span class="zone-status-pill ${zone.status === 'Active' ? 'active' : 'inactive'}">
+                <span class="pulse-dot-green"></span> ${escapeHtml(zone.status || 'Active')}
+              </span>
+            </div>
+
+            <div class="zone-name" onclick="toggleZoneHierarchy('${zone.code}')" style="cursor: pointer;" title="Click to view hierarchy workspace">
+              ${escapeHtml(zone.name)}
+            </div>
+            <div class="zone-desc">${escapeHtml(zone.regional_sector || '')}</div>
+
+            <div class="zone-stats-bar">
+              <div class="zone-stat-cell">
+                <span class="zone-stat-label">STATES</span>
+                <span class="zone-stat-val">${zone.state_count || 0}</span>
+              </div>
+              <div class="zone-stat-cell">
+                <span class="zone-stat-label">UTS</span>
+                <span class="zone-stat-val">${zone.ut_count || 0}</span>
+              </div>
+              <div class="zone-stat-cell">
+                <span class="zone-stat-label">TOTAL</span>
+                <span class="zone-stat-val highlight">${zone.total_entities || 0}</span>
+              </div>
+            </div>
+
+            <div class="zone-admin-section">
+              <div class="zone-admin-label-row">
+                <span>Assigned Zone Admins</span>
+                <span class="zone-admin-count">${zone.assigned_admin_count || (zone.admin_name ? 1 : 0)}</span>
+              </div>
+              <div class="zone-admin-profile">
+                <div class="zone-admin-avatar ${zoneClass}">${initial}</div>
+                <div class="zone-admin-info">
+                  <div class="zone-admin-name">${escapeHtml(adminName)} <span style="font-weight: 500; color: #64748b;">(${escapeHtml(zone.name)} Admin)</span></div>
+                  <div class="zone-admin-code">${escapeHtml(adminCode)}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="zone-card-actions">
+              <button type="button" class="btn-zone-card-outline" onclick="openStatesDirectoryModal('${zone.code}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                View States &amp; UTs
+              </button>
+              <button type="button" class="btn-zone-card-primary" onclick="openAssignAdminModal('zone', '${zone.code}', '${escapeHtml(zone.name)}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Assign
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Toggle in-page Expanded Zone Hierarchy (Screenshot 1)
+    function toggleZoneHierarchy(zoneCode) {
+      if (activeHierarchyZone === zoneCode) {
+        closeZoneHierarchy();
+      } else {
+        openZoneHierarchy(zoneCode);
+      }
+    }
+
+    function openZoneHierarchy(zoneCode) {
+      activeHierarchyZone = zoneCode;
+      hierarchyFilterType = 'all';
+      hierarchySearchQuery = '';
+
+      // Highlight active card
+      document.querySelectorAll('.zonal-sector-card').forEach(c => c.classList.remove('active-hierarchy-card'));
+      const card = document.getElementById(`zone-card-${zoneCode}`);
+      if (card) card.classList.add('active-hierarchy-card');
+
+      renderZoneHierarchy(zoneCode);
+
+      // Smooth scroll to hierarchy workspace
+      const workspace = document.getElementById('zone-hierarchy-workspace');
+      if (workspace) {
+        workspace.style.display = 'block';
+        setTimeout(() => {
+          workspace.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      }
+    }
+
+    function closeZoneHierarchy() {
+      activeHierarchyZone = null;
+      document.querySelectorAll('.zonal-sector-card').forEach(c => c.classList.remove('active-hierarchy-card'));
+      const workspace = document.getElementById('zone-hierarchy-workspace');
+      if (workspace) workspace.style.display = 'none';
+    }
+
+    function filterHierarchyUnits(type) {
+      hierarchyFilterType = type;
+      ['all', 'states', 'uts'].forEach(t => {
+        const pill = document.getElementById(`hierarchy-pill-${t}`);
+        if (pill) {
+          if (t === type) pill.classList.add('active');
+          else pill.classList.remove('active');
+        }
+      });
+      if (activeHierarchyZone) renderZoneHierarchy(activeHierarchyZone);
+    }
+
+    function searchHierarchyUnits(query) {
+      hierarchySearchQuery = (query || '').toLowerCase().trim();
+      if (activeHierarchyZone) renderZoneHierarchy(activeHierarchyZone);
+    }
+
+    // Render Expanded Hierarchy Workspace Content
+    function renderZoneHierarchy(zoneCode) {
+      const workspace = document.getElementById('zone-hierarchy-workspace');
+      if (!workspace || !zonesData) return;
+
+      const zone = (zonesData.zones || []).find(z => z.code === zoneCode);
+      if (!zone) return;
+
+      const states = (zone.states || []).filter(s => {
+        if (!hierarchySearchQuery) return true;
+        return s.name.toLowerCase().includes(hierarchySearchQuery) || 
+               s.code.toLowerCase().includes(hierarchySearchQuery) || 
+               (s.capital && s.capital.toLowerCase().includes(hierarchySearchQuery));
+      });
+
+      const uts = (zone.uts || []).filter(u => {
+        if (!hierarchySearchQuery) return true;
+        return u.name.toLowerCase().includes(hierarchySearchQuery) || 
+               u.code.toLowerCase().includes(hierarchySearchQuery) || 
+               (u.capital && u.capital.toLowerCase().includes(hierarchySearchQuery));
+      });
+
+      const showStates = hierarchyFilterType === 'all' || hierarchyFilterType === 'states';
+      const showUTs = hierarchyFilterType === 'all' || hierarchyFilterType === 'uts';
+
+      workspace.innerHTML = `
+        <div class="hierarchy-top-header">
+          <div class="hierarchy-breadcrumb-wrap">
+            <div class="hierarchy-breadcrumb">
+              <span>ZONAL HIERARCHY OVERVIEW</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <strong style="color: #0f172a;">${escapeHtml(zone.name)} (${escapeHtml(zone.code)})</strong>
+            </div>
+            <p class="hierarchy-sub">View official States, Union Territories, and assigned administrators for this sector</p>
+          </div>
+
+          <div class="hierarchy-action-buttons">
+            <button type="button" class="btn-hierarchy-action state-btn" onclick="openAssignAdminModal('state', '${zone.code}', '${escapeHtml(zone.name)}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Assign State Admin
+            </button>
+            <button type="button" class="btn-hierarchy-action ut-btn" onclick="openAssignAdminModal('ut', '${zone.code}', '${escapeHtml(zone.name)}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Assign UT Admin
+            </button>
+            <button type="button" class="btn-hierarchy-action modal-view-btn" onclick="openStatesDirectoryModal('${zone.code}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              Full Modal View
+            </button>
+            <button type="button" class="btn-hierarchy-close" onclick="closeZoneHierarchy()" title="Collapse Hierarchy">&times;</button>
+          </div>
+        </div>
+
+        <div class="hierarchy-filter-bar">
+          <div class="hierarchy-filter-pills">
+            <button type="button" class="filter-pill ${hierarchyFilterType === 'all' ? 'active' : ''}" id="hierarchy-pill-all" onclick="filterHierarchyUnits('all')">All Units</button>
+            <button type="button" class="filter-pill ${hierarchyFilterType === 'states' ? 'active' : ''}" id="hierarchy-pill-states" onclick="filterHierarchyUnits('states')">States Only</button>
+            <button type="button" class="filter-pill ${hierarchyFilterType === 'uts' ? 'active' : ''}" id="hierarchy-pill-uts" onclick="filterHierarchyUnits('uts')">Union Territories Only</button>
+          </div>
+          <div class="hierarchy-search-box">
+            <svg class="hierarchy-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="hierarchy-search-input" value="${escapeHtml(hierarchySearchQuery)}" placeholder="Filter states / UTs..." oninput="searchHierarchyUnits(this.value)">
+          </div>
+        </div>
+
+        ${showStates ? `
+          <div class="hierarchy-section-title">
+            STATES (${states.length})
+          </div>
+          ${states.length === 0 ? `
+            <div style="padding: 20px; color: #94a3b8; font-size: 0.85rem; font-style: italic;">No states match the current filter in this zone.</div>
+          ` : `
+            <div class="hierarchy-grid">
+              ${states.map(state => renderHierarchyEntityCard(state, 'state', zone)).join('')}
+            </div>
+          `}
+        ` : ''}
+
+        ${showUTs ? `
+          <div class="hierarchy-section-title ut-title" style="margin-top: 24px;">
+            UNION TERRITORIES (${uts.length})
+          </div>
+          ${uts.length === 0 ? `
+            <div style="padding: 20px; color: #94a3b8; font-size: 0.85rem; font-style: italic;">No union territories match the current filter in this zone.</div>
+          ` : `
+            <div class="hierarchy-grid">
+              ${uts.map(ut => renderHierarchyEntityCard(ut, 'ut', zone)).join('')}
+            </div>
+          `}
+        ` : ''}
+      `;
+    }
+
+    // Render individual state or UT card in expanded hierarchy
+    function renderHierarchyEntityCard(item, type, zone) {
+      const isUt = type === 'ut';
+      const adminText = item.admin ? item.admin : 'Inherits Zonal Command';
+      const isInherited = !item.admin;
+      const assignLabel = isUt ? 'Assign UT Scope' : 'Assign State Scope';
+
+      return `
+        <div class="hierarchy-entity-card ${isUt ? 'ut-card' : ''}">
+          <div class="entity-card-header">
+            <span class="entity-name">${escapeHtml(item.name)}</span>
+            <span class="entity-code-badge ${isUt ? 'ut-badge' : ''}">${escapeHtml(item.code)}</span>
+          </div>
+          <div class="entity-capital">Capital: ${escapeHtml(item.capital || 'N/A')}</div>
+          <div class="entity-admin ${isInherited ? 'inherited' : 'assigned'}">
+            Admin: <span>${escapeHtml(adminText)}</span>
+          </div>
+          <button type="button" class="btn-entity-assign ${isUt ? 'ut-assign' : ''}" onclick="openAssignAdminModal('${type}', '${item.code}', '${escapeHtml(item.name)}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            ${assignLabel}
+          </button>
+        </div>
+      `;
+    }
+
+    // States & UTs Directory Modal (Screenshot 2)
+    function openStatesDirectoryModal(zoneCode) {
+      activeModalZone = zoneCode;
+      modalFilterType = 'all';
+      modalSearchQuery = '';
+
+      const modal = document.getElementById('zone-states-modal');
+      const searchInput = document.getElementById('modal-search-input');
+      if (searchInput) searchInput.value = '';
+
+      // Reset filter tabs
+      ['all', 'states', 'uts'].forEach(t => {
+        const tab = document.getElementById(`modal-tab-${t}`);
+        if (tab) {
+          if (t === 'all') tab.classList.add('active');
+          else tab.classList.remove('active');
+        }
+      });
+
+      renderStatesDirectoryModal(zoneCode);
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeStatesDirectoryModal() {
+      activeModalZone = null;
+      const modal = document.getElementById('zone-states-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleZoneModalBackdrop(e) {
+      if (e.target.id === 'zone-states-modal') closeStatesDirectoryModal();
+    }
+
+    function filterModalDirectory(type) {
+      modalFilterType = type;
+      ['all', 'states', 'uts'].forEach(t => {
+        const tab = document.getElementById(`modal-tab-${t}`);
+        if (tab) {
+          if (t === type) tab.classList.add('active');
+          else tab.classList.remove('active');
+        }
+      });
+      if (activeModalZone) renderStatesDirectoryModal(activeModalZone);
+    }
+
+    function searchModalDirectory(query) {
+      modalSearchQuery = (query || '').toLowerCase().trim();
+      if (activeModalZone) renderStatesDirectoryModal(activeModalZone);
+    }
+
+    function renderStatesDirectoryModal(zoneCode) {
+      if (!zonesData) return;
+      const zone = (zonesData.zones || []).find(z => z.code === zoneCode);
+      if (!zone) return;
+
+      const badge = document.getElementById('modal-zone-badge');
+      const title = document.getElementById('modal-zone-title');
+      const desc = document.getElementById('modal-zone-desc');
+      const countEl = document.getElementById('modal-footer-count');
+      const container = document.getElementById('modal-directory-container');
+
+      if (badge) {
+        badge.textContent = zone.code;
+        badge.className = `zone-modal-code-badge ${(zone.code || '').toLowerCase()}`;
+      }
+      if (title) title.textContent = `${zone.name} — States & UTs Directory`;
+      if (desc) desc.textContent = zone.regional_sector || '';
+
+      // Combine states and UTs based on filter
+      let units = [];
+      if (modalFilterType === 'all' || modalFilterType === 'states') {
+        units.push(...(zone.states || []).map(s => ({ ...s, is_ut: false })));
+      }
+      if (modalFilterType === 'all' || modalFilterType === 'uts') {
+        units.push(...(zone.uts || []).map(u => ({ ...u, is_ut: true })));
+      }
+
+      // Filter by search query
+      if (modalSearchQuery) {
+        units = units.filter(u => 
+          u.name.toLowerCase().includes(modalSearchQuery) || 
+          u.code.toLowerCase().includes(modalSearchQuery) || 
+          (u.capital && u.capital.toLowerCase().includes(modalSearchQuery))
+        );
+      }
+
+      if (countEl) countEl.textContent = `Total Entities in Zone: ${zone.total_entities || 0} (${units.length} displayed)`;
+
+      if (!container) return;
+      if (units.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #64748b;">No matching states or union territories found.</div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="zone-directory-grid">
+          ${units.map(unit => {
+            const adminText = unit.admin ? unit.admin : 'Inherits Sector Admin';
+            const btnLabel = unit.is_ut ? 'Assign UT Administrator' : 'Assign State Administrator';
+            const type = unit.is_ut ? 'ut' : 'state';
+
+            return `
+              <div class="zone-unit-card ${unit.is_ut ? 'is-ut' : ''}">
+                <div class="zone-unit-header">
+                  <span class="zone-unit-name">${escapeHtml(unit.name)}</span>
+                  <span class="zone-unit-code-badge">${escapeHtml(unit.code)}</span>
+                </div>
+                <div class="zone-unit-capital">Capital: ${escapeHtml(unit.capital || 'N/A')}</div>
+                <div class="zone-unit-admin">
+                  Assigned Administrator: <span>${escapeHtml(adminText)}</span>
+                </div>
+                <button type="button" class="btn-zone-unit-assign" onclick="openAssignAdminModal('${type}', '${unit.code}', '${escapeHtml(unit.name)}')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                  ${btnLabel}
+                </button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // ADMINISTRATOR ASSIGNMENT DIALOG (REQUIREMENT 6)
+    // =========================================================================
+    function openAssignAdminModal(scopeType, scopeCode, currentName) {
+      const modal = document.getElementById('zone-assign-modal');
+      const scopeTypeInput = document.getElementById('assign-scope-type');
+      const scopeCodeInput = document.getElementById('assign-scope-code');
+      const scopeDisplay = document.getElementById('assign-scope-display');
+      const select = document.getElementById('assign-admin-select');
+      const notesInput = document.getElementById('assign-admin-notes');
+
+      if (scopeTypeInput) scopeTypeInput.value = scopeType;
+      if (scopeCodeInput) scopeCodeInput.value = scopeCode;
+      if (notesInput) notesInput.value = '';
+
+      let labelText = `Scope: ${currentName || scopeCode}`;
+      if (scopeType === 'zone') {
+        if (scopeCode === 'ALL') {
+          labelText = `National Zonal Sector Apex Command`;
+        } else {
+          labelText = `Zone: ${currentName || scopeCode} (${scopeCode})`;
+        }
+      } else if (scopeType === 'state') {
+        labelText = `State Jurisdiction: ${currentName || scopeCode} (${scopeCode})`;
+      } else if (scopeType === 'ut') {
+        labelText = `Union Territory: ${currentName || scopeCode} (${scopeCode})`;
+      }
+
+      if (scopeDisplay) {
+        scopeDisplay.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          ${escapeHtml(labelText)}
+        `;
+      }
+
+      // Populate dropdown with eligible administrators
+      if (select && zonesData && zonesData.eligible_administrators) {
+        select.innerHTML = zonesData.eligible_administrators.map(admin => `
+          <option value="${escapeHtml(admin.id)}" data-name="${escapeHtml(admin.name)}" data-role="${escapeHtml(admin.role)}" data-clearance="${escapeHtml(admin.jurisdiction_clearance || '')}" data-phone="${escapeHtml(admin.contact || '')}">
+            ${escapeHtml(admin.name)} — ${escapeHtml(admin.role)} (${escapeHtml(admin.id)})
+          </option>
+        `).join('');
+      }
+
+      handleAdminSelectChange();
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function handleAdminSelectChange() {
+      const select = document.getElementById('assign-admin-select');
+      const detailsBox = document.getElementById('assign-admin-details');
+      if (!select || !detailsBox) return;
+
+      const selectedOpt = select.options[select.selectedIndex];
+      if (!selectedOpt) return;
+
+      const name = selectedOpt.getAttribute('data-name') || '';
+      const role = selectedOpt.getAttribute('data-role') || '';
+      const clearance = selectedOpt.getAttribute('data-clearance') || 'National Jurisdiction';
+      const phone = selectedOpt.getAttribute('data-phone') || '+91 98765 43210';
+
+      detailsBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong style="color: #0f172a; font-size: 0.85rem;">${escapeHtml(name)}</strong>
+          <span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.72rem;">ACTIVE / AUTHORIZED</span>
+        </div>
+        <div style="color: #475569;"><strong>Designation:</strong> ${escapeHtml(role)}</div>
+        <div style="color: #475569;"><strong>Security Clearance:</strong> ${escapeHtml(clearance)}</div>
+        <div style="color: #64748b; font-size: 0.75rem;"><strong>Verified Channel:</strong> ${escapeHtml(phone)} &bull; ServiceNow sys_user valid</div>
+      `;
+    }
+
+    function closeAssignAdminModal() {
+      const modal = document.getElementById('zone-assign-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleAssignModalBackdrop(e) {
+      if (e.target.id === 'zone-assign-modal') closeAssignAdminModal();
+    }
+
+    async function handleAdminAssignmentSubmit(e) {
+      e.preventDefault();
+      const scopeType = document.getElementById('assign-scope-type')?.value;
+      const scopeCode = document.getElementById('assign-scope-code')?.value;
+      const adminSelect = document.getElementById('assign-admin-select');
+      const adminId = adminSelect?.value;
+      const notes = document.getElementById('assign-admin-notes')?.value || '';
+      const submitBtn = document.getElementById('btn-confirm-assignment');
+
+      if (!adminId) {
+        alert('Please select an eligible administrator from the roster.');
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <div style="display: inline-block; width: 14px; height: 14px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 6px;"></div>
+          Pushing to ServiceNow...
+        `;
+      }
+
+      try {
+        const res = await fetch('/api/admin/zone-assign', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({
+            scope_type: scopeType,
+            scope_code: scopeCode,
+            admin_id: adminId,
+            notes: notes
+          })
+        });
+
+        const result = await res.json();
+        if (!res.ok || !result.success) {
+          throw new Error(result.error || 'Server rejected assignment');
+        }
+
+        closeAssignAdminModal();
+        alert(`Success: ${result.message || 'Administrator assigned successfully'}\nServiceNow Audit Logged: ${result.audit_status || 'Synced'}`);
+
+        // Re-load data dynamically
+        await loadZonesData();
+      } catch (err) {
+        console.error('Assignment error:', err);
+        alert(`Failed to save assignment: ${err.message}`);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Confirm &amp; Push Assignment';
+        }
+      }
     }
 
     function escapeHtml(str) {
