@@ -204,6 +204,10 @@
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </a>
+          <button type="button" class="btn-card-demo-direct" id="btn-demo-citizen-direct" onclick="directDemoCitizenLaunch()" title="Instant 1-Click login as Demo Citizen (Aarav Sharma)">
+            <span class="bolt">⚡</span>
+            <span>1-Click Demo Citizen Login</span>
+          </button>
         </div>
       </article>
 
@@ -381,7 +385,29 @@
   </div>
 
   <!-- JavaScript Interactions -->
+  <script src="app/ui/civicone_store.js"></script>
   <script>
+    function directDemoCitizenLaunch() {
+      try {
+        if (typeof CivicStore !== 'undefined') {
+          CivicStore.login('aarav.sharma.demo@example.gov.in', 'CivicPass2026!');
+        } else {
+          const demoCitizen = {
+            citizen_id: 'CIT-BLR-001',
+            full_name: 'Aarav Sharma',
+            email: 'aarav.sharma.demo@example.gov.in',
+            phone: '+91 98765 43210',
+            role: 'citizen',
+            address: '100ft Road, Indiranagar, Ward 12, Bengaluru, Karnataka - 560038',
+            ward: 'Ward 12 (Indiranagar)'
+          };
+          sessionStorage.setItem('civicone_active_citizen_session', JSON.stringify(demoCitizen));
+          localStorage.setItem('civicone_current_session', JSON.stringify(demoCitizen));
+        }
+      } catch (e) {}
+      window.location.href = 'dashboard.html';
+    }
+
     function toggleCoopBotModal() {
       const modal = document.getElementById('coopbot-modal');
       modal.classList.toggle('active');

@@ -633,3 +633,250 @@ body {
     padding: 12px 18px;
   }
 }
+
+/* ==========================================================================
+   DEMO CITIZEN ACCESS CARD & PERSONA SELECTOR
+   ========================================================================== */
+.demo-citizen-card {
+  margin-top: 24px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
+  border: 1.5px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 18px 20px 16px;
+  box-shadow: 0 4px 18px rgba(29, 99, 237, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.demo-citizen-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1d63ed, #38bdf8, #f59e0b);
+}
+
+.demo-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.demo-head-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.demo-head-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #dbeafe;
+  color: #1d63ed;
+  border-radius: 6px;
+}
+
+.demo-chip-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #1d63ed;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.demo-card-sub {
+  margin: 0 0 14px;
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.demo-accounts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.demo-account-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.demo-account-card:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 6px 16px rgba(29, 99, 237, 0.08);
+  transform: translateY(-1px);
+}
+
+.demo-account-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.demo-account-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1d63ed, #2563eb);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(29, 99, 237, 0.25);
+}
+
+.demo-account-avatar.avatar-purple {
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+  box-shadow: 0 3px 8px rgba(124, 58, 237, 0.25);
+}
+
+.demo-account-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.demo-account-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.demo-account-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.demo-ward-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.demo-ward-badge.badge-koramangala {
+  background: #faf5ff;
+  color: #7e22ce;
+  border: 1px solid #f3e8ff;
+}
+
+.demo-account-email {
+  font-size: 0.78rem;
+  color: #1d63ed;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.demo-account-cases {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.demo-account-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-demo-quick-login {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #1d63ed 0%, #1e40af 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(29, 99, 237, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-demo-quick-login:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(29, 99, 237, 0.35);
+}
+
+.btn-demo-fill-fields {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: #f8fafc;
+  color: #334155;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-demo-fill-fields:hover {
+  background: #ffffff;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.demo-card-footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.demo-card-footer svg {
+  color: #1d63ed;
+  flex-shrink: 0;
+}
+
+.demo-card-footer code {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: monospace;
+  font-weight: 700;
+  color: #0f172a;
+}

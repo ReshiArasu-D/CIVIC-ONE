@@ -101,6 +101,79 @@
           </button>
         </form>
 
+        <!-- Demo Citizen Access Card (1-Click Instant Evaluation) -->
+        <div class="demo-citizen-card" id="demo-citizen-card">
+          <div class="demo-card-head">
+            <div class="demo-head-title">
+              <span class="demo-head-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </span>
+              <span>Demo Citizen Access</span>
+            </div>
+            <span class="demo-chip-badge">1-Click Sign In</span>
+          </div>
+          <p class="demo-card-sub">
+            Instant testing access for evaluating grievance submission, live tracking, and status resolution.
+          </p>
+
+          <div class="demo-accounts-grid">
+            <!-- Account 1: Aarav Sharma (Primary) -->
+            <div class="demo-account-card">
+              <div class="demo-account-top">
+                <div class="demo-account-avatar" aria-hidden="true">AS</div>
+                <div class="demo-account-meta">
+                  <div class="demo-account-title-row">
+                    <span class="demo-account-name">Aarav Sharma</span>
+                    <span class="demo-ward-badge">Ward 12 Indiranagar</span>
+                  </div>
+                  <div class="demo-account-email">aarav.sharma.demo@example.gov.in</div>
+                  <div class="demo-account-cases">Active cases: CIV0001001, CIV0001013</div>
+                </div>
+              </div>
+              <div class="demo-account-actions">
+                <button type="button" class="btn-demo-quick-login" onclick="quickLoginDemoCitizen('aarav.sharma.demo@example.gov.in', 'CivicPass2026!')" title="1-Click Login as Aarav Sharma">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  <span>1-Click Sign In</span>
+                </button>
+                <button type="button" class="btn-demo-fill-fields" onclick="fillDemoFields('aarav.sharma.demo@example.gov.in', 'CivicPass2026!')" title="Autofill inputs">
+                  Fill Form
+                </button>
+              </div>
+            </div>
+
+            <!-- Account 2: Rohan Kulkarni -->
+            <div class="demo-account-card">
+              <div class="demo-account-top">
+                <div class="demo-account-avatar avatar-purple" aria-hidden="true">RK</div>
+                <div class="demo-account-meta">
+                  <div class="demo-account-title-row">
+                    <span class="demo-account-name">Rohan Kulkarni</span>
+                    <span class="demo-ward-badge badge-koramangala">Ward 15 Koramangala</span>
+                  </div>
+                  <div class="demo-account-email">rohan.k.demo@example.gov.in</div>
+                  <div class="demo-account-cases">Active case: CIV0001006</div>
+                </div>
+              </div>
+              <div class="demo-account-actions">
+                <button type="button" class="btn-demo-quick-login" onclick="quickLoginDemoCitizen('rohan.k.demo@example.gov.in', 'CivicPass2026!')" title="1-Click Login as Rohan Kulkarni">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  <span>1-Click Sign In</span>
+                </button>
+                <button type="button" class="btn-demo-fill-fields" onclick="fillDemoFields('rohan.k.demo@example.gov.in', 'CivicPass2026!')" title="Autofill inputs">
+                  Fill Form
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-card-footer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span>Default demo password for all accounts: <code>CivicPass2026!</code></span>
+          </div>
+        </div>
+
         <!-- Divider -->
         <div class="auth-divider">
           <span>or</span>
@@ -432,6 +505,49 @@
           showAlert('signin-alert', res.error, 'error');
         }
       }, 350);
+    }
+
+    // Quick 1-Click Demo Citizen Login
+    function quickLoginDemoCitizen(email, password) {
+      const emailInput = document.getElementById('signin-email');
+      const passInput = document.getElementById('signin-password');
+      if (emailInput) emailInput.value = email;
+      if (passInput) passInput.value = password;
+
+      showAlert('signin-alert', '⚡ Authenticating demo citizen credentials...', 'success');
+
+      const btn = document.getElementById('btn-signin-submit');
+      if (btn) {
+        btn.classList.add('loading');
+        btn.disabled = true;
+      }
+
+      setTimeout(() => {
+        const res = CivicStore.login(email, password);
+        if (btn) {
+          btn.classList.remove('loading');
+          btn.disabled = false;
+        }
+
+        if (res.success) {
+          showAlert('signin-alert', `Authenticated as ${res.citizen.full_name} (${res.citizen.ward || 'Citizen'})! Redirecting to Dashboard...`, 'success');
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 350);
+        } else {
+          showAlert('signin-alert', res.error || 'Failed to authenticate demo citizen.', 'error');
+        }
+      }, 300);
+    }
+
+    // Autofill demo credentials into form without instant submission
+    function fillDemoFields(email, password) {
+      const emailInput = document.getElementById('signin-email');
+      const passInput = document.getElementById('signin-password');
+      if (emailInput) emailInput.value = email;
+      if (passInput) passInput.value = password;
+      showAlert('signin-alert', `Credentials filled for ${email}. Click "Sign In" to proceed.`, 'info');
+      if (emailInput) emailInput.focus();
     }
 
     // Handle Geolocation Autofill

@@ -368,6 +368,7 @@
 
       try {
         sessionStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(safeCitizen));
+        localStorage.setItem('civicone_current_session', JSON.stringify(safeCitizen));
       } catch (e) {}
 
       return { success: true, citizen: safeCitizen };
@@ -461,19 +462,20 @@
      */
     getCurrentSession: function () {
       try {
-        const raw = sessionStorage.getItem(STORAGE_KEYS.SESSION) || localStorage.getItem(STORAGE_KEYS.SESSION);
+        const raw = sessionStorage.getItem(STORAGE_KEYS.SESSION) || localStorage.getItem(STORAGE_KEYS.SESSION) || localStorage.getItem('civicone_current_session');
         if (raw) return JSON.parse(raw);
         // Default demo session fallback if neither is set
         const demoCitizen = {
-          citizen_id: 'CIV-2026-000123',
-          full_name: 'Rishi',
-          email: 'rishi.citizen@example.gov.in',
+          citizen_id: 'CIT-BLR-001',
+          full_name: 'Aarav Sharma',
+          email: 'aarav.sharma.demo@example.gov.in',
           phone: '+91 98765 43210',
           role: 'citizen',
-          address: 'Indiranagar, Bangalore',
-          ward: 'Ward 12 (Indiranagar) - Zone East'
+          address: '100ft Road, Indiranagar, Ward 12, Bengaluru, Karnataka - 560038',
+          ward: 'Ward 12 (Indiranagar)'
         };
         sessionStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(demoCitizen));
+        localStorage.setItem('civicone_current_session', JSON.stringify(demoCitizen));
         return demoCitizen;
       } catch (e) {
         return null;
@@ -486,6 +488,7 @@
     logout: function () {
       try {
         sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+        localStorage.removeItem('civicone_current_session');
       } catch (e) {}
       return true;
     },

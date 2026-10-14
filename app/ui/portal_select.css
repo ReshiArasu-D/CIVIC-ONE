@@ -813,3 +813,36 @@ body {
     font-size: 2.1rem;
   }
 }
+
+/* 1-Click Demo Citizen Access Shortcut Button */
+.btn-card-demo-direct {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #eff6ff;
+  color: #1d63ed;
+  border: 1.5px solid #bfdbfe;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(29, 99, 237, 0.08);
+}
+
+.btn-card-demo-direct:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  color: #1e40af;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(29, 99, 237, 0.16);
+}
+
+.btn-card-demo-direct .bolt {
+  color: #f59e0b;
+  font-size: 0.95rem;
+}
