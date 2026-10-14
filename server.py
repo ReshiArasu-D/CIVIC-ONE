@@ -1395,18 +1395,26 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
                     formatted_uts.append(item)
                     all_entities.append(item)
 
+                admin_obj = zdata.get("admin") or {}
                 zones_list.append({
                     "code": zcode,
-                    "sys_code": zdata["sys_code"],
-                    "name": zdata["name"],
-                    "description": zdata["description"],
-                    "headquarters": zdata["headquarters"],
-                    "status": zdata["status"],
+                    "sys_code": zdata.get("sys_code", f"ZN-{zcode}"),
+                    "name": zdata.get("name", f"{zcode} Zone"),
+                    "description": zdata.get("description", ""),
+                    "regional_sector": zdata.get("description", ""),
+                    "headquarters": zdata.get("headquarters", ""),
+                    "status": zdata.get("status", "Active"),
                     "states_count": s_count,
+                    "state_count": s_count,
                     "uts_count": u_count,
+                    "ut_count": u_count,
                     "total_count": tot,
-                    "assigned_admin_count": 1 if zdata.get("admin") else 0,
-                    "admin": zdata["admin"],
+                    "total_entities": tot,
+                    "assigned_admin_count": 1 if admin_obj.get("name") else 0,
+                    "admin": admin_obj,
+                    "admin_name": admin_obj.get("name", "Unassigned"),
+                    "admin_code": admin_obj.get("id", "UNASSIGNED"),
+                    "admin_role": admin_obj.get("role", f"{zdata.get('name', '')} Admin"),
                     "states": formatted_states,
                     "uts": formatted_uts,
                     "entities": formatted_states + formatted_uts
@@ -1416,8 +1424,11 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
                 "success": True,
                 "summary": {
                     "total_zones": len(zones_list),
+                    "zones": len(zones_list),
                     "total_states": total_states,
+                    "states": total_states,
                     "total_uts": total_uts,
+                    "uts": total_uts,
                     "assigned_admins": len(assigned_admin_ids)
                 },
                 "zones": zones_list,

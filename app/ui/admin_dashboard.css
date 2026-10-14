@@ -2779,36 +2779,43 @@ body {
   justify-content: space-between;
 }
 
-.zone-code-badge {
-  width: 32px;
+.zone-code-badge,
+.zone-code-pill {
+  min-width: 34px;
   height: 32px;
+  padding: 0 10px;
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 800;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  letter-spacing: 0.5px;
 }
 
-.zone-code-badge.ez {
+.zone-code-badge.ez,
+.zone-code-pill.ez {
   background: #fff7ed;
   color: #ea580c;
   border: 1px solid #fed7aa;
 }
 
-.zone-code-badge.nz {
+.zone-code-badge.nz,
+.zone-code-pill.nz {
   background: #eff6ff;
   color: #1d63ed;
   border: 1px solid #bfdbfe;
 }
 
-.zone-code-badge.sz {
+.zone-code-badge.sz,
+.zone-code-pill.sz {
   background: #f0fdf4;
   color: #16a34a;
   border: 1px solid #bbf7d0;
 }
 
-.zone-code-badge.wz {
+.zone-code-badge.wz,
+.zone-code-pill.wz {
   background: #faf5ff;
   color: #9333ea;
   border: 1px solid #e9d5ff;
@@ -2822,20 +2829,41 @@ body {
   background: #f0fdf4;
   color: #16a34a;
   border: 1px solid #bbf7d0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
+.zone-status-pill .pulse-dot-green {
+  width: 6px;
+  height: 6px;
+  background: #16a34a;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+}
+
+.zone-name,
 .zone-name-title {
   font-size: 1.25rem;
   font-weight: 800;
   color: #0f172a;
   margin: 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
 }
 
+.zone-name:hover,
+.zone-name-title:hover {
+  color: #1d63ed;
+}
+
+.zone-desc,
 .zone-sector-desc {
   font-size: 0.78rem;
   color: #64748b;
-  line-height: 1.4;
-  min-height: 34px;
+  line-height: 1.45;
+  min-height: 36px;
 }
 
 .zone-stats-bar {
@@ -2846,30 +2874,39 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   text-align: center;
+  align-items: center;
 }
 
+.zone-stat-cell,
 .zone-stat-col {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
+.zone-stat-cell:not(:last-child),
 .zone-stat-col:not(:last-child) {
   border-right: 1px solid #e2e8f0;
 }
 
+.zone-stat-label,
 .zone-stat-lbl {
-  font-size: 0.65rem;
-  font-weight: 700;
+  font-size: 0.68rem;
+  font-weight: 800;
   color: #64748b;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
 }
 
 .zone-stat-val {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: #0f172a;
+  line-height: 1.2;
+}
+
+.zone-stat-val.highlight {
+  color: #1d63ed;
 }
 
 .zone-admin-section {
@@ -2880,6 +2917,7 @@ body {
   gap: 8px;
 }
 
+.zone-admin-label-row,
 .zone-admin-head {
   display: flex;
   align-items: center;
@@ -2889,6 +2927,7 @@ body {
   color: #64748b;
 }
 
+.zone-admin-count,
 .zadmin-count {
   font-size: 0.75rem;
   font-weight: 800;
@@ -2902,20 +2941,45 @@ body {
 }
 
 .zone-admin-avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: #eff6ff;
   color: #1d63ed;
   border: 1px solid #bfdbfe;
   font-weight: 800;
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
+.zone-admin-avatar.ez {
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #fed7aa;
+}
+
+.zone-admin-avatar.nz {
+  background: #eff6ff;
+  color: #1d63ed;
+  border: 1px solid #bfdbfe;
+}
+
+.zone-admin-avatar.sz {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.zone-admin-avatar.wz {
+  background: #faf5ff;
+  color: #9333ea;
+  border: 1px solid #e9d5ff;
+}
+
+.zone-admin-info,
 .zone-admin-meta {
   display: flex;
   flex-direction: column;
@@ -2931,6 +2995,7 @@ body {
   overflow: hidden;
 }
 
+.zone-admin-code,
 .zone-admin-id {
   font-size: 0.7rem;
   color: #64748b;
@@ -2938,38 +3003,46 @@ body {
 }
 
 .zone-card-actions {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  align-items: center;
   gap: 8px;
   margin-top: auto;
-  padding-top: 10px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
 }
 
+.btn-zone-card-outline,
 .btn-zone-view-units {
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
+  flex: 1;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
   border-radius: 9px;
   padding: 8px 12px;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #334155;
+  color: #1e293b;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.btn-zone-card-outline:hover,
 .btn-zone-view-units:hover {
   background: #eff6ff;
   border-color: #93c5fd;
   color: #1d63ed;
+  box-shadow: 0 2px 6px rgba(29, 99, 237, 0.15);
+  transform: translateY(-1px);
 }
 
+.btn-zone-card-primary,
 .btn-zone-assign {
-  background: #ffffff;
-  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
   border-radius: 9px;
   padding: 8px 14px;
   font-size: 0.78rem;
@@ -2979,13 +3052,47 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  transition: all 0.15s ease;
+  gap: 6px;
+  box-shadow: 0 1px 2px rgba(29, 99, 237, 0.08);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.btn-zone-card-primary:hover,
 .btn-zone-assign:hover {
   background: #1d63ed;
+  border-color: #1d63ed;
   color: #ffffff;
+  box-shadow: 0 3px 8px rgba(29, 99, 237, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Active card highlight (e.g. North Zone in screenshot 1) */
+.zonal-sector-card.active-hierarchy-card,
+.zonal-sector-card.selected {
+  border: 2px solid #1d63ed;
+  box-shadow: 0 8px 24px rgba(29, 99, 237, 0.12), 0 0 0 1px #1d63ed;
+  background: #ffffff;
+}
+
+.zonal-sector-card.active-hierarchy-card .btn-zone-card-outline,
+.zonal-sector-card.active-hierarchy-card .btn-zone-view-units {
+  background: #1d63ed;
+  color: #ffffff;
+  border-color: #1d63ed;
+  box-shadow: 0 2px 8px rgba(29, 99, 237, 0.3);
+}
+
+.zonal-sector-card.active-hierarchy-card .btn-zone-card-outline:hover,
+.zonal-sector-card.active-hierarchy-card .btn-zone-view-units:hover {
+  background: #154dc2;
+  border-color: #154dc2;
+}
+
+.zonal-sector-card.active-hierarchy-card .btn-zone-card-primary,
+.zonal-sector-card.active-hierarchy-card .btn-zone-assign {
+  background: #eff6ff;
+  color: #1d63ed;
+  border-color: #bfdbfe;
 }
 
 /* ==========================================================================

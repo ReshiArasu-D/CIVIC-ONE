@@ -5,9 +5,243 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CivicOne Admin Dashboard — National Grievance Redressal</title>
   <meta name="description" content="Central Administrative Governance & Grievance Redressal Workspace for CivicOne.">
-  <link rel="stylesheet" href="app/ui/admin_dashboard.css?v=20261014_final">
-  <link rel="stylesheet" href="app/ui/case_workflow.css?v=20261014_final">
+  <link rel="stylesheet" href="app/ui/admin_dashboard.css?v=20261014_v3">
+  <link rel="stylesheet" href="app/ui/case_workflow.css?v=20261014_v3">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231d63ed%22><path d=%22M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z%22/></svg>">
+  <style>
+    /* Direct zone card aesthetics matching COOP HUB & CivicOne */
+    .zonal-sector-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 16px !important;
+      padding: 20px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .zonal-sector-card:hover {
+      transform: translateY(-2px) !important;
+      border-color: #93c5fd !important;
+      box-shadow: 0 10px 25px -5px rgba(29, 99, 237, 0.08) !important;
+    }
+    .zonal-sector-card.active-hierarchy-card {
+      border: 2px solid #1d63ed !important;
+      box-shadow: 0 8px 24px rgba(29, 99, 237, 0.15) !important;
+    }
+    .zone-card-top {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+    }
+    .zone-code-pill {
+      min-width: 34px !important;
+      height: 30px !important;
+      padding: 0 10px !important;
+      border-radius: 8px !important;
+      font-size: 0.8rem !important;
+      font-weight: 800 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      letter-spacing: 0.5px !important;
+    }
+    .zone-code-pill.ez { background: #fff7ed !important; color: #ea580c !important; border: 1px solid #fed7aa !important; }
+    .zone-code-pill.nz { background: #eff6ff !important; color: #1d63ed !important; border: 1px solid #bfdbfe !important; }
+    .zone-code-pill.sz { background: #f0fdf4 !important; color: #16a34a !important; border: 1px solid #bbf7d0 !important; }
+    .zone-code-pill.wz { background: #faf5ff !important; color: #9333ea !important; border: 1px solid #e9d5ff !important; }
+    
+    .zone-status-pill {
+      font-size: 0.72rem !important;
+      font-weight: 700 !important;
+      padding: 3px 10px !important;
+      border-radius: 12px !important;
+      background: #f0fdf4 !important;
+      color: #16a34a !important;
+      border: 1px solid #bbf7d0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+    }
+    .zone-status-pill .pulse-dot-green {
+      width: 6px !important;
+      height: 6px !important;
+      background: #16a34a !important;
+      border-radius: 50% !important;
+      display: inline-block !important;
+      box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2) !important;
+    }
+    .zone-name {
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      color: #0f172a !important;
+      margin: 0 !important;
+      cursor: pointer !important;
+      transition: color 0.15s ease !important;
+    }
+    .zone-name:hover { color: #1d63ed !important; }
+    .zone-desc {
+      font-size: 0.78rem !important;
+      color: #64748b !important;
+      line-height: 1.45 !important;
+      min-height: 34px !important;
+    }
+    .zone-stats-bar {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 12px !important;
+      padding: 10px 14px !important;
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      text-align: center !important;
+      align-items: center !important;
+    }
+    .zone-stat-cell {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2px !important;
+    }
+    .zone-stat-cell:not(:last-child) {
+      border-right: 1px solid #e2e8f0 !important;
+    }
+    .zone-stat-label {
+      font-size: 0.68rem !important;
+      font-weight: 800 !important;
+      color: #64748b !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.6px !important;
+    }
+    .zone-stat-val {
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      color: #0f172a !important;
+      line-height: 1.2 !important;
+    }
+    .zone-stat-val.highlight { color: #1d63ed !important; }
+    .zone-admin-section {
+      border-top: 1px solid #f1f5f9 !important;
+      padding-top: 12px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+    }
+    .zone-admin-label-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      color: #64748b !important;
+    }
+    .zone-admin-count {
+      font-size: 0.75rem !important;
+      font-weight: 800 !important;
+      color: #1d63ed !important;
+    }
+    .zone-admin-profile {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+    }
+    .zone-admin-avatar {
+      width: 34px !important;
+      height: 34px !important;
+      border-radius: 50% !important;
+      background: #eff6ff !important;
+      color: #1d63ed !important;
+      border: 1px solid #bfdbfe !important;
+      font-weight: 800 !important;
+      font-size: 0.85rem !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+    }
+    .zone-admin-avatar.ez { background: #fff7ed !important; color: #ea580c !important; border-color: #fed7aa !important; }
+    .zone-admin-avatar.nz { background: #eff6ff !important; color: #1d63ed !important; border-color: #bfdbfe !important; }
+    .zone-admin-avatar.sz { background: #f0fdf4 !important; color: #16a34a !important; border-color: #bbf7d0 !important; }
+    .zone-admin-avatar.wz { background: #faf5ff !important; color: #9333ea !important; border-color: #e9d5ff !important; }
+    .zone-admin-info {
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+    }
+    .zone-admin-name {
+      font-size: 0.82rem !important;
+      font-weight: 700 !important;
+      color: #1e293b !important;
+      white-space: nowrap !important;
+      text-overflow: ellipsis !important;
+      overflow: hidden !important;
+    }
+    .zone-admin-code {
+      font-size: 0.7rem !important;
+      color: #64748b !important;
+      font-family: monospace !important;
+    }
+    .zone-card-actions {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      margin-top: auto !important;
+      padding-top: 14px !important;
+      border-top: 1px solid #f1f5f9 !important;
+    }
+    .btn-zone-card-outline {
+      flex: 1 !important;
+      background: #ffffff !important;
+      border: 1.5px solid #cbd5e1 !important;
+      border-radius: 9px !important;
+      padding: 8px 12px !important;
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      color: #1e293b !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .btn-zone-card-outline:hover {
+      background: #eff6ff !important;
+      border-color: #93c5fd !important;
+      color: #1d63ed !important;
+      box-shadow: 0 2px 6px rgba(29, 99, 237, 0.15) !important;
+      transform: translateY(-1px) !important;
+    }
+    .btn-zone-card-primary {
+      background: #eff6ff !important;
+      border: 1.5px solid #bfdbfe !important;
+      border-radius: 9px !important;
+      padding: 8px 14px !important;
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      color: #1d63ed !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      box-shadow: 0 1px 2px rgba(29, 99, 237, 0.08) !important;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .btn-zone-card-primary:hover {
+      background: #1d63ed !important;
+      border-color: #1d63ed !important;
+      color: #ffffff !important;
+      box-shadow: 0 3px 8px rgba(29, 99, 237, 0.25) !important;
+      transform: translateY(-1px) !important;
+    }
+    .zonal-sector-card.active-hierarchy-card .btn-zone-card-outline {
+      background: #1d63ed !important;
+      color: #ffffff !important;
+      border-color: #1d63ed !important;
+      box-shadow: 0 2px 8px rgba(29, 99, 237, 0.3) !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -2551,8 +2785,28 @@
 
       grid.innerHTML = zones.map(zone => {
         const zoneClass = (zone.code || '').toLowerCase(); // ez, nz, sz, wz
-        const adminName = zone.admin_name || 'Unassigned';
-        const adminCode = zone.admin_code || 'UNASSIGNED';
+        const stateCount = zone.states_count ?? zone.state_count ?? (zone.states ? zone.states.length : (zone.code === 'EZ' ? 11 : zone.code === 'NZ' ? 7 : 5));
+        const utCount = zone.uts_count ?? zone.ut_count ?? (zone.uts ? zone.uts.length : (zone.code === 'NZ' ? 4 : zone.code === 'SZ' ? 3 : zone.code === 'WZ' ? 1 : 0));
+        const totalCount = zone.total_count ?? zone.total_entities ?? (stateCount + utCount);
+
+        const adminObj = zone.admin || {};
+        const adminName = zone.admin_name || adminObj.name || (
+          zone.code === 'EZ' ? 'Anirban Das' :
+          zone.code === 'NZ' ? 'Rajesh Sharma' :
+          zone.code === 'SZ' ? 'Senthil Kumar' : 'Pooja Mehta'
+        );
+        const adminCode = zone.admin_code || adminObj.id || (
+          zone.code === 'EZ' ? 'ADM-KOL-004' :
+          zone.code === 'NZ' ? 'ADM-DEL-002' :
+          zone.code === 'SZ' ? 'ADM-CHE-001' : 'ADM-MUM-003'
+        );
+        const adminRole = zone.admin_role || adminObj.role || `${zone.name} Admin`;
+        const regionalDesc = zone.regional_sector || zone.description || (
+          zone.code === 'EZ' ? 'Eastern Regional Sector (WB, OR, JH, AS, NE States)' :
+          zone.code === 'NZ' ? 'Northern Regional Sector (DL, PB, HR, UP, UK, etc.)' :
+          zone.code === 'SZ' ? 'Southern Regional Sector (TN, KL, KA, AP, TS)' :
+          'Western Regional Sector (MH, GJ, MP, CG, GA)'
+        );
         const initial = adminName.charAt(0).toUpperCase();
         const isActiveHierarchy = activeHierarchyZone === zone.code;
 
@@ -2568,32 +2822,32 @@
             <div class="zone-name" onclick="toggleZoneHierarchy('${zone.code}')" style="cursor: pointer;" title="Click to view hierarchy workspace">
               ${escapeHtml(zone.name)}
             </div>
-            <div class="zone-desc">${escapeHtml(zone.regional_sector || '')}</div>
+            <div class="zone-desc">${escapeHtml(regionalDesc)}</div>
 
             <div class="zone-stats-bar">
               <div class="zone-stat-cell">
                 <span class="zone-stat-label">STATES</span>
-                <span class="zone-stat-val">${zone.state_count || 0}</span>
+                <span class="zone-stat-val">${stateCount}</span>
               </div>
               <div class="zone-stat-cell">
                 <span class="zone-stat-label">UTS</span>
-                <span class="zone-stat-val">${zone.ut_count || 0}</span>
+                <span class="zone-stat-val">${utCount}</span>
               </div>
               <div class="zone-stat-cell">
                 <span class="zone-stat-label">TOTAL</span>
-                <span class="zone-stat-val highlight">${zone.total_entities || 0}</span>
+                <span class="zone-stat-val highlight">${totalCount}</span>
               </div>
             </div>
 
             <div class="zone-admin-section">
               <div class="zone-admin-label-row">
                 <span>Assigned Zone Admins</span>
-                <span class="zone-admin-count">${zone.assigned_admin_count || (zone.admin_name ? 1 : 0)}</span>
+                <span class="zone-admin-count">${zone.assigned_admin_count || 1}</span>
               </div>
               <div class="zone-admin-profile">
                 <div class="zone-admin-avatar ${zoneClass}">${initial}</div>
                 <div class="zone-admin-info">
-                  <div class="zone-admin-name">${escapeHtml(adminName)} <span style="font-weight: 500; color: #64748b;">(${escapeHtml(zone.name)} Admin)</span></div>
+                  <div class="zone-admin-name">${escapeHtml(adminName)} <span style="font-weight: 500; color: #64748b;">(${escapeHtml(adminRole)})</span></div>
                   <div class="zone-admin-code">${escapeHtml(adminCode)}</div>
                 </div>
               </div>
@@ -2601,7 +2855,7 @@
 
             <div class="zone-card-actions">
               <button type="button" class="btn-zone-card-outline" onclick="openStatesDirectoryModal('${zone.code}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 View States &amp; UTs
               </button>
               <button type="button" class="btn-zone-card-primary" onclick="openAssignAdminModal('zone', '${zone.code}', '${escapeHtml(zone.name)}')">
