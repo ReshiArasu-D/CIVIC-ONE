@@ -4309,3 +4309,600 @@ body {
   gap: 4px;
 }
 
+/* =========================================================================
+   OFFICER & FIELD ENGINEER MANAGEMENT MODULE STYLES
+   ========================================================================= */
+.officers-workspace-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* 4 Summary Cards Grid */
+.officers-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 1024px) {
+  .officers-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .officers-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.officer-kpi-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+}
+
+.officer-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  border-color: #bfdbfe;
+}
+
+.officer-kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.officer-kpi-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.officer-kpi-icon-box.blue { background: #eff6ff; color: #1d63ed; }
+.officer-kpi-icon-box.green { background: #f0fdf4; color: #16a34a; }
+.officer-kpi-icon-box.cyan { background: #e0f2fe; color: #0284c7; }
+.officer-kpi-icon-box.red { background: #fef2f2; color: #dc2626; }
+
+.officer-kpi-pill {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.officer-kpi-pill.blue { background: #eff6ff; color: #1d63ed; }
+.officer-kpi-pill.green { background: #dcfce7; color: #15803d; }
+.officer-kpi-pill.cyan { background: #e0f2fe; color: #0369a1; }
+.officer-kpi-pill.red { background: #fee2e2; color: #b91c1c; }
+
+.officer-kpi-val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.officer-kpi-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.officer-kpi-sub {
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+
+/* Officers Filter Toolbar */
+.officers-filter-toolbar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.officers-search-wrap {
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.officers-search-wrap svg {
+  position: absolute;
+  left: 10px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.officers-search-input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  outline: none;
+  background: #f8fafc;
+  transition: all 0.15s ease;
+}
+
+.officers-search-input:focus {
+  border-color: #93c5fd;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(29, 99, 237, 0.1);
+}
+
+.officers-filter-select {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1e293b;
+  background: #f8fafc;
+  outline: none;
+  cursor: pointer;
+}
+
+.officers-filter-select:hover, .officers-filter-select:focus {
+  border-color: #93c5fd;
+  background: #ffffff;
+}
+
+.btn-officers-clear {
+  background: none;
+  border: 1px solid #e2e8f0;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-officers-clear:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Officers Table Card */
+.officers-table-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.officers-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.officers-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.officers-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  padding: 11px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.officers-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.officers-table tr:hover td {
+  background: #f8fafc;
+}
+
+.officer-cell-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.officer-avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1d63ed;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.officer-info-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.officer-name-title {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 0.84rem;
+}
+
+.officer-role-sub {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.officer-avail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.officer-avail-badge.available { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+.officer-avail-badge.on-field { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.officer-avail-badge.on-leave { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+.officer-avail-badge.inactive { background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+
+.officer-actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn-officer-tbl {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-officer-tbl.profile {
+  background: #eff6ff;
+  color: #1d63ed;
+  border-color: #bfdbfe;
+}
+.btn-officer-tbl.profile:hover {
+  background: #1d63ed;
+  color: #ffffff;
+}
+
+.btn-officer-tbl.assign {
+  background: #f0fdf4;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+.btn-officer-tbl.assign:hover {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.btn-officer-tbl.remove {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+.btn-officer-tbl.remove:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+/* Pagination Bar */
+.officers-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.76rem;
+  color: #64748b;
+}
+
+.officers-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-pagination {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+}
+
+.btn-pagination:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.btn-pagination:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================================
+   OFFICER PROFILE MODAL / DRAWER STYLES
+   ========================================================================= */
+.officer-profile-modal-box {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 92%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+  animation: modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.officer-profile-header-banner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  padding: 20px 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.officer-profile-banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.officer-profile-main-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.officer-profile-avatar-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #1d63ed;
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.officer-profile-name-lg {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.officer-profile-sub-meta {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
+
+.officer-profile-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.officer-strip-kpi {
+  display: flex;
+  flex-direction: column;
+}
+
+.officer-strip-kpi-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.officer-strip-kpi-lbl {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+/* Tabs Navigation Bar */
+.officer-profile-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #f8fafc;
+  padding: 0 20px;
+  border-bottom: 1px solid #e2e8f0;
+  overflow-x: auto;
+}
+
+.officer-tab-btn {
+  background: none;
+  border: none;
+  padding: 12px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.officer-tab-btn:hover {
+  color: #0f172a;
+}
+
+.officer-tab-btn.active {
+  color: #1d63ed;
+  border-bottom-color: #1d63ed;
+}
+
+.officer-tab-content-area {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.officer-tab-pane {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.15s ease;
+}
+
+.officer-tab-pane.active {
+  display: flex;
+}
+
+/* Key-Value Details Grid for Overview */
+.profile-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 768px) {
+  .profile-meta-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.profile-kv-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.profile-kv-key {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.profile-kv-value {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Workload Capacity Meter */
+.workload-capacity-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.capacity-bar-track {
+  width: 100%;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.capacity-bar-fill {
+  height: 100%;
+  background: #1d63ed;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+
+.capacity-bar-fill.warning { background: #f59e0b; }
+.capacity-bar-fill.critical { background: #ef4444; }
+
+/* Modal Footer Action Strip */
+.officer-profile-footer {
+  padding: 14px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.officer-profile-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.officer-profile-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+

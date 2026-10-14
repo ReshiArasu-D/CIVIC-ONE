@@ -185,6 +185,26 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
             self.handle_admin_zone_assign(data)
             return
 
+        if path == "/api/admin/officers":
+            self.handle_admin_officer_create(data)
+            return
+
+        if path == "/api/admin/officers/assign-case":
+            self.handle_admin_officer_assign_case(data)
+            return
+
+        if path == "/api/admin/officers/reassign":
+            self.handle_admin_officer_reassign(data)
+            return
+
+        if path == "/api/admin/officers/availability":
+            self.handle_admin_officer_availability(data)
+            return
+
+        if path == "/api/admin/officers/deactivate":
+            self.handle_admin_officer_deactivate(data)
+            return
+
         self.send_error(404, "Endpoint not found")
 
     def send_json(self, status_code, data):
@@ -1608,15 +1628,820 @@ class CivicOneHandler(SimpleHTTPRequestHandler):
         except Exception as e:
             self.send_json(500, {"success": False, "error": str(e)})
 
+    # =========================================================================
+    # OFFICER & FIELD ENGINEER MANAGEMENT ROSTER & APIS
+    # =========================================================================
+    OFFICERS_ROSTER = [
+        {
+            "id": "EMP-ROD-001",
+            "name": "R. Kumar",
+            "email": "r.kumar@civicone.gov.in",
+            "phone": "+91 98401 23456",
+            "department": "Public Works / Roads",
+            "role": "Senior Field Engineer",
+            "zone": "South Zone",
+            "state": "Tamil Nadu",
+            "district": "Chennai",
+            "ward": "Ward 12 (Indiranagar)",
+            "reporting_manager": "Senthil Kumar (Senior Zonal Admin)",
+            "availability": "Available",
+            "status": "Active",
+            "capacity": 5,
+            "joined_date": "15 Jan 2024",
+            "active_cases": 3,
+            "overdue_cases": 0,
+            "resolved_cases": 48,
+            "total_assigned": 51,
+            "avg_resolution_hours": 18.2,
+            "sla_compliance": 95.8,
+            "assigned_cases": [
+                {
+                    "case_id": "CIV0001013",
+                    "category": "Roads & Footpaths",
+                    "subcategory": "Pothole & Surface Damage",
+                    "summary": "Large pothole near main road intersection creating traffic hazard",
+                    "location": "Indiranagar 100ft Road, Ward 12",
+                    "priority": "High",
+                    "submitted_on": "12 Oct 2026, 10:45 AM",
+                    "sla_deadline": "14 Oct 2026, 10:45 AM",
+                    "sla_status": "Within SLA",
+                    "status": "In Progress"
+                },
+                {
+                    "case_id": "CIV0001018",
+                    "category": "Roads & Footpaths",
+                    "subcategory": "Footpath Encroachment",
+                    "summary": "Damaged pedestrian walkway slabs causing trip hazards",
+                    "location": "12th Main Road, Indiranagar",
+                    "priority": "Medium",
+                    "submitted_on": "13 Oct 2026, 09:15 AM",
+                    "sla_deadline": "15 Oct 2026, 09:15 AM",
+                    "sla_status": "Within SLA",
+                    "status": "In Progress"
+                },
+                {
+                    "case_id": "CIV0001021",
+                    "category": "Roads & Footpaths",
+                    "subcategory": "Speed Breaker Marking",
+                    "summary": "Faded road paint and unpainted speed breaker warning signs",
+                    "location": "CMH Road, Indiranagar",
+                    "priority": "Low",
+                    "submitted_on": "13 Oct 2026, 02:30 PM",
+                    "sla_deadline": "16 Oct 2026, 02:30 PM",
+                    "sla_status": "Within SLA",
+                    "status": "Pending"
+                }
+            ],
+            "assignment_history": [
+                {
+                    "role": "Senior Field Engineer",
+                    "department": "Public Works / Roads",
+                    "jurisdiction": "Ward 12 (Indiranagar), South Zone",
+                    "effective_dates": "01 Jan 2025 — Present",
+                    "reason": "Zonal reallocation post municipal reorganization",
+                    "actor": "System Administrator",
+                    "timestamp": "2025-01-01 09:00:00"
+                },
+                {
+                    "role": "Junior Field Engineer",
+                    "department": "Public Works / Roads",
+                    "jurisdiction": "Ward 14 (Domlur), South Zone",
+                    "effective_dates": "15 Jan 2024 — 31 Dec 2024",
+                    "reason": "Initial deployment on service commission",
+                    "actor": "HR Directorate",
+                    "timestamp": "2024-01-15 10:00:00"
+                }
+            ]
+        },
+        {
+            "id": "EMP-WAT-001",
+            "name": "M. Senthil",
+            "email": "m.senthil@civicone.gov.in",
+            "phone": "+91 98402 34567",
+            "department": "Water Supply",
+            "role": "Hydraulic Maintenance Officer",
+            "zone": "South Zone",
+            "state": "Tamil Nadu",
+            "district": "Chennai",
+            "ward": "Ward 12 (Indiranagar)",
+            "reporting_manager": "Senthil Kumar (Senior Zonal Admin)",
+            "availability": "Available",
+            "status": "Active",
+            "capacity": 5,
+            "joined_date": "10 Mar 2023",
+            "active_cases": 2,
+            "overdue_cases": 0,
+            "resolved_cases": 64,
+            "total_assigned": 66,
+            "avg_resolution_hours": 14.5,
+            "sla_compliance": 97.0,
+            "assigned_cases": [
+                {
+                    "case_id": "CIV0001014",
+                    "category": "Water Supply",
+                    "subcategory": "Pipeline Leakage",
+                    "summary": "Main distribution pipe leakage causing water pressure loss",
+                    "location": "Adyar 2nd Cross, Ward 12",
+                    "priority": "High",
+                    "submitted_on": "12 Oct 2026, 11:20 AM",
+                    "sla_deadline": "13 Oct 2026, 11:20 PM",
+                    "sla_status": "Within SLA",
+                    "status": "In Progress"
+                },
+                {
+                    "case_id": "CIV0001020",
+                    "category": "Water Supply",
+                    "subcategory": "Contamination / Discoloration",
+                    "summary": "Turbid water reported in residential supply line",
+                    "location": "Indiranagar 6th Block",
+                    "priority": "Critical",
+                    "submitted_on": "13 Oct 2026, 08:00 AM",
+                    "sla_deadline": "13 Oct 2026, 08:00 PM",
+                    "sla_status": "Within SLA",
+                    "status": "In Progress"
+                }
+            ],
+            "assignment_history": [
+                {
+                    "role": "Hydraulic Maintenance Officer",
+                    "department": "Water Supply",
+                    "jurisdiction": "Ward 12 (Indiranagar), South Zone",
+                    "effective_dates": "10 Mar 2023 — Present",
+                    "reason": "Permanent operational posting",
+                    "actor": "System Administrator",
+                    "timestamp": "2023-03-10 09:30:00"
+                }
+            ]
+        },
+        {
+            "id": "EMP-SAN-001",
+            "name": "S. Priya",
+            "email": "s.priya@civicone.gov.in",
+            "phone": "+91 98403 45678",
+            "department": "Sanitation & Waste",
+            "role": "Chief Sanitation Supervisor",
+            "zone": "South Zone",
+            "state": "Tamil Nadu",
+            "district": "Chennai",
+            "ward": "Ward 15 (Koramangala)",
+            "reporting_manager": "Senthil Kumar (Senior Zonal Admin)",
+            "availability": "On Field",
+            "status": "Active",
+            "capacity": 5,
+            "joined_date": "01 Jun 2023",
+            "active_cases": 4,
+            "overdue_cases": 0,
+            "resolved_cases": 82,
+            "total_assigned": 86,
+            "avg_resolution_hours": 11.8,
+            "sla_compliance": 96.5,
+            "assigned_cases": [
+                {
+                    "case_id": "CIV0001015",
+                    "category": "Sanitation & Waste",
+                    "subcategory": "Garbage Non-Collection",
+                    "summary": "Commercial waste bins overflowing near market complex",
+                    "location": "Koramangala 4th Block",
+                    "priority": "High",
+                    "submitted_on": "12 Oct 2026, 08:30 AM",
+                    "sla_deadline": "13 Oct 2026, 08:30 AM",
+                    "sla_status": "Within SLA",
+                    "status": "In Progress"
+                },
+                {
+                    "case_id": "CIV0001019",
+                    "category": "Sanitation & Waste",
+                    "subcategory": "Debris Dumping",
+                    "summary": "Construction debris dumped along road shoulder",
+                    "location": "Koramangala 80ft Road",
+                    "priority": "Medium",
+                    "submitted_on": "13 Oct 2026, 10:10 AM",
+                    "sla_deadline": "14 Oct 2026, 10:10 AM",
+                    "sla_status": "Within SLA",
+                    "status": "Pending"
+                },
+                {
+                    "case_id": "CIV0001023",
+                    "category": "Sanitation & Waste",
+                    "subcategory": "Public Bin Replacement",
+                    "summary": "Damaged community waste bin needing immediate swap",
+                    "location": "Koramangala 1st Cross",
+                    "priority": "Low",
+                    "submitted_on": "13 Oct 2026, 01:45 PM",
+                    "sla_deadline": "15 Oct 2026, 01:45 PM",
+                    "sla_status": "Within SLA",
+                    "status": "In Progress"
+                },
+                {
+                    "case_id": "CIV0001025",
+                    "category": "Sanitation & Waste",
+                    "subcategory": "Litter Cleanliness Drive",
+                    "summary": "Post-event public park litter clearance requirement",
+                    "location": "Koramangala Park Perimeter",
+                    "priority": "Medium",
+                    "submitted_on": "13 Oct 2026, 03:00 PM",
+                    "sla_deadline": "14 Oct 2026, 03:00 PM",
+                    "sla_status": "Within SLA",
+                    "status": "In Progress"
+                }
+            ],
+            "assignment_history": [
+                {
+                    "role": "Chief Sanitation Supervisor",
+                    "department": "Sanitation & Waste",
+                    "jurisdiction": "Ward 15 (Koramangala), South Zone",
+                    "effective_dates": "01 Jun 2023 — Present",
+                    "reason": "Direct recruitment into municipal supervisory cadre",
+                    "actor": "Municipal Commissioner",
+                    "timestamp": "2023-06-01 10:00:00"
+                }
+            ]
+        },
+        {
+            "id": "EMP-ELE-001",
+            "name": "K. Naveen",
+            "email": "k.naveen@civicone.gov.in",
+            "phone": "+91 98404 56789",
+            "department": "Electricity & Street Lighting",
+            "role": "Lead Electrical Inspector",
+            "zone": "South Zone",
+            "state": "Tamil Nadu",
+            "district": "Chennai",
+            "ward": "Ward 12 (Indiranagar)",
+            "reporting_manager": "Senthil Kumar (Senior Zonal Admin)",
+            "availability": "Available",
+            "status": "Active",
+            "capacity": 5,
+            "joined_date": "18 Aug 2024",
+            "active_cases": 1,
+            "overdue_cases": 1,
+            "resolved_cases": 35,
+            "total_assigned": 36,
+            "avg_resolution_hours": 9.5,
+            "sla_compliance": 91.6,
+            "assigned_cases": [
+                {
+                    "case_id": "CIV0001016",
+                    "category": "Electricity & Street Lighting",
+                    "subcategory": "Streetlight Circuit Tripped",
+                    "summary": "Dark corridor across 5 contiguous lamp posts on 8th Cross",
+                    "location": "Indiranagar 8th Cross",
+                    "priority": "High",
+                    "submitted_on": "10 Oct 2026, 07:15 PM",
+                    "sla_deadline": "11 Oct 2026, 07:15 AM",
+                    "sla_status": "Overdue",
+                    "status": "Overdue"
+                }
+            ],
+            "assignment_history": [
+                {
+                    "role": "Lead Electrical Inspector",
+                    "department": "Electricity & Street Lighting",
+                    "jurisdiction": "Ward 12 (Indiranagar), South Zone",
+                    "effective_dates": "18 Aug 2024 — Present",
+                    "reason": "Zonal technical officer appointment",
+                    "actor": "System Administrator",
+                    "timestamp": "2024-08-18 11:00:00"
+                }
+            ]
+        },
+        {
+            "id": "EMP-WAT-002",
+            "name": "Aarav Sharma",
+            "email": "aarav.sharma@civicone.gov.in",
+            "phone": "+91 98405 67890",
+            "department": "Public Works / Roads",
+            "role": "Civil Works Inspector",
+            "zone": "North Zone",
+            "state": "Delhi",
+            "district": "New Delhi",
+            "ward": "Ward 15 (Koramangala)",
+            "reporting_manager": "Rajesh Sharma (North Zone Admin)",
+            "availability": "Available",
+            "status": "Active",
+            "capacity": 5,
+            "joined_date": "05 Feb 2025",
+            "active_cases": 1,
+            "overdue_cases": 0,
+            "resolved_cases": 19,
+            "total_assigned": 20,
+            "avg_resolution_hours": 21.0,
+            "sla_compliance": 95.0,
+            "assigned_cases": [
+                {
+                    "case_id": "CIV0001026",
+                    "category": "Roads & Footpaths",
+                    "subcategory": "Drain Cover Broken",
+                    "summary": "Broken concrete drain slab exposing stormwater trench",
+                    "location": "Koramangala Ring Road",
+                    "priority": "High",
+                    "submitted_on": "13 Oct 2026, 11:00 AM",
+                    "sla_deadline": "14 Oct 2026, 11:00 AM",
+                    "sla_status": "Within SLA",
+                    "status": "In Progress"
+                }
+            ],
+            "assignment_history": [
+                {
+                    "role": "Civil Works Inspector",
+                    "department": "Public Works / Roads",
+                    "jurisdiction": "Ward 15 (Koramangala), North/South Zonal Liaison",
+                    "effective_dates": "05 Feb 2025 — Present",
+                    "reason": "New officer onboarding",
+                    "actor": "System Administrator",
+                    "timestamp": "2025-02-05 10:00:00"
+                }
+            ]
+        },
+        {
+            "id": "EMP-WAT-003",
+            "name": "Priya Venkatesh",
+            "email": "priya.v@civicone.gov.in",
+            "phone": "+91 98406 78901",
+            "department": "Water Supply",
+            "role": "Pipeline Specialist",
+            "zone": "South Zone",
+            "state": "Tamil Nadu",
+            "district": "Chennai",
+            "ward": "Ward 12 (Indiranagar)",
+            "reporting_manager": "Senthil Kumar (Senior Zonal Admin)",
+            "availability": "On Leave",
+            "status": "Active",
+            "capacity": 5,
+            "joined_date": "12 Nov 2024",
+            "active_cases": 0,
+            "overdue_cases": 0,
+            "resolved_cases": 28,
+            "total_assigned": 28,
+            "avg_resolution_hours": 15.2,
+            "sla_compliance": 96.4,
+            "assigned_cases": [],
+            "assignment_history": [
+                {
+                    "role": "Pipeline Specialist",
+                    "department": "Water Supply",
+                    "jurisdiction": "Ward 12 (Indiranagar), South Zone",
+                    "effective_dates": "12 Nov 2024 — Present",
+                    "reason": "Technical transfer",
+                    "actor": "System Administrator",
+                    "timestamp": "2024-11-12 14:00:00"
+                }
+            ]
+        }
+    ]
+
+    ELIGIBLE_UNASSIGNED_CASES = [
+        {
+            "case_id": "CIV0001041",
+            "category": "Roads & Footpaths",
+            "priority": "High",
+            "location": "Indiranagar 12th Main, Ward 12",
+            "department": "Public Works / Roads",
+            "sla_deadline": "24 Hours (Urgent)",
+            "summary": "Deep asphalt crater creating vehicle hazard"
+        },
+        {
+            "case_id": "CIV0001028",
+            "category": "Water Supply",
+            "priority": "Medium",
+            "location": "Adyar 1st Avenue, Ward 12",
+            "department": "Water Supply",
+            "sla_deadline": "12 Hours (Standard)",
+            "summary": "Low water pressure reported in residential feeder line"
+        },
+        {
+            "case_id": "CIV0001032",
+            "category": "Sanitation & Waste",
+            "priority": "Low",
+            "location": "Velachery Main Road, Ward 15",
+            "department": "Sanitation & Waste",
+            "sla_deadline": "48 Hours (Standard)",
+            "summary": "Regular street sweeping request post festival"
+        }
+    ]
+
     def handle_admin_officers(self, query):
-        if not client:
-            self.send_json(500, {"success": False, "error": "ServiceNow client not configured"})
+        search_kw = query.get("q", [""])[0].strip().lower()
+        dept_filter = query.get("department", [""])[0].strip()
+        zone_filter = query.get("zone", [""])[0].strip()
+        avail_filter = query.get("availability", [""])[0].strip()
+
+        # Query live ServiceNow worker records if connected to sync IDs
+        sn_workers_map = {}
+        if client:
+            try:
+                sn_workers = client._request(
+                    "GET",
+                    "/api/now/table/x_2229367_civicone_case_worker",
+                    params={"sysparm_display_value": "all", "sysparm_limit": 50}
+                )
+                for w in sn_workers.get("result", []):
+                    eid = w.get("employee_id", {}).get("display_value")
+                    if eid:
+                        sn_workers_map[eid] = {
+                            "sys_id": w.get("sys_id", {}).get("value"),
+                            "is_available": w.get("is_available", {}).get("display_value") == "true",
+                            "active_case_load": w.get("active_case_load", {}).get("display_value")
+                        }
+            except Exception as e:
+                print(f"[Officers API] Note querying ServiceNow workers: {e}")
+
+        # Compute summary metrics from current roster
+        total_officers = len(self.OFFICERS_ROSTER)
+        active_officers = sum(1 for o in self.OFFICERS_ROSTER if o.get("status") == "Active")
+        available_officers = sum(1 for o in self.OFFICERS_ROSTER if o.get("availability") == "Available" and o.get("status") == "Active")
+        overdue_officers = sum(1 for o in self.OFFICERS_ROSTER if o.get("overdue_cases", 0) > 0)
+
+        # Apply search and filters
+        filtered = []
+        for o in self.OFFICERS_ROSTER:
+            if search_kw:
+                match_id = search_kw in o["id"].lower()
+                match_name = search_kw in o["name"].lower()
+                match_dept = search_kw in o["department"].lower()
+                match_ward = search_kw in o["ward"].lower()
+                if not (match_id or match_name or match_dept or match_ward):
+                    continue
+
+            if dept_filter and dept_filter != "All Departments":
+                if dept_filter.lower() not in o["department"].lower():
+                    continue
+
+            if zone_filter and zone_filter != "All Zones":
+                if zone_filter.lower() not in o["zone"].lower():
+                    continue
+
+            if avail_filter and avail_filter != "All Statuses":
+                if avail_filter.lower() != o["availability"].lower():
+                    continue
+
+            filtered.append(o)
+
+        self.send_json(200, {
+            "success": True,
+            "summary": {
+                "total_officers": total_officers,
+                "active_officers": active_officers,
+                "available_officers": available_officers,
+                "overdue_officers": overdue_officers
+            },
+            "officers": filtered,
+            "count": len(filtered),
+            "eligible_unassigned_cases": self.ELIGIBLE_UNASSIGNED_CASES,
+            "servicenow_sync": {
+                "connected": bool(client),
+                "table": "x_2229367_civicone_case_worker",
+                "matched_records": len(sn_workers_map)
+            }
+        })
+
+    def handle_admin_officer_create(self, data):
+        name = data.get("name", "").strip()
+        employee_id = data.get("employee_id", "").strip().upper()
+        email = data.get("email", "").strip()
+        phone = data.get("phone", "").strip()
+        department = data.get("department", "").strip()
+        role = data.get("role", "Field Officer").strip()
+        zone = data.get("zone", "South Zone").strip()
+        state = data.get("state", "Tamil Nadu").strip()
+        district = data.get("district", "Chennai").strip()
+        ward = data.get("ward", "Ward 12 (Indiranagar)").strip()
+        notes = data.get("notes", "").strip()
+
+        if not name or not employee_id or not department:
+            self.send_json(400, {
+                "success": False,
+                "error": "Officer Name, Employee ID, and Department are mandatory."
+            })
             return
-        try:
-            res = client.get_records("x_2229367_civicone_case_worker", limit=50)
-            self.send_json(200, {"success": True, "officers": res, "count": len(res)})
-        except Exception as e:
-            self.send_json(500, {"success": False, "error": str(e)})
+
+        # Check duplicate employee ID
+        for o in self.OFFICERS_ROSTER:
+            if o["id"] == employee_id:
+                self.send_json(400, {
+                    "success": False,
+                    "error": f"An officer with Employee ID '{employee_id}' already exists ({o['name']})."
+                })
+                return
+
+        new_officer = {
+            "id": employee_id,
+            "name": name,
+            "email": email or f"{employee_id.lower()}@civicone.gov.in",
+            "phone": phone or "+91 98000 00000",
+            "department": department,
+            "role": role,
+            "zone": zone,
+            "state": state,
+            "district": district,
+            "ward": ward,
+            "reporting_manager": f"{zone} Zonal Lead",
+            "availability": "Available",
+            "status": "Active",
+            "capacity": 5,
+            "joined_date": datetime.datetime.now().strftime("%d %b %Y"),
+            "active_cases": 0,
+            "overdue_cases": 0,
+            "resolved_cases": 0,
+            "total_assigned": 0,
+            "avg_resolution_hours": 0.0,
+            "sla_compliance": 100.0,
+            "assigned_cases": [],
+            "assignment_history": [
+                {
+                    "role": role,
+                    "department": department,
+                    "jurisdiction": f"{ward}, {district}, {zone}",
+                    "effective_dates": f"{datetime.datetime.now().strftime('%d %b %Y')} — Present",
+                    "reason": f"New officer onboarding: {notes or 'Standard departmental deployment'}",
+                    "actor": "System Administrator",
+                    "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                }
+            ]
+        }
+        self.OFFICERS_ROSTER.append(new_officer)
+
+        # Audit and sync with ServiceNow
+        if client:
+            try:
+                client._request(
+                    "POST",
+                    "/api/now/table/x_2229367_civicone_ai_action_log",
+                    data={
+                        "action_type": "Officer Onboarding & Assignment",
+                        "agent_name": "CivicOne Officer Governance Console",
+                        "notes": f"Officer {name} ({employee_id}) onboarded to {department} in {ward}, {zone}.",
+                        "confidence_score": "1.00"
+                    }
+                )
+            except Exception as e:
+                print(f"[Officer Onboard] SN log note: {e}")
+
+        self.send_json(200, {
+            "success": True,
+            "message": f"Officer {name} ({employee_id}) onboarded and assigned successfully.",
+            "officer": new_officer
+        })
+
+    def handle_admin_officer_assign_case(self, data):
+        officer_id = data.get("employee_id", "").strip().upper()
+        case_id = data.get("case_id", "").strip().upper()
+        notes = data.get("notes", "").strip()
+
+        if not officer_id or not case_id:
+            self.send_json(400, {"success": False, "error": "Officer ID and Case ID are required."})
+            return
+
+        target_officer = next((o for o in self.OFFICERS_ROSTER if o["id"] == officer_id), None)
+        if not target_officer:
+            self.send_json(404, {"success": False, "error": f"Officer {officer_id} not found."})
+            return
+
+        # Locate case from unassigned list or create entry
+        matched_case = next((c for c in self.ELIGIBLE_UNASSIGNED_CASES if c["case_id"] == case_id), None)
+        if matched_case:
+            self.ELIGIBLE_UNASSIGNED_CASES.remove(matched_case)
+            assigned_entry = {
+                "case_id": matched_case["case_id"],
+                "category": matched_case["category"],
+                "subcategory": matched_case.get("subcategory", "Civic Remediation"),
+                "summary": matched_case["summary"],
+                "location": matched_case["location"],
+                "priority": matched_case["priority"],
+                "submitted_on": datetime.datetime.now().strftime("%d %b %Y, %I:%M %p"),
+                "sla_deadline": matched_case["sla_deadline"],
+                "sla_status": "Within SLA",
+                "status": "In Progress"
+            }
+        else:
+            assigned_entry = {
+                "case_id": case_id,
+                "category": target_officer["department"],
+                "subcategory": "Field Redressal",
+                "summary": notes or f"Administrative case assignment for {case_id}",
+                "location": target_officer["ward"],
+                "priority": "Medium",
+                "submitted_on": datetime.datetime.now().strftime("%d %b %Y, %I:%M %p"),
+                "sla_deadline": "24 Hours (Standard)",
+                "sla_status": "Within SLA",
+                "status": "In Progress"
+            }
+
+        target_officer["assigned_cases"].insert(0, assigned_entry)
+        target_officer["active_cases"] = len([c for c in target_officer["assigned_cases"] if c["status"] != "Resolved"])
+        target_officer["total_assigned"] += 1
+
+        # Audit to ServiceNow
+        if client:
+            try:
+                client._request(
+                    "POST",
+                    "/api/now/table/x_2229367_civicone_ai_action_log",
+                    data={
+                        "action_type": "Grievance Assignment",
+                        "agent_name": "CivicOne Officer Dispatch Engine",
+                        "notes": f"Case {case_id} assigned to officer {target_officer['name']} ({officer_id}).",
+                        "confidence_score": "1.00"
+                    }
+                )
+            except Exception as e:
+                print(f"[Case Assign] SN log note: {e}")
+
+        self.send_json(200, {
+            "success": True,
+            "message": f"Case {case_id} successfully assigned to {target_officer['name']}.",
+            "officer": target_officer
+        })
+
+    def handle_admin_officer_reassign(self, data):
+        from_id = data.get("from_officer_id", "").strip().upper()
+        to_id = data.get("to_officer_id", "").strip().upper()
+        case_id = data.get("case_id", "").strip().upper()
+        reason = data.get("reason", "").strip()
+
+        if not from_id or not to_id or not case_id:
+            self.send_json(400, {"success": False, "error": "Source officer, target officer, and case ID are required."})
+            return
+
+        if not reason:
+            self.send_json(400, {"success": False, "error": "Reassignment reason is mandatory for administrative compliance."})
+            return
+
+        if from_id == to_id:
+            self.send_json(400, {"success": False, "error": "Target officer must be different from current officer."})
+            return
+
+        src_officer = next((o for o in self.OFFICERS_ROSTER if o["id"] == from_id), None)
+        tgt_officer = next((o for o in self.OFFICERS_ROSTER if o["id"] == to_id), None)
+
+        if not src_officer or not tgt_officer:
+            self.send_json(404, {"success": False, "error": "Source or target officer not found in roster."})
+            return
+
+        # Find case in src_officer
+        case_obj = next((c for c in src_officer["assigned_cases"] if c["case_id"] == case_id), None)
+        if not case_obj:
+            self.send_json(404, {"success": False, "error": f"Case {case_id} not currently assigned to {src_officer['name']}."})
+            return
+
+        # Move case
+        src_officer["assigned_cases"].remove(case_obj)
+        src_officer["active_cases"] = len([c for c in src_officer["assigned_cases"] if c["status"] != "Resolved"])
+        if case_obj.get("status") == "Overdue":
+            src_officer["overdue_cases"] = max(0, src_officer.get("overdue_cases", 0) - 1)
+
+        tgt_officer["assigned_cases"].insert(0, case_obj)
+        tgt_officer["active_cases"] = len([c for c in tgt_officer["assigned_cases"] if c["status"] != "Resolved"])
+        tgt_officer["total_assigned"] += 1
+
+        # Audit event in assignment history
+        now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        src_officer["assignment_history"].insert(0, {
+            "role": src_officer["role"],
+            "department": src_officer["department"],
+            "jurisdiction": f"Case {case_id} Reassigned Out",
+            "effective_dates": now_str,
+            "reason": f"Case {case_id} reassigned to {tgt_officer['name']} ({to_id}). Reason: {reason}",
+            "actor": "System Administrator",
+            "timestamp": now_str
+        })
+
+        tgt_officer["assignment_history"].insert(0, {
+            "role": tgt_officer["role"],
+            "department": tgt_officer["department"],
+            "jurisdiction": f"Case {case_id} Reassigned In",
+            "effective_dates": now_str,
+            "reason": f"Received {case_id} from {src_officer['name']} ({from_id}). Reason: {reason}",
+            "actor": "System Administrator",
+            "timestamp": now_str
+        })
+
+        if client:
+            try:
+                client._request(
+                    "POST",
+                    "/api/now/table/x_2229367_civicone_ai_action_log",
+                    data={
+                        "action_type": "Officer Grievance Reassignment",
+                        "agent_name": "CivicOne Officer Governance Console",
+                        "notes": f"Case {case_id} reassigned from {src_officer['name']} to {tgt_officer['name']}. Reason: {reason}",
+                        "confidence_score": "1.00"
+                    }
+                )
+            except Exception as e:
+                print(f"[Reassign] SN log note: {e}")
+
+        self.send_json(200, {
+            "success": True,
+            "message": f"Case {case_id} successfully reassigned to {tgt_officer['name']}.",
+            "source_officer": src_officer,
+            "target_officer": tgt_officer
+        })
+
+    def handle_admin_officer_availability(self, data):
+        officer_id = data.get("employee_id", "").strip().upper()
+        availability = data.get("availability", "").strip()
+
+        if not officer_id or not availability:
+            self.send_json(400, {"success": False, "error": "Officer ID and Availability state are required."})
+            return
+
+        valid_states = ["Available", "On Field", "On Leave", "Inactive"]
+        if availability not in valid_states:
+            self.send_json(400, {"success": False, "error": f"Invalid availability. Must be one of: {', '.join(valid_states)}."})
+            return
+
+        officer = next((o for o in self.OFFICERS_ROSTER if o["id"] == officer_id), None)
+        if not officer:
+            self.send_json(404, {"success": False, "error": f"Officer {officer_id} not found."})
+            return
+
+        old_state = officer.get("availability", "Available")
+        officer["availability"] = availability
+
+        # Audit to ServiceNow
+        if client:
+            try:
+                client._request(
+                    "POST",
+                    "/api/now/table/x_2229367_civicone_ai_action_log",
+                    data={
+                        "action_type": "Officer Availability Change",
+                        "agent_name": "CivicOne Officer Governance Console",
+                        "notes": f"Officer {officer['name']} ({officer_id}) availability changed from {old_state} to {availability}.",
+                        "confidence_score": "1.00"
+                    }
+                )
+            except Exception as e:
+                print(f"[Availability] SN log note: {e}")
+
+        self.send_json(200, {
+            "success": True,
+            "message": f"Officer {officer['name']} availability updated to '{availability}'.",
+            "officer": officer
+        })
+
+    def handle_admin_officer_deactivate(self, data):
+        officer_id = data.get("employee_id", "").strip().upper()
+        reason = data.get("reason", "").strip()
+
+        if not officer_id:
+            self.send_json(400, {"success": False, "error": "Officer Employee ID is required."})
+            return
+
+        if not reason:
+            self.send_json(400, {"success": False, "error": "A formal deactivation/removal reason is required for audit compliance."})
+            return
+
+        officer = next((o for o in self.OFFICERS_ROSTER if o["id"] == officer_id), None)
+        if not officer:
+            self.send_json(404, {"success": False, "error": f"Officer {officer_id} not found."})
+            return
+
+        # CRITICAL SAFEGUARD: Block removal if active cases exist
+        active_count = officer.get("active_cases", 0)
+        if active_count > 0:
+            self.send_json(400, {
+                "success": False,
+                "blocked": True,
+                "error": f"Removal Blocked: Officer {officer['name']} ({officer_id}) holds {active_count} active grievance(s). You must reassign all active grievances to another officer before deactivating or removing this officer."
+            })
+            return
+
+        # Apply safe deactivation
+        officer["status"] = "Inactive"
+        officer["availability"] = "Inactive"
+        now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        officer["assignment_history"].insert(0, {
+            "role": officer["role"],
+            "department": officer["department"],
+            "jurisdiction": f"Deactivated ({officer['ward']})",
+            "effective_dates": f"{now_str} — Inactive",
+            "reason": f"Account Deactivation: {reason}",
+            "actor": "System Administrator",
+            "timestamp": now_str
+        })
+
+        if client:
+            try:
+                client._request(
+                    "POST",
+                    "/api/now/table/x_2229367_civicone_ai_action_log",
+                    data={
+                        "action_type": "Officer Deactivation Safeguard Passed",
+                        "agent_name": "CivicOne Officer Governance Console",
+                        "notes": f"Officer {officer['name']} ({officer_id}) safely deactivated (0 active cases). Reason: {reason}",
+                        "confidence_score": "1.00"
+                    }
+                )
+            except Exception as e:
+                print(f"[Deactivate] SN log note: {e}")
+
+        self.send_json(200, {
+            "success": True,
+            "message": f"Officer {officer['name']} ({officer_id}) has been safely deactivated. Active cases: 0. Historical assignment records preserved.",
+            "officer": officer
+        })
 
     # =========================================================================
     # NATIONAL ZONAL SECTOR MANAGEMENT (CANONICAL 28 STATES + 8 UTS)

@@ -1140,34 +1140,148 @@
            WORKSPACE 6: OFFICER MANAGEMENT
            ==================================================================== -->
       <section class="workspace-view-panel" id="panel-officers">
-        <div class="workspace-banner-card">
-          <div>
-            <h2>Officer & Field Engineer Directory</h2>
-            <p style="color: #64748b; font-size: 0.85rem; margin-top: 4px;">Staff assignments, department allocation, and workload monitoring.</p>
+        <div class="officers-workspace-container">
+          
+          <!-- Banner & Action Header -->
+          <div class="workspace-banner-card">
+            <div>
+              <h2>Officer &amp; Field Engineer Management</h2>
+              <p style="color: #64748b; font-size: 0.85rem; margin-top: 4px;">Staff roster, zonal deployment, performance audits, and grievance workload distribution.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button type="button" class="btn-case-action-view" onclick="refreshOfficersRoster()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Refresh Staff Roster
+              </button>
+              <button type="button" class="btn-zone-primary" onclick="openAssignOfficerModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Assign Officer
+              </button>
+            </div>
           </div>
-          <button type="button" class="btn-case-action-view" onclick="loadOfficersData()">Refresh Staff Roster</button>
-        </div>
-        <div class="table-section-card">
-          <div class="admin-table-responsive">
-            <table class="admin-cases-table" id="officers-table">
-              <thead>
-                <tr>
-                  <th>Employee ID</th>
-                  <th>Officer Name</th>
-                  <th>Department</th>
-                  <th>Ward Assignment</th>
-                  <th>Active Cases</th>
-                  <th>Availability</th>
-                </tr>
-              </thead>
-              <tbody id="officers-tbody">
-                <tr><td>EMP-ROD-001</td><td>R. Kumar</td><td>Public Works / Roads</td><td>Ward 12 (Indiranagar)</td><td>3</td><td><span class="status-badge-chip resolved">Active</span></td></tr>
-                <tr><td>EMP-WAT-001</td><td>M. Senthil</td><td>Water Supply</td><td>Ward 12 (Indiranagar)</td><td>2</td><td><span class="status-badge-chip resolved">Active</span></td></tr>
-                <tr><td>EMP-SAN-001</td><td>S. Priya</td><td>Sanitation</td><td>Ward 15 (Koramangala)</td><td>4</td><td><span class="status-badge-chip resolved">Active</span></td></tr>
-                <tr><td>EMP-ELE-001</td><td>K. Naveen</td><td>Electricity / Streetlights</td><td>Ward 12 (Indiranagar)</td><td>1</td><td><span class="status-badge-chip resolved">Active</span></td></tr>
-              </tbody>
-            </table>
+
+          <!-- 4 Summary KPI Cards -->
+          <div class="officers-summary-grid">
+            <!-- Card 1: Total Officers -->
+            <div class="officer-kpi-card">
+              <div class="officer-kpi-top">
+                <div class="officer-kpi-icon-box blue">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <span class="officer-kpi-pill blue">4 Zonal Sectors</span>
+              </div>
+              <div class="officer-kpi-val" id="off-kpi-total">6</div>
+              <div class="officer-kpi-label">Total Officers</div>
+              <div class="officer-kpi-sub">Field engineers &amp; supervisors</div>
+            </div>
+
+            <!-- Card 2: Active Officers -->
+            <div class="officer-kpi-card">
+              <div class="officer-kpi-top">
+                <div class="officer-kpi-icon-box green">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <span class="officer-kpi-pill green">100% Operational</span>
+              </div>
+              <div class="officer-kpi-val" id="off-kpi-active">6</div>
+              <div class="officer-kpi-label">Active Officers</div>
+              <div class="officer-kpi-sub">In service &amp; accountable</div>
+            </div>
+
+            <!-- Card 3: Available Officers -->
+            <div class="officer-kpi-card">
+              <div class="officer-kpi-top">
+                <div class="officer-kpi-icon-box cyan">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+                </div>
+                <span class="officer-kpi-pill cyan">Ready for Dispatch</span>
+              </div>
+              <div class="officer-kpi-val" id="off-kpi-available">4</div>
+              <div class="officer-kpi-label">Available Officers</div>
+              <div class="officer-kpi-sub">Within capacity threshold</div>
+            </div>
+
+            <!-- Card 4: Officers with Overdue Cases -->
+            <div class="officer-kpi-card">
+              <div class="officer-kpi-top">
+                <div class="officer-kpi-icon-box red">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <span class="officer-kpi-pill red">SLA Breaches</span>
+              </div>
+              <div class="officer-kpi-val" id="off-kpi-overdue" style="color: #dc2626;">1</div>
+              <div class="officer-kpi-label">Officers with Overdue Cases</div>
+              <div class="officer-kpi-sub">Requires triage escalation</div>
+            </div>
           </div>
+
+          <!-- Officers Filter & Search Toolbar -->
+          <div class="officers-filter-toolbar">
+            <div class="officers-search-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="officers-search-input" id="officers-search-input" placeholder="Search by Employee ID, name, ward, or department..." oninput="handleOfficersSearch(this.value)">
+            </div>
+
+            <select class="officers-filter-select" id="officers-filter-dept" onchange="applyOfficersFilters()">
+              <option value="All Departments" selected>All Departments</option>
+              <option value="Public Works / Roads">Public Works / Roads</option>
+              <option value="Water Supply">Water Supply</option>
+              <option value="Sanitation & Waste">Sanitation & Waste</option>
+              <option value="Electricity & Street Lighting">Electricity & Street Lighting</option>
+            </select>
+
+            <select class="officers-filter-select" id="officers-filter-zone" onchange="applyOfficersFilters()">
+              <option value="All Zones" selected>All Zones</option>
+              <option value="South Zone">South Zone</option>
+              <option value="North Zone">North Zone</option>
+              <option value="East Zone">East Zone</option>
+              <option value="West Zone">West Zone</option>
+            </select>
+
+            <select class="officers-filter-select" id="officers-filter-avail" onchange="applyOfficersFilters()">
+              <option value="All Statuses" selected>All Availability</option>
+              <option value="Available">Available</option>
+              <option value="On Field">On Field</option>
+              <option value="On Leave">On Leave</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+
+            <button type="button" class="btn-officers-clear" onclick="clearOfficersFilters()">Clear Filters</button>
+          </div>
+
+          <!-- Officers Directory Table Card -->
+          <div class="officers-table-card">
+            <div class="officers-table-wrap">
+              <table class="officers-table">
+                <thead>
+                  <tr>
+                    <th>EMPLOYEE ID</th>
+                    <th>OFFICER NAME</th>
+                    <th>DEPARTMENT</th>
+                    <th>JURISDICTION</th>
+                    <th>ACTIVE CASES</th>
+                    <th>OVERDUE CASES</th>
+                    <th>AVAILABILITY</th>
+                    <th>ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody id="officers-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination Bar -->
+            <div class="officers-pagination-bar">
+              <div id="officers-pagination-info">Showing 1 to 6 of 6 officers</div>
+              <div class="officers-pagination-controls">
+                <button type="button" class="btn-pagination" disabled>&larr; Previous</button>
+                <button type="button" class="btn-pagination" style="background:#1d63ed; color:#fff; border-color:#1d63ed;">1</button>
+                <button type="button" class="btn-pagination" disabled>Next &rarr;</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -2168,6 +2282,496 @@
       <div class="case-modal-body" id="citizen-modal-body">
         Loading citizen profile...
       </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       OFFICER PROFILE MODAL (5 TABS)
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="officer-profile-modal" onclick="handleOfficerModalBackdrop(event)">
+    <div class="officer-profile-modal-box" role="dialog" aria-modal="true" aria-labelledby="off-prof-name">
+      <!-- Profile Header Banner -->
+      <div class="officer-profile-header-banner">
+        <div class="officer-profile-banner-top">
+          <div class="officer-profile-main-meta">
+            <div class="officer-profile-avatar-lg" id="off-prof-avatar">R</div>
+            <div>
+              <div class="officer-profile-name-lg">
+                <span id="off-prof-name">R. Kumar</span>
+                <span class="officer-avail-badge available" id="off-prof-avail-pill">Available</span>
+              </div>
+              <div class="officer-profile-sub-meta">
+                <span id="off-prof-emp-id" style="font-family: monospace; font-weight: 700; color: #93c5fd;">EMP-ROD-001</span> &bull; 
+                <span id="off-prof-role">Senior Field Engineer</span> &bull; 
+                <span id="off-prof-dept">Public Works / Roads</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-modal-close" style="color: #ffffff;" onclick="closeOfficerProfileModal()">&times;</button>
+        </div>
+
+        <!-- Quick KPI Strip -->
+        <div class="officer-profile-kpi-strip">
+          <div class="officer-strip-kpi">
+            <span class="officer-strip-kpi-val" id="off-prof-active-cases">3</span>
+            <span class="officer-strip-kpi-lbl">Active Cases</span>
+          </div>
+          <div class="officer-strip-kpi">
+            <span class="officer-strip-kpi-val" id="off-prof-overdue-cases" style="color:#f87171;">0</span>
+            <span class="officer-strip-kpi-lbl">Overdue</span>
+          </div>
+          <div class="officer-strip-kpi">
+            <span class="officer-strip-kpi-val" id="off-prof-resolved-cases" style="color:#4ade80;">48</span>
+            <span class="officer-strip-kpi-lbl">Resolved</span>
+          </div>
+          <div class="officer-strip-kpi">
+            <span class="officer-strip-kpi-val" id="off-prof-sla-pct">95.8%</span>
+            <span class="officer-strip-kpi-lbl">SLA Compliance</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="officer-profile-tabs-nav">
+        <button type="button" class="officer-tab-btn active" id="tab-btn-overview" onclick="switchOfficerTab('overview')">Overview</button>
+        <button type="button" class="officer-tab-btn" id="tab-btn-cases" onclick="switchOfficerTab('cases')">Assigned Cases (<span id="off-tab-cases-count">3</span>)</button>
+        <button type="button" class="officer-tab-btn" id="tab-btn-performance" onclick="switchOfficerTab('performance')">Performance &amp; SLA</button>
+        <button type="button" class="officer-tab-btn" id="tab-btn-history" onclick="switchOfficerTab('history')">Assignment History</button>
+        <button type="button" class="officer-tab-btn" id="tab-btn-workload" onclick="switchOfficerTab('workload')">Availability &amp; Workload</button>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="officer-tab-content-area">
+        <!-- Tab 1: Overview -->
+        <div class="officer-tab-pane active" id="pane-off-overview">
+          <div class="profile-meta-grid">
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Employee ID</span>
+              <span class="profile-kv-value" id="off-meta-id">EMP-ROD-001</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Official Role</span>
+              <span class="profile-kv-value" id="off-meta-role">Senior Field Engineer</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Department</span>
+              <span class="profile-kv-value" id="off-meta-dept">Public Works / Roads</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Jurisdiction Zone</span>
+              <span class="profile-kv-value" id="off-meta-zone">South Zone</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">State / UT &amp; District</span>
+              <span class="profile-kv-value" id="off-meta-geo">Tamil Nadu / Chennai</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Primary Ward</span>
+              <span class="profile-kv-value" id="off-meta-ward">Ward 12 (Indiranagar)</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Reporting Manager</span>
+              <span class="profile-kv-value" id="off-meta-mgr">Senthil Kumar (Senior Zonal Admin)</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Official Email</span>
+              <span class="profile-kv-value" id="off-meta-email">r.kumar@civicone.gov.in</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Contact Phone</span>
+              <span class="profile-kv-value" id="off-meta-phone">+91 98401 23456</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Account Status</span>
+              <span class="profile-kv-value" id="off-meta-status" style="color:#16a34a;">Active</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">Service Joined</span>
+              <span class="profile-kv-value" id="off-meta-joined">15 Jan 2024</span>
+            </div>
+            <div class="profile-kv-card">
+              <span class="profile-kv-key">System of Record</span>
+              <span class="profile-kv-value" style="font-size:0.75rem; color:#64748b;">ServiceNow (x_2229367_civicone_case_worker)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Assigned Cases -->
+        <div class="officer-tab-pane" id="pane-off-cases">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 700; font-size: 0.85rem; color: #0f172a;">Active &amp; Historical Grievance Assignments</span>
+            <button type="button" class="btn-officer-tbl assign" onclick="openAssignCaseModal(currentOfficerProfileId)">+ Assign New Case</button>
+          </div>
+          <div class="officers-table-wrap">
+            <table class="officers-table">
+              <thead>
+                <tr>
+                  <th>CASE ID</th>
+                  <th>CATEGORY</th>
+                  <th>SUMMARY</th>
+                  <th>PRIORITY</th>
+                  <th>LOCATION</th>
+                  <th>SUBMITTED</th>
+                  <th>SLA STATUS</th>
+                  <th>STATUS</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="off-cases-tbody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 3: Performance & SLA -->
+        <div class="officer-tab-pane" id="pane-off-performance">
+          <div class="officers-summary-grid">
+            <div class="officer-kpi-card">
+              <div class="officer-kpi-label">Total Assigned</div>
+              <div class="officer-kpi-val" id="off-perf-total">51</div>
+              <div class="officer-kpi-sub">Lifetime allocation</div>
+            </div>
+            <div class="officer-kpi-card">
+              <div class="officer-kpi-label">Successfully Resolved</div>
+              <div class="officer-kpi-val" id="off-perf-resolved" style="color:#16a34a;">48</div>
+              <div class="officer-kpi-sub">Confirmed closures</div>
+            </div>
+            <div class="officer-kpi-card">
+              <div class="officer-kpi-label">Avg Resolution Time</div>
+              <div class="officer-kpi-val" id="off-perf-avg-time">18.2h</div>
+              <div class="officer-kpi-sub">Charter target: &le; 24h</div>
+            </div>
+            <div class="officer-kpi-card">
+              <div class="officer-kpi-label">SLA Compliance</div>
+              <div class="officer-kpi-val" id="off-perf-sla" style="color:#1d63ed;">95.8%</div>
+              <div class="officer-kpi-sub">Benchmark: &ge; 85%</div>
+            </div>
+          </div>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-top:8px;">
+            <div style="font-size:0.85rem; font-weight:800; color:#0f172a; margin-bottom:8px;">Municipal Performance Audit Note</div>
+            <p style="font-size:0.8rem; color:#475569; line-height:1.5;">
+              Officer maintains a <strong>95.8% statutory SLA compliance rating</strong> with zero currently breached cases. Average field turnaround time of 18.2 hours is within municipal charter standard for Public Works &amp; Infrastructure.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab 4: Assignment History -->
+        <div class="officer-tab-pane" id="pane-off-history">
+          <div style="font-weight: 700; font-size: 0.85rem; color: #0f172a; margin-bottom: 4px;">Service &amp; Jurisdiction History Trail</div>
+          <div id="off-history-container" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Tab 5: Availability & Workload -->
+        <div class="officer-tab-pane" id="pane-off-workload">
+          <div class="workload-capacity-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #0f172a; font-size: 0.9rem;">Current Workload &amp; Active Capacity</strong>
+                <p style="color: #64748b; font-size: 0.78rem; margin-top: 2px;">Standard operational threshold: Max 5 concurrent field cases</p>
+              </div>
+              <span class="officer-kpi-pill green" id="off-workload-cap-pill">60% Capacity (3/5)</span>
+            </div>
+            <div class="capacity-bar-track">
+              <div class="capacity-bar-fill" id="off-workload-bar" style="width: 60%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #64748b;">
+              <span>0 Cases (Idle)</span>
+              <span>3 Cases (Moderate)</span>
+              <span>5 Cases (Max Capacity)</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+            <div>
+              <div style="font-weight: 800; color: #0f172a; font-size: 0.85rem;">Officer Availability Status</div>
+              <div style="font-size: 0.78rem; color: #64748b; margin-top: 2px;">Update field operational status to manage automated grievance triage.</div>
+            </div>
+            <button type="button" class="btn-case-action-view" onclick="openChangeAvailabilityModal(currentOfficerProfileId)">Change Availability</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="officer-profile-footer">
+        <div class="officer-profile-footer-left">
+          <button type="button" class="btn-officer-tbl assign" onclick="openAssignCaseModal(currentOfficerProfileId)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+            Assign Case
+          </button>
+          <button type="button" class="btn-officer-tbl profile" onclick="openChangeAvailabilityModal(currentOfficerProfileId)">
+            Change Availability
+          </button>
+          <button type="button" class="btn-officer-tbl remove" onclick="openDeactivateOfficerModal(currentOfficerProfileId)">
+            Deactivate / Remove
+          </button>
+        </div>
+        <div class="officer-profile-footer-right">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeOfficerProfileModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       ASSIGN / ONBOARD OFFICER MODAL
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="officer-assign-modal" onclick="handleOfficerModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 680px;">
+      <div class="case-modal-header">
+        <div>
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">Assign &amp; Onboard Officer</h3>
+          <p style="font-size: 0.76rem; color: #64748b; margin-top: 2px;">Deploy a municipal officer or field engineer to a jurisdictional division.</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeAssignOfficerModal()">&times;</button>
+      </div>
+
+      <form id="form-assign-officer" onsubmit="handleAssignOfficerSubmit(event)" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="hub-field-group">
+            <label class="hub-field-label">Full Officer Name *</label>
+            <input type="text" class="hub-input" id="new-off-name" placeholder="e.g. Anand Verma" required>
+          </div>
+          <div class="hub-field-group">
+            <label class="hub-field-label">Employee ID *</label>
+            <input type="text" class="hub-input" id="new-off-id" placeholder="e.g. EMP-ROD-004" required style="font-family: monospace;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="hub-field-group">
+            <label class="hub-field-label">Department *</label>
+            <select class="hub-select" id="new-off-dept" required>
+              <option value="Public Works / Roads">Public Works / Roads</option>
+              <option value="Water Supply">Water Supply</option>
+              <option value="Sanitation & Waste">Sanitation & Waste</option>
+              <option value="Electricity & Street Lighting">Electricity & Street Lighting</option>
+              <option value="Municipal Services">Municipal Services</option>
+            </select>
+          </div>
+          <div class="hub-field-group">
+            <label class="hub-field-label">Official Cadre Role</label>
+            <input type="text" class="hub-input" id="new-off-role" placeholder="e.g. Field Inspector" value="Field Inspector">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <div class="hub-field-group">
+            <label class="hub-field-label">Jurisdiction Zone *</label>
+            <select class="hub-select" id="new-off-zone" required>
+              <option value="South Zone">South Zone</option>
+              <option value="North Zone">North Zone</option>
+              <option value="East Zone">East Zone</option>
+              <option value="West Zone">West Zone</option>
+            </select>
+          </div>
+          <div class="hub-field-group">
+            <label class="hub-field-label">District</label>
+            <input type="text" class="hub-input" id="new-off-district" placeholder="e.g. Chennai" value="Chennai">
+          </div>
+          <div class="hub-field-group">
+            <label class="hub-field-label">Primary Ward *</label>
+            <input type="text" class="hub-input" id="new-off-ward" placeholder="e.g. Ward 12 (Indiranagar)" value="Ward 12 (Indiranagar)" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="hub-field-group">
+            <label class="hub-field-label">Official Email</label>
+            <input type="email" class="hub-input" id="new-off-email" placeholder="officer@civicone.gov.in">
+          </div>
+          <div class="hub-field-group">
+            <label class="hub-field-label">Contact Phone</label>
+            <input type="tel" class="hub-input" id="new-off-phone" placeholder="+91 98000 00000">
+          </div>
+        </div>
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">Deployment Notes &amp; Justification</label>
+          <textarea class="hub-textarea" id="new-off-notes" rows="2" placeholder="e.g. Operational expansion for ward grievance redressal..."></textarea>
+        </div>
+
+        <div class="assign-modal-actions">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeAssignOfficerModal()">Cancel</button>
+          <button type="submit" class="btn-zone-primary" id="btn-submit-officer-onboard">
+            Confirm &amp; Onboard Officer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       ASSIGN CASE TO OFFICER MODAL
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="case-assign-to-officer-modal" onclick="handleOfficerModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 600px;">
+      <div class="case-modal-header">
+        <div>
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">Assign Grievance to Officer</h3>
+          <p style="font-size: 0.76rem; color: #64748b; margin-top: 2px;" id="case-assign-target-name">Assigning to officer...</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeAssignCaseModal()">&times;</button>
+      </div>
+
+      <form id="form-assign-case-to-officer" onsubmit="handleAssignCaseSubmit(event)" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <input type="hidden" id="assign-case-officer-id">
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">Select Unassigned Grievance *</label>
+          <select class="hub-select" id="assign-case-select" required onchange="handleSelectCaseChange(this.value)">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <div id="assign-case-preview-card" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.78rem; display:flex; flex-direction:column; gap:4px;">
+          <div><strong style="color:#0f172a;">Category:</strong> <span id="prev-case-cat">Roads &amp; Footpaths</span></div>
+          <div><strong style="color:#0f172a;">Location:</strong> <span id="prev-case-loc">Indiranagar 12th Main</span></div>
+          <div><strong style="color:#0f172a;">Priority &amp; SLA:</strong> <span id="prev-case-sla">High &bull; 24h</span></div>
+          <div style="color:#475569; margin-top:4px;" id="prev-case-summary">Deep asphalt crater creating vehicle hazard</div>
+        </div>
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">Dispatch Instructions / Notes (Optional)</label>
+          <textarea class="hub-textarea" id="assign-case-notes" rows="2" placeholder="e.g. Priority dispatch requested by zonal command..."></textarea>
+        </div>
+
+        <div class="assign-modal-actions">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeAssignCaseModal()">Cancel</button>
+          <button type="submit" class="btn-zone-primary" id="btn-submit-case-assign">
+            Confirm Assignment
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       REASSIGN CASE MODAL
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="case-reassign-modal" onclick="handleOfficerModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 580px;">
+      <div class="case-modal-header">
+        <div>
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">Reassign Grievance Case</h3>
+          <p style="font-size: 0.76rem; color: #64748b; margin-top: 2px;" id="reassign-sub-title">Transferring case to another eligible officer</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeReassignCaseModal()">&times;</button>
+      </div>
+
+      <form id="form-reassign-case" onsubmit="handleReassignCaseSubmit(event)" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <input type="hidden" id="reassign-from-officer-id">
+        <input type="hidden" id="reassign-case-id">
+
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:12px; font-size:0.8rem; color:#1e3a8a;">
+          Reassigning Case <strong id="reassign-case-badge">CIV0001013</strong> currently held by <strong id="reassign-from-name">R. Kumar</strong>.
+        </div>
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">Select Target Officer *</label>
+          <select class="hub-select" id="reassign-to-officer-select" required>
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">Mandatory Reason for Reassignment *</label>
+          <textarea class="hub-textarea" id="reassign-reason-input" rows="2" placeholder="e.g. Workload balancing, specialized equipment required, officer on field inspection..." required></textarea>
+        </div>
+
+        <div class="assign-modal-actions">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeReassignCaseModal()">Cancel</button>
+          <button type="submit" class="btn-zone-primary" id="btn-submit-reassign">
+            Confirm Reassignment
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       CHANGE OFFICER AVAILABILITY MODAL
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="officer-availability-modal" onclick="handleOfficerModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 500px;">
+      <div class="case-modal-header">
+        <div>
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">Change Availability Status</h3>
+          <p style="font-size: 0.76rem; color: #64748b; margin-top: 2px;" id="avail-modal-sub">Officer operational state</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeChangeAvailabilityModal()">&times;</button>
+      </div>
+
+      <form id="form-change-avail" onsubmit="handleChangeAvailabilitySubmit(event)" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <input type="hidden" id="avail-officer-id">
+
+        <div class="hub-field-group">
+          <label class="hub-field-label">New Availability State *</label>
+          <select class="hub-select" id="avail-state-select" required>
+            <option value="Available">Available (Ready for assignment)</option>
+            <option value="On Field">On Field (Active duty on site)</option>
+            <option value="On Leave">On Leave (Unavailable for new cases)</option>
+            <option value="Inactive">Inactive (Suspended / Off roster)</option>
+          </select>
+        </div>
+
+        <div id="avail-case-warning" style="display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px; font-size:0.76rem; color:#92400e;">
+          ⚠️ <strong>Active Cases Notice:</strong> This officer currently holds active grievance assignments. Changing status to On Leave or Inactive does not automatically reassign their open cases.
+        </div>
+
+        <div class="assign-modal-actions">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeChangeAvailabilityModal()">Cancel</button>
+          <button type="submit" class="btn-zone-primary">Save Availability</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       SAFE REMOVE / DEACTIVATE OFFICER MODAL
+       ==================================================================== -->
+  <div class="case-modal-overlay" id="officer-deactivate-modal" onclick="handleOfficerModalBackdrop(event)">
+    <div class="case-modal-box" role="dialog" aria-modal="true" style="max-width: 550px;">
+      <div class="case-modal-header" style="border-bottom-color: #fee2e2;">
+        <div>
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: #dc2626; display: flex; align-items: center; gap: 6px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Deactivate / Remove Officer
+          </h3>
+          <p style="font-size: 0.76rem; color: #64748b; margin-top: 2px;">Administrative deactivation safeguard audit</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeDeactivateOfficerModal()">&times;</button>
+      </div>
+
+      <form id="form-deactivate-officer" onsubmit="handleDeactivateOfficerSubmit(event)" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <input type="hidden" id="deactivate-officer-id">
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; font-size: 0.8rem; display: flex; flex-direction: column; gap: 4px;">
+          <div><strong>Officer:</strong> <span id="deact-off-name">R. Kumar</span> (<span id="deact-off-id" style="font-family: monospace;">EMP-ROD-001</span>)</div>
+          <div><strong>Department:</strong> <span id="deact-off-dept">Public Works / Roads</span></div>
+          <div><strong>Active Grievances:</strong> <span id="deact-off-active" style="font-weight: 800;">3</span></div>
+        </div>
+
+        <!-- Safeguard Warning Alert (Visible if active_cases > 0) -->
+        <div id="deact-blocked-alert" style="display: none; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 12px; font-size: 0.78rem; color: #991b1b; line-height: 1.5;">
+          <strong>⛔ REMOVAL BLOCKED:</strong> This officer currently has <span id="deact-blocked-count">3</span> active grievance assignments. The CivicOne Governance policy prevents removing or deactivating officers with open cases. Please use the <strong>Reassign Case</strong> feature to transfer all active cases before proceeding.
+        </div>
+
+        <!-- Reason Input (Required when active_cases == 0) -->
+        <div class="hub-field-group" id="deact-reason-group">
+          <label class="hub-field-label">Mandatory Removal / Deactivation Reason *</label>
+          <textarea class="hub-textarea" id="deactivate-reason-input" rows="2" placeholder="e.g. Transfer to municipal headquarters, completed contract term, voluntary retirement..." required></textarea>
+        </div>
+
+        <div class="assign-modal-actions">
+          <button type="button" class="btn-case-nav-action secondary" onclick="closeDeactivateOfficerModal()">Cancel</button>
+          <button type="submit" class="btn-officer-tbl remove" id="btn-confirm-deactivate" style="padding: 9px 16px; font-size: 0.82rem;">
+            Confirm Deactivation
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -4338,6 +4942,702 @@
         botBubble.innerHTML = `Processed query: <strong>${escapeHtml(userQuery)}</strong>.<br>Current compliance is 87% within SLA across North, East, South, and West command zones.`;
       }
       conv.scrollTop = conv.scrollHeight;
+    }
+
+    // =========================================================================
+    // WORKSPACE 6: OFFICER MANAGEMENT CONTROLLER
+    // =========================================================================
+    let currentOfficersData = [];
+    let currentEligibleCases = [];
+    let currentOfficerProfileId = null;
+
+    async function loadOfficersData() {
+      const tbody = document.getElementById('officers-tbody');
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 24px; color: #64748b;">
+          <div style="display:inline-block; width:14px; height:14px; border:2px solid #1d63ed; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite; margin-right:6px;"></div>
+          Fetching official roster from ServiceNow...
+        </td></tr>`;
+      }
+
+      const q = document.getElementById('officers-search-input')?.value || '';
+      const dept = document.getElementById('officers-filter-dept')?.value || 'All Departments';
+      const zone = document.getElementById('officers-filter-zone')?.value || 'All Zones';
+      const avail = document.getElementById('officers-filter-avail')?.value || 'All Statuses';
+
+      try {
+        const queryParams = `q=${encodeURIComponent(q)}&department=${encodeURIComponent(dept)}&zone=${encodeURIComponent(zone)}&availability=${encodeURIComponent(avail)}`;
+        const res = await fetch(`/api/admin/officers?${queryParams}`, {
+          headers: { 'Authorization': `Bearer ${currentToken}` }
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          currentOfficersData = data.officers || [];
+          currentEligibleCases = data.eligible_unassigned_cases || [];
+
+          // Summary Cards
+          if (data.summary) {
+            const totEl = document.getElementById('off-kpi-total');
+            const actEl = document.getElementById('off-kpi-active');
+            const avlEl = document.getElementById('off-kpi-available');
+            const ovdEl = document.getElementById('off-kpi-overdue');
+
+            if (totEl) totEl.innerText = data.summary.total_officers;
+            if (actEl) actEl.innerText = data.summary.active_officers;
+            if (avlEl) avlEl.innerText = data.summary.available_officers;
+            if (ovdEl) ovdEl.innerText = data.summary.overdue_officers;
+          }
+
+          renderOfficersTable(currentOfficersData);
+        } else {
+          if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:red; padding:20px;">Failed to load officers.</td></tr>`;
+        }
+      } catch (err) {
+        console.error('Error loading officers:', err);
+        if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:red; padding:20px;">Error connecting to ServiceNow officer roster.</td></tr>`;
+      }
+    }
+
+    function renderOfficersTable(officers) {
+      const tbody = document.getElementById('officers-tbody');
+      const pageInfo = document.getElementById('officers-pagination-info');
+      if (!tbody) return;
+
+      if (!officers || officers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:32px; color:#64748b;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" style="margin-bottom:8px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div>No officers match the selected filter criteria.</div>
+        </td></tr>`;
+        if (pageInfo) pageInfo.innerText = 'Showing 0 officers';
+        return;
+      }
+
+      if (pageInfo) pageInfo.innerText = `Showing 1 to ${officers.length} of ${officers.length} officers`;
+
+      tbody.innerHTML = '';
+      officers.forEach(o => {
+        const tr = document.createElement('tr');
+        const availClass = (o.availability || 'available').toLowerCase().replace(' ', '-');
+        const overduePill = o.overdue_cases > 0 
+          ? `<span class="officer-kpi-pill red" style="font-size:0.7rem;">${o.overdue_cases} Overdue</span>` 
+          : `<span style="color:#94a3b8; font-size:0.78rem;">0</span>`;
+
+        tr.innerHTML = `
+          <td>
+            <a href="javascript:void(0)" class="case-id-code" onclick="openOfficerProfileModal('${escapeHtml(o.id)}')" title="Click to view full Officer Profile & Workload">${escapeHtml(o.id)}</a>
+          </td>
+          <td>
+            <div class="officer-cell-user">
+              <div class="officer-avatar-circle">${escapeHtml((o.name || 'O').charAt(0))}</div>
+              <div class="officer-info-col">
+                <a href="javascript:void(0)" class="officer-name-title" onclick="openOfficerProfileModal('${escapeHtml(o.id)}')" style="text-decoration:none;">${escapeHtml(o.name)}</a>
+                <span class="officer-role-sub">${escapeHtml(o.role || 'Field Engineer')}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span style="font-weight: 600; color: #1e293b;">${escapeHtml(o.department)}</span>
+          </td>
+          <td>
+            <div style="font-size: 0.78rem; color: #334155;">${escapeHtml(o.ward || 'Ward 12')}</div>
+            <div style="font-size: 0.7rem; color: #64748b;">${escapeHtml(o.district || 'Chennai')}, ${escapeHtml(o.zone || 'South Zone')}</div>
+          </td>
+          <td>
+            <span class="status-badge-chip in-progress" style="font-size:0.72rem; padding: 2px 8px;">${o.active_cases || 0} active</span>
+          </td>
+          <td>${overduePill}</td>
+          <td>
+            <span class="officer-avail-badge ${availClass}">${escapeHtml(o.availability || 'Available')}</span>
+          </td>
+          <td>
+            <div class="officer-actions-cell">
+              <button type="button" class="btn-officer-tbl profile" onclick="openOfficerProfileModal('${escapeHtml(o.id)}')">Profile</button>
+              <button type="button" class="btn-officer-tbl assign" onclick="openAssignCaseModal('${escapeHtml(o.id)}')">Assign</button>
+              <button type="button" class="btn-officer-tbl remove" onclick="openDeactivateOfficerModal('${escapeHtml(o.id)}')">Remove</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function refreshOfficersRoster() {
+      const refreshBtn = document.querySelector('#panel-officers .btn-case-action-view');
+      if (refreshBtn) {
+        refreshBtn.innerHTML = `
+          <div style="display:inline-block; width:12px; height:12px; border:2px solid #1d63ed; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite; margin-right:4px;"></div>
+          Refreshing...
+        `;
+      }
+      await loadOfficersData();
+      setTimeout(() => {
+        if (refreshBtn) {
+          refreshBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Refresh Staff Roster
+          `;
+        }
+      }, 500);
+    }
+
+    function handleOfficersSearch() {
+      applyOfficersFilters();
+    }
+
+    function applyOfficersFilters() {
+      loadOfficersData();
+    }
+
+    function clearOfficersFilters() {
+      const sInput = document.getElementById('officers-search-input');
+      const dSelect = document.getElementById('officers-filter-dept');
+      const zSelect = document.getElementById('officers-filter-zone');
+      const aSelect = document.getElementById('officers-filter-avail');
+
+      if (sInput) sInput.value = '';
+      if (dSelect) dSelect.value = 'All Departments';
+      if (zSelect) zSelect.value = 'All Zones';
+      if (aSelect) aSelect.value = 'All Statuses';
+
+      loadOfficersData();
+    }
+
+    // =========================================================================
+    // OFFICER PROFILE DRAWER / MODAL (5 TABS)
+    // =========================================================================
+    function openOfficerProfileModal(officerId) {
+      const officer = currentOfficersData.find(o => o.id === officerId);
+      if (!officer) return;
+      currentOfficerProfileId = officerId;
+
+      // Populate header banner
+      const avatarEl = document.getElementById('off-prof-avatar');
+      const nameEl = document.getElementById('off-prof-name');
+      const availEl = document.getElementById('off-prof-avail-pill');
+      const empIdEl = document.getElementById('off-prof-emp-id');
+      const roleEl = document.getElementById('off-prof-role');
+      const deptEl = document.getElementById('off-prof-dept');
+
+      if (avatarEl) avatarEl.innerText = (officer.name || 'O').charAt(0);
+      if (nameEl) nameEl.innerText = officer.name;
+      if (empIdEl) empIdEl.innerText = officer.id;
+      if (roleEl) roleEl.innerText = officer.role || 'Field Engineer';
+      if (deptEl) deptEl.innerText = officer.department;
+
+      if (availEl) {
+        availEl.innerText = officer.availability;
+        availEl.className = `officer-avail-badge ${(officer.availability || 'available').toLowerCase().replace(' ', '-')}`;
+      }
+
+      // Quick KPI Strip
+      document.getElementById('off-prof-active-cases').innerText = officer.active_cases || 0;
+      document.getElementById('off-prof-overdue-cases').innerText = officer.overdue_cases || 0;
+      document.getElementById('off-prof-resolved-cases').innerText = officer.resolved_cases || 0;
+      document.getElementById('off-prof-sla-pct').innerText = `${officer.sla_compliance || 95.0}%`;
+      document.getElementById('off-tab-cases-count').innerText = (officer.assigned_cases || []).length;
+
+      // Tab 1: Overview
+      document.getElementById('off-meta-id').innerText = officer.id;
+      document.getElementById('off-meta-role').innerText = officer.role || 'Field Engineer';
+      document.getElementById('off-meta-dept').innerText = officer.department;
+      document.getElementById('off-meta-zone').innerText = officer.zone || 'South Zone';
+      document.getElementById('off-meta-geo').innerText = `${officer.state || 'Tamil Nadu'} / ${officer.district || 'Chennai'}`;
+      document.getElementById('off-meta-ward').innerText = officer.ward || 'Ward 12 (Indiranagar)';
+      document.getElementById('off-meta-mgr').innerText = officer.reporting_manager || 'Senior Zonal Admin';
+      document.getElementById('off-meta-email').innerText = officer.email || `${officer.id.toLowerCase()}@civicone.gov.in`;
+      document.getElementById('off-meta-phone').innerText = officer.phone || '+91 98000 00000';
+      document.getElementById('off-meta-status').innerText = officer.status || 'Active';
+      document.getElementById('off-meta-joined').innerText = officer.joined_date || '15 Jan 2024';
+
+      // Tab 2: Assigned Cases
+      const casesTbody = document.getElementById('off-cases-tbody');
+      if (casesTbody) {
+        if (!officer.assigned_cases || officer.assigned_cases.length === 0) {
+          casesTbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#64748b;">No active or historical grievances assigned to this officer.</td></tr>`;
+        } else {
+          casesTbody.innerHTML = '';
+          officer.assigned_cases.forEach(c => {
+            const tr = document.createElement('tr');
+            const stClass = getStatusClass(c.status);
+            const slaClass = (c.sla_status || 'Within SLA').toLowerCase().includes('overdue') ? 'overdue' : 'within';
+
+            tr.innerHTML = `
+              <td><a href="javascript:void(0)" class="case-id-code" onclick="closeOfficerProfileModal(); openCaseModal('${escapeHtml(c.case_id)}')">${escapeHtml(c.case_id)}</a></td>
+              <td>${escapeHtml(c.category)}</td>
+              <td style="font-weight:600; color:#0f172a;">${escapeHtml(c.summary)}</td>
+              <td><span class="status-badge-chip ${c.priority === 'High' ? 'pending' : 'in-progress'}">${escapeHtml(c.priority)}</span></td>
+              <td>${escapeHtml(c.location)}</td>
+              <td style="color:#64748b; font-size:0.75rem;">${escapeHtml(c.submitted_on)}</td>
+              <td><span class="sla-badge-chip ${slaClass}">${escapeHtml(c.sla_status)}</span></td>
+              <td><span class="status-badge-chip ${stClass}">${escapeHtml(c.status)}</span></td>
+              <td>
+                <div style="display:flex; gap:4px;">
+                  <button type="button" class="btn-officer-tbl profile" onclick="closeOfficerProfileModal(); openCaseModal('${escapeHtml(c.case_id)}')">Inspect</button>
+                  <button type="button" class="btn-officer-tbl assign" onclick="openReassignCaseModal('${escapeHtml(officer.id)}', '${escapeHtml(c.case_id)}')">Reassign</button>
+                </div>
+              </td>
+            `;
+            casesTbody.appendChild(tr);
+          });
+        }
+      }
+
+      // Tab 3: Performance
+      document.getElementById('off-perf-total').innerText = officer.total_assigned || 0;
+      document.getElementById('off-perf-resolved').innerText = officer.resolved_cases || 0;
+      document.getElementById('off-perf-avg-time').innerText = `${officer.avg_resolution_hours || 18.0}h`;
+      document.getElementById('off-perf-sla').innerText = `${officer.sla_compliance || 95.0}%`;
+
+      // Tab 4: Assignment History
+      const histContainer = document.getElementById('off-history-container');
+      if (histContainer) {
+        if (!officer.assignment_history || officer.assignment_history.length === 0) {
+          histContainer.innerHTML = `<div style="color:#64748b; font-size:0.8rem;">No historical assignment transitions recorded.</div>`;
+        } else {
+          histContainer.innerHTML = '';
+          officer.assignment_history.forEach(h => {
+            const div = document.createElement('div');
+            div.style.cssText = 'background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:12px 16px; display:flex; flex-direction:column; gap:4px;';
+            div.innerHTML = `
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong style="color:#0f172a; font-size:0.85rem;">${escapeHtml(h.role || 'Officer')} &bull; ${escapeHtml(h.jurisdiction || '')}</strong>
+                <span style="font-size:0.72rem; color:#64748b; font-weight:600;">${escapeHtml(h.effective_dates)}</span>
+              </div>
+              <div style="font-size:0.78rem; color:#475569;">${escapeHtml(h.reason || 'Operational deployment')}</div>
+              <div style="font-size:0.7rem; color:#94a3b8;">Authorized Actor: ${escapeHtml(h.actor || 'System Administrator')} &bull; ${escapeHtml(h.timestamp)}</div>
+            `;
+            histContainer.appendChild(div);
+          });
+        }
+      }
+
+      // Tab 5: Availability & Workload
+      const cap = officer.capacity || 5;
+      const actCases = officer.active_cases || 0;
+      const pct = Math.min(100, Math.round((actCases / cap) * 100));
+      const barEl = document.getElementById('off-workload-bar');
+      const capPillEl = document.getElementById('off-workload-cap-pill');
+
+      if (barEl) {
+        barEl.style.width = `${pct}%`;
+        barEl.className = 'capacity-bar-fill';
+        if (pct >= 80) barEl.classList.add('critical');
+        else if (pct >= 60) barEl.classList.add('warning');
+      }
+      if (capPillEl) {
+        capPillEl.innerText = `${pct}% Capacity (${actCases}/${cap})`;
+      }
+
+      // Reset to Tab 1
+      switchOfficerTab('overview');
+
+      // Open Modal
+      const modal = document.getElementById('officer-profile-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function switchOfficerTab(tabName) {
+      const tabs = ['overview', 'cases', 'performance', 'history', 'workload'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const pane = document.getElementById(`pane-off-${t}`);
+        if (btn) btn.classList.toggle('active', t === tabName);
+        if (pane) pane.classList.toggle('active', t === tabName);
+      });
+    }
+
+    function closeOfficerProfileModal() {
+      const modal = document.getElementById('officer-profile-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    // =========================================================================
+    // ASSIGN / ONBOARD OFFICER WORKFLOW
+    // =========================================================================
+    function openAssignOfficerModal() {
+      const modal = document.getElementById('officer-assign-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        // Suggest unique employee ID
+        const nextId = `EMP-${Math.floor(100 + Math.random() * 900)}`;
+        const idInput = document.getElementById('new-off-id');
+        if (idInput && !idInput.value) idInput.value = nextId;
+      }
+    }
+
+    function closeAssignOfficerModal() {
+      const modal = document.getElementById('officer-assign-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function handleAssignOfficerSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-off-name')?.value.trim();
+      const id = document.getElementById('new-off-id')?.value.trim().toUpperCase();
+      const dept = document.getElementById('new-off-dept')?.value;
+      const role = document.getElementById('new-off-role')?.value.trim();
+      const zone = document.getElementById('new-off-zone')?.value;
+      const district = document.getElementById('new-off-district')?.value.trim();
+      const ward = document.getElementById('new-off-ward')?.value.trim();
+      const email = document.getElementById('new-off-email')?.value.trim();
+      const phone = document.getElementById('new-off-phone')?.value.trim();
+      const notes = document.getElementById('new-off-notes')?.value.trim();
+
+      const btn = document.getElementById('btn-submit-officer-onboard');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = 'Onboarding to ServiceNow...';
+      }
+
+      try {
+        const res = await fetch('/api/admin/officers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({
+            name, employee_id: id, department: dept, role, zone, district, ward, email, phone, notes
+          })
+        });
+        const result = await res.json();
+        if (!res.ok || !result.success) {
+          throw new Error(result.error || 'Server rejected officer onboarding');
+        }
+
+        closeAssignOfficerModal();
+        alert(`Success: ${result.message}\nLogged in ServiceNow Audit Trail.`);
+        await loadOfficersData();
+      } catch (err) {
+        alert(`Failed to onboard officer: ${err.message}`);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Confirm &amp; Onboard Officer';
+        }
+      }
+    }
+
+    // =========================================================================
+    // ASSIGN CASE TO OFFICER WORKFLOW
+    // =========================================================================
+    function openAssignCaseModal(officerId) {
+      const officer = currentOfficersData.find(o => o.id === officerId);
+      if (!officer) return;
+
+      document.getElementById('assign-case-officer-id').value = officer.id;
+      document.getElementById('case-assign-target-name').innerText = `Assigning grievance to ${officer.name} (${officer.id}) &bull; ${officer.department}`;
+
+      const select = document.getElementById('assign-case-select');
+      if (select) {
+        select.innerHTML = '';
+        if (currentEligibleCases.length === 0) {
+          select.innerHTML = `<option value="CIV0001041">CIV0001041 — Deep asphalt crater (Roads & Footpaths, High)</option>`;
+        } else {
+          currentEligibleCases.forEach(c => {
+            select.innerHTML += `<option value="${c.case_id}">${c.case_id} — ${c.summary} (${c.category}, ${c.priority})</option>`;
+          });
+        }
+        handleSelectCaseChange(select.value);
+      }
+
+      const modal = document.getElementById('case-assign-to-officer-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeAssignCaseModal() {
+      const modal = document.getElementById('case-assign-to-officer-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleSelectCaseChange(caseId) {
+      const matched = currentEligibleCases.find(c => c.case_id === caseId);
+      if (matched) {
+        document.getElementById('prev-case-cat').innerText = matched.category;
+        document.getElementById('prev-case-loc').innerText = matched.location;
+        document.getElementById('prev-case-sla').innerText = `${matched.priority} &bull; ${matched.sla_deadline}`;
+        document.getElementById('prev-case-summary').innerText = matched.summary;
+      }
+    }
+
+    async function handleAssignCaseSubmit(e) {
+      e.preventDefault();
+      const officerId = document.getElementById('assign-case-officer-id')?.value;
+      const caseId = document.getElementById('assign-case-select')?.value;
+      const notes = document.getElementById('assign-case-notes')?.value;
+
+      const btn = document.getElementById('btn-submit-case-assign');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = 'Dispatching to ServiceNow...';
+      }
+
+      try {
+        const res = await fetch('/api/admin/officers/assign-case', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ employee_id: officerId, case_id: caseId, notes })
+        });
+        const result = await res.json();
+        if (!res.ok || !result.success) {
+          throw new Error(result.error || 'Server rejected case assignment');
+        }
+
+        closeAssignCaseModal();
+        alert(`Success: ${result.message}\nServiceNow Task Workflow Updated.`);
+        await loadOfficersData();
+        if (currentOfficerProfileId === officerId) {
+          openOfficerProfileModal(officerId);
+        }
+      } catch (err) {
+        alert(`Failed to assign case: ${err.message}`);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Confirm Assignment';
+        }
+      }
+    }
+
+    // =========================================================================
+    // REASSIGN CASE WORKFLOW
+    // =========================================================================
+    function openReassignCaseModal(fromOfficerId, caseId) {
+      const srcOfficer = currentOfficersData.find(o => o.id === fromOfficerId);
+      if (!srcOfficer) return;
+
+      document.getElementById('reassign-from-officer-id').value = fromOfficerId;
+      document.getElementById('reassign-case-id').value = caseId;
+      document.getElementById('reassign-case-badge').innerText = caseId;
+      document.getElementById('reassign-from-name').innerText = `${srcOfficer.name} (${fromOfficerId})`;
+
+      // Populate target eligible officers
+      const select = document.getElementById('reassign-to-officer-select');
+      if (select) {
+        select.innerHTML = '';
+        currentOfficersData.filter(o => o.id !== fromOfficerId && o.status === 'Active').forEach(o => {
+          select.innerHTML += `<option value="${o.id}">${o.name} (${o.id}) &bull; ${o.department} &bull; ${o.active_cases || 0} active</option>`;
+        });
+      }
+
+      const modal = document.getElementById('case-reassign-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeReassignCaseModal() {
+      const modal = document.getElementById('case-reassign-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function handleReassignCaseSubmit(e) {
+      e.preventDefault();
+      const fromId = document.getElementById('reassign-from-officer-id')?.value;
+      const toId = document.getElementById('reassign-to-officer-select')?.value;
+      const caseId = document.getElementById('reassign-case-id')?.value;
+      const reason = document.getElementById('reassign-reason-input')?.value.trim();
+
+      const btn = document.getElementById('btn-submit-reassign');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = 'Logging Reassignment...';
+      }
+
+      try {
+        const res = await fetch('/api/admin/officers/reassign', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ from_officer_id: fromId, to_officer_id: toId, case_id: caseId, reason })
+        });
+        const result = await res.json();
+        if (!res.ok || !result.success) {
+          throw new Error(result.error || 'Server rejected reassignment');
+        }
+
+        closeReassignCaseModal();
+        alert(`Success: ${result.message}\nAudit Trail Recorded.`);
+        await loadOfficersData();
+        if (currentOfficerProfileId) {
+          openOfficerProfileModal(currentOfficerProfileId);
+        }
+      } catch (err) {
+        alert(`Failed to reassign case: ${err.message}`);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Confirm Reassignment';
+        }
+      }
+    }
+
+    // =========================================================================
+    // CHANGE AVAILABILITY WORKFLOW
+    // =========================================================================
+    function openChangeAvailabilityModal(officerId) {
+      const officer = currentOfficersData.find(o => o.id === officerId);
+      if (!officer) return;
+
+      document.getElementById('avail-officer-id').value = officer.id;
+      document.getElementById('avail-modal-sub').innerText = `${officer.name} (${officer.id}) &bull; Current: ${officer.availability}`;
+      document.getElementById('avail-state-select').value = officer.availability;
+
+      const warning = document.getElementById('avail-case-warning');
+      if (warning) {
+        warning.style.display = officer.active_cases > 0 ? 'block' : 'none';
+      }
+
+      const modal = document.getElementById('officer-availability-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeChangeAvailabilityModal() {
+      const modal = document.getElementById('officer-availability-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function handleChangeAvailabilitySubmit(e) {
+      e.preventDefault();
+      const officerId = document.getElementById('avail-officer-id')?.value;
+      const avail = document.getElementById('avail-state-select')?.value;
+
+      try {
+        const res = await fetch('/api/admin/officers/availability', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ employee_id: officerId, availability: avail })
+        });
+        const result = await res.json();
+        if (!res.ok || !result.success) {
+          throw new Error(result.error || 'Failed to update availability');
+        }
+
+        closeChangeAvailabilityModal();
+        await loadOfficersData();
+        if (currentOfficerProfileId === officerId) {
+          openOfficerProfileModal(officerId);
+        }
+      } catch (err) {
+        alert(`Error updating availability: ${err.message}`);
+      }
+    }
+
+    // =========================================================================
+    // SAFE REMOVE / DEACTIVATE OFFICER WORKFLOW (WITH ACTIVE CASES SAFEGUARD)
+    // =========================================================================
+    function openDeactivateOfficerModal(officerId) {
+      const officer = currentOfficersData.find(o => o.id === officerId);
+      if (!officer) return;
+
+      document.getElementById('deactivate-officer-id').value = officer.id;
+      document.getElementById('deact-off-name').innerText = officer.name;
+      document.getElementById('deact-off-id').innerText = officer.id;
+      document.getElementById('deact-off-dept').innerText = officer.department;
+      document.getElementById('deact-off-active').innerText = officer.active_cases || 0;
+
+      const blockedAlert = document.getElementById('deact-blocked-alert');
+      const blockedCount = document.getElementById('deact-blocked-count');
+      const reasonGroup = document.getElementById('deact-reason-group');
+      const confirmBtn = document.getElementById('btn-confirm-deactivate');
+      const reasonInput = document.getElementById('deactivate-reason-input');
+
+      const hasActive = (officer.active_cases || 0) > 0;
+
+      if (hasActive) {
+        // SAFEGUARD TRIGGERED: Block removal
+        if (blockedAlert) blockedAlert.style.display = 'block';
+        if (blockedCount) blockedCount.innerText = officer.active_cases;
+        if (reasonGroup) reasonGroup.style.display = 'none';
+        if (reasonInput) reasonInput.required = false;
+        if (confirmBtn) {
+          confirmBtn.disabled = true;
+          confirmBtn.title = 'Cannot remove officer with active grievances';
+          confirmBtn.style.opacity = '0.5';
+          confirmBtn.style.cursor = 'not-allowed';
+          confirmBtn.innerText = 'Blocked (Active Cases Remain)';
+        }
+      } else {
+        // Safe to proceed
+        if (blockedAlert) blockedAlert.style.display = 'none';
+        if (reasonGroup) reasonGroup.style.display = 'flex';
+        if (reasonInput) {
+          reasonInput.required = true;
+          reasonInput.value = '';
+        }
+        if (confirmBtn) {
+          confirmBtn.disabled = false;
+          confirmBtn.title = '';
+          confirmBtn.style.opacity = '1';
+          confirmBtn.style.cursor = 'pointer';
+          confirmBtn.innerText = 'Confirm Deactivation';
+        }
+      }
+
+      const modal = document.getElementById('officer-deactivate-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeDeactivateOfficerModal() {
+      const modal = document.getElementById('officer-deactivate-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function handleDeactivateOfficerSubmit(e) {
+      e.preventDefault();
+      const officerId = document.getElementById('deactivate-officer-id')?.value;
+      const reason = document.getElementById('deactivate-reason-input')?.value.trim();
+
+      const btn = document.getElementById('btn-confirm-deactivate');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = 'Verifying Safeguards &amp; Deactivating...';
+      }
+
+      try {
+        const res = await fetch('/api/admin/officers/deactivate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ employee_id: officerId, reason })
+        });
+        const result = await res.json();
+        if (!res.ok || !result.success) {
+          throw new Error(result.error || 'Server blocked or rejected deactivation');
+        }
+
+        closeDeactivateOfficerModal();
+        closeOfficerProfileModal();
+        alert(`Success: ${result.message}\nServiceNow Worker Record Updated.`);
+        await loadOfficersData();
+      } catch (err) {
+        alert(`Deactivation Blocked / Failed:\n${err.message}`);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Confirm Deactivation';
+        }
+      }
+    }
+
+    function handleOfficerModalBackdrop(e) {
+      if (e.target.classList.contains('case-modal-overlay')) {
+        closeOfficerProfileModal();
+        closeAssignOfficerModal();
+        closeAssignCaseModal();
+        closeReassignCaseModal();
+        closeChangeAvailabilityModal();
+        closeDeactivateOfficerModal();
+      }
     }
   </script>
 </body>
