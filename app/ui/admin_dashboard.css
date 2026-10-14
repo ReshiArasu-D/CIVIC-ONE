@@ -3636,19 +3636,12 @@ body {
    ADVANCED REPORTS & ANALYTICS DASHBOARD (REFERENCE SCREENSHOT DESIGN)
    ========================================================================== */
 .reports-workspace-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 20px;
-  align-items: start;
+  display: block;
+  width: 100%;
 }
 
-@media (max-width: 1440px) {
-  .reports-workspace-layout {
-    grid-template-columns: 1fr;
-  }
-  .reports-ai-panel {
-    display: none;
-  }
+.reports-ai-panel {
+  display: none !important;
 }
 
 .reports-main-content {
