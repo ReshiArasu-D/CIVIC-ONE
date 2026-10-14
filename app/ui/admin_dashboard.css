@@ -1340,6 +1340,13 @@ body {
 }
 
 /* Modal for Case Details & Citizen Details */
+#case-modal {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
 .case-modal-overlay {
   display: none;
   position: fixed;

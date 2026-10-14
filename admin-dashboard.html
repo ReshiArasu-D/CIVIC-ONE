@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CivicOne Admin Dashboard — National Grievance Redressal</title>
   <meta name="description" content="Central Administrative Governance & Grievance Redressal Workspace for CivicOne.">
-  <link rel="stylesheet" href="app/ui/admin_dashboard.css">
-  <link rel="stylesheet" href="app/ui/case_workflow.css">
+  <link rel="stylesheet" href="app/ui/admin_dashboard.css?v=20261014_final">
+  <link rel="stylesheet" href="app/ui/case_workflow.css?v=20261014_final">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231d63ed%22><path d=%22M12 1.5L2 6.5V8.5H22V6.5L12 1.5ZM5 10.5V18.5H7V10.5H5ZM9.5 10.5V18.5H11.5V10.5H9.5ZM14 10.5V18.5H16V10.5H14ZM18.5 10.5V18.5H20.5V10.5H18.5ZM2 20.5V22.5H22V20.5H2Z%22/></svg>">
 </head>
 <body>
@@ -1029,18 +1029,7 @@
     </form>
   </div>
 
-  <!-- Case Details Modal for Inspecting Cases -->
-  <div class="case-modal-overlay" id="case-modal" onclick="handleCaseModalBackdrop(event)">
-    <div class="case-modal-box" role="dialog" aria-modal="true" aria-labelledby="case-modal-title">
-      <div class="case-modal-header">
-        <h3 id="case-modal-title" style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">Case Details</h3>
-        <button type="button" class="btn-modal-close" onclick="closeCaseModal()">&times;</button>
-      </div>
-      <div class="case-modal-body" id="case-modal-body">
-        Loading case data...
-      </div>
-    </div>
-  </div>
+
 
   <!-- Citizen Details Modal for Inspecting Citizens -->
   <div class="case-modal-overlay" id="citizen-modal" onclick="handleCitizenModalBackdrop(event)">
